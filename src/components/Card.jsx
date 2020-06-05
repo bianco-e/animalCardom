@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { utilitiesIcons, tenCards } from "../data/data.jsx";
 
@@ -7,7 +7,7 @@ var statsToCompare = [];
 const Card = ({
   attack,
   clicked,
-  defense,
+  life,
   family,
   image,
   onClickFn,
@@ -15,7 +15,7 @@ const Card = ({
   skill,
   species,
 }) => {
-  const [currentDefense, setCurrentDefense] = useState(defense);
+  const [currentLife, setCurrentLife] = useState(life);
   const computerHand = tenCards.computerCards;
   const userHand = tenCards.userCards;
 
@@ -25,11 +25,11 @@ const Card = ({
   };
 
   const damageEnemy = () => {
-    var statsDiff = statsToCompare[1].currentDefense - statsToCompare[0].attack;
+    var statsDiff = statsToCompare[1].currentLife - statsToCompare[0].attack;
     if (statsDiff < 1) {
-      setCurrentDefense("DEAD");
+      setCurrentLife("DEAD");
     } else {
-      setCurrentDefense(statsDiff);
+      setCurrentLife(statsDiff);
     }
   };
 
@@ -38,7 +38,7 @@ const Card = ({
       if (clicked) {
         if (
           !userHand.some((card) => card.species === valToPush.species) &&
-          currentDefense !== "DEAD"
+          currentLife !== "DEAD"
         ) {
           triggerAndPush(valToPush);
           damageEnemy();
@@ -59,10 +59,10 @@ const Card = ({
       onClick={() => {
         !clicked
           ? attackSelection({ species, attack })
-          : attackSelection({ species, currentDefense });
+          : attackSelection({ species, currentLife });
         onClickFn();
       }}
-      opacity={`${currentDefense === "DEAD" && "0.5"}`}
+      opacity={`${currentLife === "DEAD" && "0.5"}`}
     >
       <FamilyIcon>{family}</FamilyIcon>
 
@@ -83,9 +83,9 @@ const Card = ({
         <Picture width={"20"} height={"20"} src={utilitiesIcons.attack} />
         <Text px={"12"}>{attack}</Text>
 
-        <Picture width={"20"} height={"20"} src={utilitiesIcons.defense} />
-        <Text px={"12"} color={`${currentDefense !== defense && "red"}`}>
-          {currentDefense}
+        <Picture width={"20"} height={"20"} src={utilitiesIcons.life} />
+        <Text px={"12"} color={`${currentLife !== life && "red"}`}>
+          {currentLife}
         </Text>
       </FlexSection>
     </AnimalCard>
@@ -93,6 +93,12 @@ const Card = ({
 };
 
 const AnimalCard = styled.button({
+  ["&:focus"]: {
+    boxShadow: "20px 20px 20px black",
+  },
+  ["&:hover"]: {
+    boxShadow: "15px 15px 15px brown",
+  },
   display: "flex",
   alignItems: "center",
   flexDirection: "column",

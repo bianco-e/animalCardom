@@ -27,10 +27,8 @@ function App() {
 const Wrapper = styled.div({
   display: "flex",
   flexDirection: "column",
-  alignItems: "center",
   justifyContent: "space-between",
   height: "100vh",
-  padding: "0",
 });
 
 export default App;

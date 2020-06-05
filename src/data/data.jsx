@@ -1,21 +1,21 @@
 import attIcon from "../images/attackIcon.png";
 import furyIcon from "../images/furyIcon.png";
-import defIcon from "../images/defenseIcon.png";
+import lifeIcon from "../images/lifeIcon.png";
 
 const utilitiesIcons = {
   attack: attIcon,
-  defense: defIcon,
+  life: lifeIcon,
   fury: furyIcon,
 };
 
 class Animal {
-  constructor(family, species, image, skill, attack, defense) {
+  constructor(family, species, image, skill, attack, life) {
     this.family = family;
     this.species = species;
     this.image = image;
     this.skill = skill;
     this.attack = attack;
-    this.defense = defense;
+    this.life = life;
   }
 }
 

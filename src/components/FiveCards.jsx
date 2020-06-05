@@ -10,7 +10,7 @@ const FiveCards = ({ arrayToRender, clicked, setClicked }) => {
           <Card
             attack={animal.attack}
             clicked={clicked}
-            defense={animal.defense}
+            life={animal.life}
             family={animal.family}
             image={animal.image}
             key={animal.species}
@@ -29,7 +29,6 @@ const CardsGroup = styled.div({
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
-  flexWrap: "wrap",
 });
 
 export default FiveCards;
