@@ -10,13 +10,12 @@ const Card = ({
   life,
   family,
   image,
-  onClickFn,
+  skillFn,
   setClicked,
   skill,
   species,
 }) => {
   const [currentLife, setCurrentLife] = useState(life);
-  const computerHand = tenCards.computerCards;
   const userHand = tenCards.userCards;
 
   const triggerAndPush = (valToPush) => {
@@ -26,11 +25,14 @@ const Card = ({
 
   const damageEnemy = () => {
     var statsDiff = statsToCompare[1].currentLife - statsToCompare[0].attack;
+
     if (statsDiff < 1) {
       setCurrentLife("DEAD");
     } else {
       setCurrentLife(statsDiff);
     }
+    statsToCompare = [];
+    setClicked(!clicked);
   };
 
   const attackSelection = (valToPush) => {
@@ -42,6 +44,9 @@ const Card = ({
         ) {
           triggerAndPush(valToPush);
           damageEnemy();
+        } else if (statsToCompare[0].species === valToPush.species) {
+          setClicked(!clicked);
+          statsToCompare = [];
         } else {
           alert("You can't do that! Select an alive enemy!");
         }
@@ -54,15 +59,27 @@ const Card = ({
     }
   };
 
+  const toDoOnClick = () => {
+    if (clicked) {
+      attackSelection({ species, currentLife });
+    } else {
+      if (userHand.some((card) => card.species === species)) {
+        attackSelection({ species, attack });
+      }
+    }
+  };
+
   return (
     <AnimalCard
       onClick={() => {
-        !clicked
-          ? attackSelection({ species, attack })
-          : attackSelection({ species, currentLife });
-        onClickFn();
+        toDoOnClick();
+        skillFn();
       }}
       opacity={`${currentLife === "DEAD" && "0.5"}`}
+      outline={`${
+        statsToCompare[0]?.species === species &&
+        "6px ridge rgba(255, 129, 3, .8)"
+      }`}
     >
       <FamilyIcon>{family}</FamilyIcon>
 
@@ -93,24 +110,22 @@ const Card = ({
 };
 
 const AnimalCard = styled.button({
-  ["&:focus"]: {
-    boxShadow: "20px 20px 20px black",
-  },
-  ["&:hover"]: {
-    boxShadow: "15px 15px 15px brown",
-  },
   display: "flex",
   alignItems: "center",
   flexDirection: "column",
   justifyContent: "center",
   border: "2px solid #b9935a",
   borderRadius: "5px",
+  cursor: "pointer",
   position: "relative",
   padding: "15px",
   backgroundColor: "#d4a257",
-  boxShadow: "inset 0px 0px 10px black",
-  cursor: "pointer",
+  boxShadow: `inset 0px 0px 10px black`,
+  outline: (props) => props.outline,
   opacity: (props) => props.opacity,
+  ["&:hover"]: {
+    boxShadow: "4px 4px 4px #b9935a, inset 0px 0px 15px black",
+  },
 });
 
 const FamilyIcon = styled.span({
@@ -122,6 +137,7 @@ const FamilyIcon = styled.span({
 const Picture = styled.img({
   width: (props) => `${props.width}px`,
   height: (props) => `${props.height}px`,
+  borderRadius: "200px",
 });
 const Text = styled.h3({
   color: (props) => props.color,

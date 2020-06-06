@@ -14,7 +14,7 @@ const FiveCards = ({ arrayToRender, clicked, setClicked }) => {
             family={animal.family}
             image={animal.image}
             key={animal.species}
-            onClickFn={() => {}}
+            skillFn={() => {}}
             setClicked={setClicked}
             skill={animal.skill}
             species={animal.species}
