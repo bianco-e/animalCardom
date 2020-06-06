@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Card from "./Card";
 
-const FiveCards = ({ arrayToRender, clicked, setClicked }) => {
+const Hand = ({ arrayToRender, clicked, setClicked, setPcPlay }) => {
   return (
     <CardsGroup>
       {arrayToRender.map((animal) => {
@@ -18,6 +18,7 @@ const FiveCards = ({ arrayToRender, clicked, setClicked }) => {
             setClicked={setClicked}
             skill={animal.skill}
             species={animal.species}
+            setPcPlay={setPcPlay}
           />
         );
       })}
@@ -31,4 +32,4 @@ const CardsGroup = styled.div({
   justifyContent: "space-between",
 });
 
-export default FiveCards;
+export default Hand;

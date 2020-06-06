@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
-import { utilitiesIcons, tenCards } from "../data/data.jsx";
+import { utilitiesIcons } from "../data/data.jsx";
+import Context from "../context/HandsContext";
 
 var statsToCompare = [];
 
@@ -14,78 +15,124 @@ const Card = ({
   setClicked,
   skill,
   species,
+  setPcPlay,
 }) => {
-  const [currentLife, setCurrentLife] = useState(life);
-  const userHand = tenCards.userCards;
+  const [initialLife] = useState(life);
+  const { hands, setHands } = useContext(Context);
+  const [pcLiveCards, setPcLiveCards] = useState("");
+  const [userLiveCards, setUserLiveCards] = useState("");
 
-  const triggerAndPush = (valToPush) => {
+  useEffect(() => {
+    if (hands.pc.every((card) => card.life === "DEAD")) {
+      alert("You win!");
+    }
+    if (hands.user.every((card) => card.life === "DEAD")) {
+      alert("Computer wins!");
+    }
+  }, []);
+
+  useEffect(() => {
+    setPcLiveCards(hands.pc.filter((card) => card.life !== "DEAD"));
+    setUserLiveCards(hands.user.filter((card) => card.life !== "DEAD"));
+  }, [hands]);
+
+  // ARREGLAR AMBOS USE EFFECT: NUNCA DICE QUIÉN GANA, Y NO ACTUALIZA BIEN LA LISTA DE LOS VIVOS
+  // PROBABLEMENTE SE ARREGLEN LOS DOS, SI ACTUALIZA BIEN LA LISTA DE VIVOS
+
+  const changeCardLife = (hand, defender, newVal) => {
+    var newHand = hands[hand].map((card) => {
+      if (card === defender) {
+        return (card.life = newVal);
+      }
+    });
+    return newHand;
+  };
+
+  const computerDamage = (defender, attacker) => {
+    var statsDiff = defender.life - attacker.attack;
+    if (statsDiff < 1) {
+      var newUserHand = changeCardLife("user", defender, "DEAD");
+      setHands({ ...hands, newUserHand });
+      return "and KILLED IT";
+    } else {
+      var newUserHand = changeCardLife("user", defender, statsDiff);
+      setHands({ ...hands, newUserHand });
+      return `inflicting ${attacker.attack} damage`;
+    }
+  };
+
+  const computerPlay = () => {
+    setPcPlay("Thinking...");
+    var firstRandomNum = Math.floor(Math.random() * pcLiveCards.length);
+    var secondRandomNum = Math.floor(Math.random() * userLiveCards.length);
+    setTimeout(() => {
+      setPcPlay(
+        `${pcLiveCards[firstRandomNum].species} attacked ${
+          userLiveCards[secondRandomNum].species
+        } ${computerDamage(
+          userLiveCards[secondRandomNum],
+          pcLiveCards[firstRandomNum]
+        )}`
+      );
+    }, 1400);
+  };
+
+  const triggerAndAddStat = (valToAdd) => {
     setClicked(!clicked);
-    statsToCompare.push(valToPush);
+    statsToCompare.push(valToAdd);
   };
 
   const damageEnemy = () => {
-    var statsDiff = statsToCompare[1].currentLife - statsToCompare[0].attack;
-
+    var statsDiff = statsToCompare[1].life - statsToCompare[0].attack;
     if (statsDiff < 1) {
-      setCurrentLife("DEAD");
+      var newPcHand = changeCardLife("pc", statsToCompare[1], "DEAD");
+      setHands({ newPcHand, ...hands });
     } else {
-      setCurrentLife(statsDiff);
+      var newPcHand = changeCardLife("pc", statsToCompare[1], statsDiff);
+      setHands({ newPcHand, ...hands });
     }
     statsToCompare = [];
     setClicked(!clicked);
+    computerPlay();
   };
 
-  const attackSelection = (valToPush) => {
-    if (statsToCompare.length < 2) {
-      if (clicked) {
-        if (
-          !userHand.some((card) => card.species === valToPush.species) &&
-          currentLife !== "DEAD"
-        ) {
-          triggerAndPush(valToPush);
-          damageEnemy();
-        } else if (statsToCompare[0].species === valToPush.species) {
-          setClicked(!clicked);
-          statsToCompare = [];
-        } else {
-          alert("You can't do that! Select an alive enemy!");
-        }
-      } else {
-        triggerAndPush(valToPush);
-      }
-    } else {
-      statsToCompare = [];
-      triggerAndPush(valToPush);
-    }
-  };
-
-  const toDoOnClick = () => {
+  const attackSelection = (animalCard) => {
     if (clicked) {
-      attackSelection({ species, currentLife });
-    } else {
-      if (userHand.some((card) => card.species === species)) {
-        attackSelection({ species, attack });
+      if (!hands.user.some((card) => card === animalCard)) {
+        triggerAndAddStat(animalCard);
+        damageEnemy();
+      } else if (statsToCompare[0] === animalCard) {
+        setClicked(!clicked);
+        statsToCompare = [];
+      } else {
+        alert("You can't do that! Select an alive enemy!");
       }
+    } else {
+      triggerAndAddStat(animalCard);
     }
   };
 
   return (
     <AnimalCard
       onClick={() => {
-        toDoOnClick();
+        attackSelection(
+          pcLiveCards
+            .concat(userLiveCards)
+            .find((card) => card.species === species)
+        );
         skillFn();
       }}
-      opacity={`${currentLife === "DEAD" && "0.5"}`}
+      opacity={`${life === "DEAD" && "0.5"}`}
       outline={`${
         statsToCompare[0]?.species === species &&
-        "6px ridge rgba(255, 129, 3, .8)"
+        "7px inset rgba(255, 129, 3, .8)"
       }`}
     >
       <FamilyIcon>{family}</FamilyIcon>
 
       <Text px={"20"}>{species}</Text>
 
-      <Picture width={"200"} height={"140"} src={image} />
+      <Picture width={"190"} height={"140"} src={image} />
 
       <FlexSection justify={"center"}>
         <Picture width={"20"} height={"20"} src={utilitiesIcons.fury} />
@@ -101,8 +148,8 @@ const Card = ({
         <Text px={"12"}>{attack}</Text>
 
         <Picture width={"20"} height={"20"} src={utilitiesIcons.life} />
-        <Text px={"12"} color={`${currentLife !== life && "red"}`}>
-          {currentLife}
+        <Text px={"12"} color={`${initialLife > life && "red"}`}>
+          {life}
         </Text>
       </FlexSection>
     </AnimalCard>
@@ -137,7 +184,7 @@ const FamilyIcon = styled.span({
 const Picture = styled.img({
   width: (props) => `${props.width}px`,
   height: (props) => `${props.height}px`,
-  borderRadius: "200px",
+  borderRadius: "120px",
 });
 const Text = styled.h3({
   color: (props) => props.color,
@@ -151,10 +198,10 @@ const FlexSection = styled.div({
   justifyContent: (props) => props.justify,
 });
 const DescriptionDiv = styled.div({
-  width: "210px",
+  width: "200px",
   padding: "5px",
   backgroundColor: "#b9935a",
-  boxShadow: "inset 0px 0px 5px whitesmoke",
+  boxShadow: "inset 0px 0px 5px white",
   borderRadius: "5px",
 });
 

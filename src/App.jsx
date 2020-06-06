@@ -1,24 +1,26 @@
-import React, { useState } from "react";
-import { tenCards } from "./data/data.jsx";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
-import FiveCards from "./components/FiveCards";
+import Hand from "./components/Hand";
+import Context from "./context/HandsContext";
 
 function App() {
   const [clicked, setClicked] = useState(false);
-  const computerHand = tenCards.computerCards;
-  const userHand = tenCards.userCards;
-
+  const [pcPlay, setPcPlay] = useState("");
+  const { hands, setHands } = useContext(Context);
   return (
     <Wrapper>
-      <FiveCards
-        arrayToRender={computerHand}
+      <Hand
+        arrayToRender={hands.pc}
         clicked={clicked}
         setClicked={setClicked}
+        setPcPlay={setPcPlay}
       />
-      <FiveCards
-        arrayToRender={userHand}
+      <ComputerMessage>{pcPlay}</ComputerMessage>
+      <Hand
+        arrayToRender={hands.user}
         clicked={clicked}
         setClicked={setClicked}
+        setPcPlay={setPcPlay}
       />
     </Wrapper>
   );
@@ -29,6 +31,9 @@ const Wrapper = styled.div({
   flexDirection: "column",
   justifyContent: "space-between",
   height: "100vh",
+});
+const ComputerMessage = styled.h4({
+  textAlign: "center",
 });
 
 export default App;

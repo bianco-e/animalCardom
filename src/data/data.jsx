@@ -34,6 +34,18 @@ const animals = [
   ),
   new Animal(
     "🦎",
+    "Tortoise",
+    "https://img.culturacolectiva.com/cdn-cgi/image/f=auto,w=1600,q=80,fit=contain/content_image/2020/5/22/1590170907479-reaparece-tortuga-gigante-fernandina-en-peligro-de-extincion.001.jpeg",
+    {
+      name: "Hibernate",
+      description:
+        "After its first attack, Tortoise can get inside its shell increasing its life by 5.",
+    },
+    2,
+    10
+  ),
+  new Animal(
+    "🦎",
     "Snake",
     "https://www.oronoticias.com.mx/wp-content/uploads/2019/07/serpiente.jpg",
     {
@@ -90,7 +102,7 @@ const animals = [
         "Orc ejects a waterjet from its back making the enemy unable to see and attack on next round",
     },
     7,
-    16
+    15
   ),
   new Animal(
     "🦈",
@@ -139,6 +151,18 @@ const animals = [
     },
     9,
     9
+  ),
+  new Animal(
+    "🦂",
+    "Mosquito",
+    "https://imagenes.20minutos.es/files/image_990_v1/uploads/imagenes/2019/07/05/986865.jpg",
+    {
+      name: "Life drain",
+      description:
+        "After its first attack Mosquito will start to drain enemy's life, 2 points per round.",
+    },
+    2,
+    1
   ),
   new Animal(
     "🦂",
@@ -237,13 +261,23 @@ const animals = [
   ),
 ];
 
+const shuffleArr = (array) => {
+  var j, x, i;
+  for (i = array.length - 1; i > 0; i--) {
+    j = Math.floor(Math.random() * (i + 1));
+    x = array[i];
+    array[i] = array[j];
+    array[j] = x;
+  }
+  return array;
+};
+
 const getTenCards = () => {
-  var tenCards = animals.sort((a, b) => 0.5 - Math.random()).slice(0, 10);
+  var tenCards = shuffleArr(animals).slice(0, 10);
   return {
-    computerCards: tenCards.slice(0, 5),
-    userCards: tenCards.slice(5, 10),
+    pc: tenCards.slice(0, 5),
+    user: tenCards.slice(5, 10),
   };
 };
-const tenCards = getTenCards();
 
-export { animals, utilitiesIcons, tenCards };
+export { animals, utilitiesIcons, getTenCards };
