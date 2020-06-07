@@ -18,9 +18,11 @@ const Card = ({
   setPcPlay,
 }) => {
   const [initialLife] = useState(life);
-  const { hands, setHands } = useContext(Context);
-  const [pcLiveCards, setPcLiveCards] = useState("");
-  const [userLiveCards, setUserLiveCards] = useState("");
+  const { hands, setHands, turn, setTurn } = useContext(Context);
+
+  useEffect(() => {
+    turn === "pc" && computerPlay();
+  }, [turn]);
 
   useEffect(() => {
     if (hands.pc.every((card) => card.life === "DEAD")) {
@@ -29,40 +31,39 @@ const Card = ({
     if (hands.user.every((card) => card.life === "DEAD")) {
       alert("Computer wins!");
     }
-  }, []);
-
-  useEffect(() => {
-    setPcLiveCards(hands.pc.filter((card) => card.life !== "DEAD"));
-    setUserLiveCards(hands.user.filter((card) => card.life !== "DEAD"));
   }, [hands]);
 
-  // ARREGLAR AMBOS USE EFFECT: NUNCA DICE QUIÉN GANA, Y NO ACTUALIZA BIEN LA LISTA DE LOS VIVOS
-  // PROBABLEMENTE SE ARREGLEN LOS DOS, SI ACTUALIZA BIEN LA LISTA DE VIVOS
-
   const changeCardLife = (hand, defender, newVal) => {
-    var newHand = hands[hand].map((card) => {
-      if (card === defender) {
-        return (card.life = newVal);
-      }
+    var restingHand = hand === "user" ? "pc" : "user";
+    console.log(hands[restingHand]);
+    setHands({
+      [hand]: hands[hand].map((card) => {
+        if (card === defender) {
+          return { ...card, life: newVal };
+        } else {
+          return card;
+        }
+      }),
+      [restingHand]: hands[restingHand],
     });
-    return newHand;
   };
 
   const computerDamage = (defender, attacker) => {
     var statsDiff = defender.life - attacker.attack;
     if (statsDiff < 1) {
-      var newUserHand = changeCardLife("user", defender, "DEAD");
-      setHands({ ...hands, newUserHand });
+      changeCardLife("user", defender, "DEAD");
       return "and KILLED IT";
     } else {
-      var newUserHand = changeCardLife("user", defender, statsDiff);
-      setHands({ ...hands, newUserHand });
+      changeCardLife("user", defender, statsDiff);
       return `inflicting ${attacker.attack} damage`;
     }
   };
 
   const computerPlay = () => {
+    setTurn("user");
     setPcPlay("Thinking...");
+    var pcLiveCards = hands.pc.filter((card) => card.life !== "DEAD");
+    var userLiveCards = hands.user.filter((card) => card.life !== "DEAD");
     var firstRandomNum = Math.floor(Math.random() * pcLiveCards.length);
     var secondRandomNum = Math.floor(Math.random() * userLiveCards.length);
     setTimeout(() => {
@@ -85,15 +86,13 @@ const Card = ({
   const damageEnemy = () => {
     var statsDiff = statsToCompare[1].life - statsToCompare[0].attack;
     if (statsDiff < 1) {
-      var newPcHand = changeCardLife("pc", statsToCompare[1], "DEAD");
-      setHands({ newPcHand, ...hands });
+      changeCardLife("pc", statsToCompare[1], "DEAD");
     } else {
-      var newPcHand = changeCardLife("pc", statsToCompare[1], statsDiff);
-      setHands({ newPcHand, ...hands });
+      changeCardLife("pc", statsToCompare[1], statsDiff);
     }
     statsToCompare = [];
     setClicked(!clicked);
-    computerPlay();
+    setTurn("pc");
   };
 
   const attackSelection = (animalCard) => {
@@ -116,9 +115,11 @@ const Card = ({
     <AnimalCard
       onClick={() => {
         attackSelection(
-          pcLiveCards
-            .concat(userLiveCards)
-            .find((card) => card.species === species)
+          hands.pc
+            .concat(hands.user)
+            .filter(
+              (card) => card.life !== "DEAD" && card.species === species
+            )[0]
         );
         skillFn();
       }}
