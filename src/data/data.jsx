@@ -113,7 +113,7 @@ const animals = [
       description:
         "Blowfish reflects 3 damage to any enemy that dares to atack it.",
     },
-    4,
+    3,
     5
   ),
   new Animal(
@@ -151,6 +151,18 @@ const animals = [
     },
     9,
     9
+  ),
+  new Animal(
+    "🦅",
+    "Parrot",
+    "https://avesexoticas.org/wp-content/uploads/2017/06/Chestnut-fronted_Macaw_Ara_severa_-Free_Flight_Aviary_-San_Diego-3000x1997.jpg",
+    {
+      name: "Echo",
+      description:
+        "When Parrot kills an enemy will automatically copy its skill.",
+    },
+    3,
+    4
   ),
   new Animal(
     "🦂",
@@ -258,6 +270,18 @@ const animals = [
     },
     7,
     8
+  ),
+  new Animal(
+    "🐺",
+    "Elephant",
+    "https://static.nationalgeographic.es/files/styles/image_3200/public/2928.600x450.jpg?w=1900&h=1425",
+    {
+      name: "Stomp",
+      description:
+        "Elephant can hardly stomp making all enemies' attack decrease by 1.",
+    },
+    5,
+    12
   ),
 ];
 

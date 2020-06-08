@@ -24,6 +24,8 @@ const Card = ({
     turn === "pc" && computerPlay();
   }, [turn]);
 
+  // HACER EL REDUCER PARA VER SI EVITAMOS LOS RE-RENDERS
+
   useEffect(() => {
     if (hands.pc.every((card) => card.life === "DEAD")) {
       alert("You win!");
@@ -33,9 +35,11 @@ const Card = ({
     }
   }, [hands]);
 
+  var pcLiveCards = hands.pc.filter((card) => card.life !== "DEAD");
+  var userLiveCards = hands.user.filter((card) => card.life !== "DEAD");
+
   const changeCardLife = (hand, defender, newVal) => {
     var restingHand = hand === "user" ? "pc" : "user";
-    console.log(hands[restingHand]);
     setHands({
       [hand]: hands[hand].map((card) => {
         if (card === defender) {
@@ -62,8 +66,6 @@ const Card = ({
   const computerPlay = () => {
     setTurn("user");
     setPcPlay("Thinking...");
-    var pcLiveCards = hands.pc.filter((card) => card.life !== "DEAD");
-    var userLiveCards = hands.user.filter((card) => card.life !== "DEAD");
     var firstRandomNum = Math.floor(Math.random() * pcLiveCards.length);
     var secondRandomNum = Math.floor(Math.random() * userLiveCards.length);
     setTimeout(() => {
@@ -97,7 +99,7 @@ const Card = ({
 
   const attackSelection = (animalCard) => {
     if (clicked) {
-      if (!hands.user.some((card) => card === animalCard)) {
+      if (pcLiveCards.includes(animalCard)) {
         triggerAndAddStat(animalCard);
         damageEnemy();
       } else if (statsToCompare[0] === animalCard) {
@@ -106,7 +108,7 @@ const Card = ({
       } else {
         alert("You can't do that! Select an alive enemy!");
       }
-    } else {
+    } else if (userLiveCards.includes(animalCard)) {
       triggerAndAddStat(animalCard);
     }
   };
@@ -115,11 +117,9 @@ const Card = ({
     <AnimalCard
       onClick={() => {
         attackSelection(
-          hands.pc
-            .concat(hands.user)
-            .filter(
-              (card) => card.life !== "DEAD" && card.species === species
-            )[0]
+          pcLiveCards
+            .concat(userLiveCards)
+            .find((card) => card.species === species)
         );
         skillFn();
       }}
