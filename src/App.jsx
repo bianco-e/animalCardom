@@ -2,6 +2,9 @@ import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import Hand from "./components/Hand";
 import Context from "./context/HandsContext";
+import { getAnimalsInfo } from "./data/data.jsx";
+
+getAnimalsInfo();
 
 function App() {
   const [clicked, setClicked] = useState(false);

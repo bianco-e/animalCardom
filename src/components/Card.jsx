@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useReducer } from "react";
 import styled from "styled-components";
 import { utilitiesIcons } from "../data/data.jsx";
 import Context from "../context/HandsContext";
@@ -18,13 +18,14 @@ const Card = ({
   setPcPlay,
 }) => {
   const [initialLife] = useState(life);
-  const { hands, setHands, turn, setTurn } = useContext(Context);
+  const { hands, setHands, pcTurn, setPcTurn } = useContext(Context);
+  // const [state, dispatch] = useReducer(reducer, initialState, init)
 
   useEffect(() => {
-    turn === "pc" && computerPlay();
-  }, [turn]);
+    pcTurn && computerPlay();
+  }, [pcTurn]);
 
-  // HACER EL REDUCER PARA VER SI EVITAMOS LOS RE-RENDERS
+  // HACER EL REDUCER PARA VER SI EVITA LOS RE-RENDERS
 
   useEffect(() => {
     if (hands.pc.every((card) => card.life === "DEAD")) {
@@ -64,7 +65,7 @@ const Card = ({
   };
 
   const computerPlay = () => {
-    setTurn("user");
+    setPcTurn(!pcTurn);
     setPcPlay("Thinking...");
     var firstRandomNum = Math.floor(Math.random() * pcLiveCards.length);
     var secondRandomNum = Math.floor(Math.random() * userLiveCards.length);
@@ -94,7 +95,7 @@ const Card = ({
     }
     statsToCompare = [];
     setClicked(!clicked);
-    setTurn("pc");
+    setPcTurn(!pcTurn);
   };
 
   const attackSelection = (animalCard) => {

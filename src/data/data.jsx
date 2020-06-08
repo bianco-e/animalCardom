@@ -49,9 +49,9 @@ const animals = [
     "Snake",
     "https://www.oronoticias.com.mx/wp-content/uploads/2019/07/serpiente.jpg",
     {
-      name: "Poison",
+      name: "Venom",
       description:
-        "Snake injects its poison inflicting 1 damage for the next 3 rounds.",
+        "Snake can poison and paralyze its enemy for the next 3 rounds, inflicting 1 damage per round.",
     },
     10,
     7
@@ -69,6 +69,42 @@ const animals = [
     10
   ),
   new Animal(
+    "🦎",
+    "Chameleon",
+    "https://cumbrepuebloscop20.org/wp-content/uploads/2018/09/CAMALE%C3%93N-sus-colores-var%C3%ADan-de-acuerdo-a-su-condici%C3%B3n-de-vida-1.jpg",
+    {
+      name: "Mimicry",
+      description:
+        "Chameleon is untargeteable. Enemy can't see it until it attacks.",
+    },
+    3,
+    4
+  ),
+  new Animal(
+    "🐸",
+    "Toad",
+    "https://cdn.colombia.com/sdi/2020/01/20/significado-sonar-con-sapos-803289.jpg",
+    {
+      name: "Sticky tongue",
+      description:
+        "Toad can devorate any insect immediatly. This skill can be used just once.",
+    },
+    3,
+    3
+  ),
+  new Animal(
+    "🐸",
+    "Salamander",
+    "https://dr282zn36sxxg.cloudfront.net/datastreams/f-d%3A557c2460eab996bf3a2f50da686efbccaa2fd2cff611a768b337e5ab%2BIMAGE_TINY%2BIMAGE_TINY.1",
+    {
+      name: "Tissue regeneration",
+      description:
+        "Salamander can regenerate any part of its body, healing 1 point per round if damaged.",
+    },
+    2,
+    4
+  ),
+  new Animal(
     "🦈",
     "Shark",
     "https://www.ngenespanol.com/wp-content/uploads/2018/08/%C2%BFPor-qu%C3%A9-disminuy%C3%B3-el-riesgo-de-ataques-de-tibur%C3%B3n.jpg",
@@ -77,7 +113,7 @@ const animals = [
       description:
         "Shark can devorate any damaged enemy under 7 life in one bite.",
     },
-    14,
+    13,
     12
   ),
   new Animal(
@@ -89,7 +125,7 @@ const animals = [
       description:
         "Stingray can hide from all enemies and can't be attacked till it atacks.",
     },
-    11,
+    10,
     6
   ),
   new Animal(
@@ -102,7 +138,7 @@ const animals = [
         "Orc ejects a waterjet from its back making the enemy unable to see and attack on next round",
     },
     7,
-    15
+    14
   ),
   new Animal(
     "🦈",
@@ -150,7 +186,7 @@ const animals = [
         "Cassowary uses its casque and claws to knock enemy down and making it lose 1 round.",
     },
     9,
-    9
+    8
   ),
   new Animal(
     "🦅",
@@ -183,7 +219,7 @@ const animals = [
     {
       name: "Revenge",
       description:
-        "Before dying, Scorpion will sting its enemy inflicting 1 damage for the next 5 rounds.",
+        "Before dying, Scorpion stings its enemy inflicting 1 damage per round for the next 5 rounds.",
     },
     9,
     5
@@ -193,21 +229,21 @@ const animals = [
     "Bee",
     "https://www.rankeamos.com/uploads/2019/4/abejaafricana_1554405087.jpg",
     {
-      name: "Swarm attack",
+      name: "Life or Death",
       description:
-        "Bee can come with its swarm and sting its enemy, but will die at the end of the round.",
+        "Bee can sting its enemy making 2 extra damage, but will die after doing it.",
     },
-    7,
-    4
+    6,
+    3
   ),
   new Animal(
     "🦂",
     "Spider",
     "https://cdnmundo1.img.sputniknews.com/img/109135/72/1091357298_0:290:1920:1328_1000x541_80_0_0_5b55f584c4a63ff0ffeff88b86420468.jpg",
     {
-      name: "Sticky shelter",
+      name: "Sticky wrapping",
       description:
-        "Spider can weave its web protecting itself, after it attacks, so it can't be attacked on next round.",
+        "Spider can weave its web wrapping and paralyzing the enemy, so it can't use its ability for 3 rounds.",
     },
     7,
     4
@@ -221,8 +257,8 @@ const animals = [
       description:
         "Bear nails its claws making enemy bleed, inflicting 10% enemy's current life for the next 2 rounds.",
     },
-    11,
-    15
+    10,
+    14
   ),
   new Animal(
     "🐺",
@@ -258,7 +294,7 @@ const animals = [
         "Cheetah appears from nowhere when some ally is attacked inflicting 2 damage to the enemy.",
     },
     9,
-    12
+    9
   ),
   new Animal(
     "🐺",
@@ -280,10 +316,13 @@ const animals = [
       description:
         "Elephant can hardly stomp making all enemies' attack decrease by 1.",
     },
-    5,
+    6,
     12
   ),
 ];
+
+// Add plants to each hand like: antidote, healing plant, poisonous mushroom
+// Add option to set terrains that can benefit animals families: sea, forest, sand, etc...
 
 const shuffleArr = (array) => {
   var j, x, i;
@@ -296,7 +335,7 @@ const shuffleArr = (array) => {
   return array;
 };
 
-const getTenCards = () => {
+const getCards = () => {
   var tenCards = shuffleArr(animals).slice(0, 10);
   return {
     pc: tenCards.slice(0, 5),
@@ -304,4 +343,23 @@ const getTenCards = () => {
   };
 };
 
-export { animals, utilitiesIcons, getTenCards };
+const getAnimalsInfo = () => {
+  var reptile = animals.filter((animal) => animal.family === "🦎").length;
+  var amphibian = animals.filter((animal) => animal.family === "🐸").length;
+  var fish = animals.filter((animal) => animal.family === "🦈").length;
+  var bird = animals.filter((animal) => animal.family === "🦅").length;
+  var insect = animals.filter((animal) => animal.family === "🦂").length;
+  var mammal = animals.filter((animal) => animal.family === "🐺").length;
+
+  console.log(
+    animals.length + " cards,",
+    reptile + " reptiles,",
+    amphibian + " amphibians,",
+    fish + " fishes,",
+    bird + " birds,",
+    insect + " insects,",
+    mammal + " mammals"
+  );
+};
+
+export { animals, utilitiesIcons, getCards, getAnimalsInfo };
