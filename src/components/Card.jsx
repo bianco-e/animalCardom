@@ -1,133 +1,21 @@
-import React, { useState, useContext, useEffect, useReducer } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { utilitiesIcons } from "../data/data.jsx";
-import Context from "../context/HandsContext";
+import Context, { SELECT_CARD } from "../context/HandsContext";
 
-var statsToCompare = [];
-
-const Card = ({
-  attack,
-  clicked,
-  life,
-  family,
-  image,
-  skillFn,
-  setClicked,
-  skill,
-  species,
-  setPcPlay,
-}) => {
+const Card = ({ attack, life, family, image, skillFn, skill, species }) => {
   const [initialLife] = useState(life);
-  const { hands, setHands, pcTurn, setPcTurn } = useContext(Context);
-  // const [state, dispatch] = useReducer(reducer, initialState, init)
-
-  useEffect(() => {
-    pcTurn && computerPlay();
-  }, [pcTurn]);
-
-  // HACER EL REDUCER PARA VER SI EVITA LOS RE-RENDERS
-
-  useEffect(() => {
-    if (hands.pc.every((card) => card.life === "DEAD")) {
-      alert("You win!");
-    }
-    if (hands.user.every((card) => card.life === "DEAD")) {
-      alert("Computer wins!");
-    }
-  }, [hands]);
-
-  var pcLiveCards = hands.pc.filter((card) => card.life !== "DEAD");
-  var userLiveCards = hands.user.filter((card) => card.life !== "DEAD");
-
-  const changeCardLife = (hand, defender, newVal) => {
-    var restingHand = hand === "user" ? "pc" : "user";
-    setHands({
-      [hand]: hands[hand].map((card) => {
-        if (card === defender) {
-          return { ...card, life: newVal };
-        } else {
-          return card;
-        }
-      }),
-      [restingHand]: hands[restingHand],
-    });
-  };
-
-  const computerDamage = (defender, attacker) => {
-    var statsDiff = defender.life - attacker.attack;
-    if (statsDiff < 1) {
-      changeCardLife("user", defender, "DEAD");
-      return "and KILLED IT";
-    } else {
-      changeCardLife("user", defender, statsDiff);
-      return `inflicting ${attacker.attack} damage`;
-    }
-  };
-
-  const computerPlay = () => {
-    setPcTurn(!pcTurn);
-    setPcPlay("Thinking...");
-    var firstRandomNum = Math.floor(Math.random() * pcLiveCards.length);
-    var secondRandomNum = Math.floor(Math.random() * userLiveCards.length);
-    setTimeout(() => {
-      setPcPlay(
-        `${pcLiveCards[firstRandomNum].species} attacked ${
-          userLiveCards[secondRandomNum].species
-        } ${computerDamage(
-          userLiveCards[secondRandomNum],
-          pcLiveCards[firstRandomNum]
-        )}`
-      );
-    }, 1400);
-  };
-
-  const triggerAndAddStat = (valToAdd) => {
-    setClicked(!clicked);
-    statsToCompare.push(valToAdd);
-  };
-
-  const damageEnemy = () => {
-    var statsDiff = statsToCompare[1].life - statsToCompare[0].attack;
-    if (statsDiff < 1) {
-      changeCardLife("pc", statsToCompare[1], "DEAD");
-    } else {
-      changeCardLife("pc", statsToCompare[1], statsDiff);
-    }
-    statsToCompare = [];
-    setClicked(!clicked);
-    setPcTurn(!pcTurn);
-  };
-
-  const attackSelection = (animalCard) => {
-    if (clicked) {
-      if (pcLiveCards.includes(animalCard)) {
-        triggerAndAddStat(animalCard);
-        damageEnemy();
-      } else if (statsToCompare[0] === animalCard) {
-        setClicked(!clicked);
-        statsToCompare = [];
-      } else {
-        alert("You can't do that! Select an alive enemy!");
-      }
-    } else if (userLiveCards.includes(animalCard)) {
-      triggerAndAddStat(animalCard);
-    }
-  };
+  const [state, dispatch] = useContext(Context);
 
   return (
     <AnimalCard
       onClick={() => {
-        attackSelection(
-          pcLiveCards
-            .concat(userLiveCards)
-            .find((card) => card.species === species)
-        );
+        !state.pcTurn && dispatch({ type: SELECT_CARD, species });
         skillFn();
       }}
       opacity={`${life === "DEAD" && "0.5"}`}
       outline={`${
-        statsToCompare[0]?.species === species &&
-        "7px inset rgba(255, 129, 3, .8)"
+        state.attacker?.species === species && "7px inset rgba(255, 129, 3, .8)"
       }`}
     >
       <FamilyIcon>{family}</FamilyIcon>
