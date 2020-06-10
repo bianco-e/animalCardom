@@ -1,5 +1,5 @@
 import React, { useReducer } from "react";
-import { getCards } from "../data/data.jsx";
+import { getCards, getPlants } from "../data/data.jsx";
 export const SELECT_CARD = "SELECT_CARD";
 export const COMPUTER_PLAY = "COMPUTER_PLAY";
 export const RESTART_GAME = "RESTART_GAME";
@@ -10,6 +10,7 @@ const Context = React.createContext({});
 
 const initialState = {
   hands: getCards(),
+  plants: getPlants(),
   pcTurn: false,
   triggerPcAttack: false,
   attacker: undefined,
@@ -65,6 +66,7 @@ const computerPlay = (state) => {
 const damageEnemy = (state) => {
   const { hands, defender, attacker, pcTurn } = state;
   const statsDiff = defender.life.current - attacker.attack.current;
+
   return {
     ...state,
     hands: {
@@ -135,8 +137,6 @@ const setTerrain = (state, familyToBuff) => {
       };
     } else return card;
   });
-
-  console.log("buffed", userBuffedCards, pcBuffedCards);
 
   return {
     ...state,

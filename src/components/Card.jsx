@@ -21,7 +21,7 @@ const Card = ({ attack, life, family, image, skillFn, skill, species }) => {
 
       <Text px={"20"}>{species}</Text>
 
-      <Picture width={"190"} height={"140"} src={image} />
+      <Picture width={"180"} height={"130"} src={image} />
 
       <FlexSection justify={"center"}>
         <Picture width={"20"} height={"20"} src={utilitiesIcons.fury} />
@@ -34,12 +34,12 @@ const Card = ({ attack, life, family, image, skillFn, skill, species }) => {
 
       <FlexSection>
         <Picture width={"20"} height={"20"} src={utilitiesIcons.attack} />
-        <Text px={"12"} color={`${attack.current > attack.initial && "green"}`}>
+        <Text px={"14"} color={`${attack.current > attack.initial && "green"}`}>
           {attack.current}
         </Text>
 
         <Picture width={"20"} height={"20"} src={utilitiesIcons.life} />
-        <Text px={"12"} color={`${life.current < life.initial && "red"}`}>
+        <Text px={"14"} color={`${life.current < life.initial && "red"}`}>
           {life.current}
         </Text>
       </FlexSection>
@@ -56,13 +56,16 @@ const AnimalCard = styled.button({
   borderRadius: "5px",
   cursor: "pointer",
   position: "relative",
-  padding: "15px",
+  padding: "12px",
   backgroundColor: "#d4a257",
   boxShadow: `inset 0px 0px 10px black`,
   outline: (props) => props.outline,
   opacity: (props) => props.opacity,
   ["&:hover"]: {
     boxShadow: "4px 4px 4px #b9935a, inset 0px 0px 15px black",
+  },
+  ["&:active"]: {
+    boxShadow: "inset 0px 0px 40px black",
   },
 });
 
@@ -89,7 +92,7 @@ const FlexSection = styled.div({
   justifyContent: (props) => props.justify,
 });
 const DescriptionDiv = styled.div({
-  width: "200px",
+  width: "185px",
   padding: "5px",
   backgroundColor: "#b9935a",
   boxShadow: "inset 0px 0px 5px white",

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import Hand from "./components/Hand";
+import Panel from "./components/Panel";
 import Context, {
   COMPUTER_PLAY,
   RESTART_GAME,
@@ -12,6 +13,7 @@ import { getAnimalsInfo, terrains } from "./data/data.jsx";
 function App() {
   const [state, dispatch] = useContext(Context);
   const [bgColor, setBgColor] = useState("");
+  const { hands, plants, pcTurn, pcPlay, triggerPcAttack } = state;
 
   const setTerrain = () => {
     const randomNum = Math.floor(Math.random() * terrains.length);
@@ -28,19 +30,21 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (state.hands.pc.every((card) => card.life === "DEAD")) {
+    if (hands.pc.every((card) => card.life === "DEAD")) {
       alert("You win!");
       dispatch({ type: RESTART_GAME });
     }
-    if (state.hands.user.every((card) => card.life === "DEAD")) {
+    if (hands.user.every((card) => card.life === "DEAD")) {
       alert("Computer wins!");
       dispatch({ type: RESTART_GAME });
     }
-  }, [state.hands]);
+  }, [hands]);
+
+  // THE useEffect TO ANNOUNCE THE WINNER IS NOT WORKING PROPERLY
 
   useEffect(() => {
-    if (state.pcTurn) {
-      if (state.triggerPcAttack) {
+    if (pcTurn) {
+      if (triggerPcAttack) {
         setTimeout(() => {
           dispatch({ type: COMPUTER_PLAY });
         }, 1400);
@@ -48,22 +52,41 @@ function App() {
         dispatch({ type: COMPUTER_THINK });
       }
     }
-  }, [state.pcTurn, state.triggerPcAttack]);
+  }, [pcTurn, triggerPcAttack]);
 
   return (
-    <Wrapper bgColor={bgColor}>
-      <Hand arrayToRender={state.hands.pc} />
-      <ComputerMessage>{state.pcPlay}</ComputerMessage>
-      <Hand arrayToRender={state.hands.user} />
+    <Wrapper>
+      <LeftPanel>
+        <Panel player={"PC"} plants={plants.pc} />
+        <Panel player={"USER"} plants={plants.user} />
+      </LeftPanel>
+      <Board bgColor={bgColor}>
+        <Hand arrayToRender={hands.pc} />
+        <ComputerMessage>{pcPlay}</ComputerMessage>
+        <Hand arrayToRender={hands.user} />
+      </Board>
     </Wrapper>
   );
 }
-
 const Wrapper = styled.div({
   display: "flex",
+  flexStart: "left",
+});
+const LeftPanel = styled.div({
+  display: "flex",
+  flexDirection: "column",
+  height: "100vh",
+  backgroundColor: "#EEE8AA",
+  width: "90px",
+  border: "2px solid #CD853F",
+});
+const Board = styled.div({
+  display: "flex",
+  padding: "0px 10px 0px 10px",
   flexDirection: "column",
   justifyContent: "space-between",
   height: "100vh",
+  width: "100%",
   backgroundColor: (props) => props.bgColor,
 });
 const ComputerMessage = styled.h4({

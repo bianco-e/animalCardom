@@ -12,12 +12,43 @@ const utilitiesIcons = {
 // Add option to set terrains that can benefit animals families: sea, forest, sand, etc...
 
 const terrains = [
-  { terrain: "sea", color: "lightblue", familyToBuff: "🦈" },
-  { terrain: "swamp", color: "darkgreen", familyToBuff: "🐸" },
-  { terrain: "jungle", color: "green", familyToBuff: "🐺" },
-  { terrain: "dessert", color: "brown", familyToBuff: "🦂" },
-  { terrain: "mountain", color: "lightgrey", familyToBuff: "🦅" },
-  { terrain: "forest", color: "lightgreen", familyToBuff: "🦎" },
+  { terrain: "sea", color: "#87CEEB", familyToBuff: "🦈" },
+  { terrain: "swamp", color: "#228B22", familyToBuff: "🐸" },
+  { terrain: "jungle", color: "#006400", familyToBuff: "🐺" },
+  { terrain: "dessert", color: "#DEB887", familyToBuff: "🦂" },
+  { terrain: "mountain", color: "#C0C0C0", familyToBuff: "🦅" },
+  { terrain: "forest", color: "#2E8B57", familyToBuff: "🦎" },
+];
+
+class Plant {
+  constructor(name, description, image) {
+    this.name = name;
+    this.description = description;
+    this.image = image;
+  }
+}
+
+const plants = [
+  new Plant(
+    "Ricinum",
+    "Highly poisonous seeds: can poison any enemy making 1 damage per round, for 3 rounds",
+    "https://1.bp.blogspot.com/-zSHJ8wTmG14/WEMxdEhIDGI/AAAAAAAAQbU/EzJQttXOuU4_iyLzzel2fK-XiURsoJcVgCLcB/s1600/ricinus-minor.jpg"
+  ),
+  new Plant(
+    "Aloe",
+    "Very effective in treating wounds: can heal any ally restoring 2 life points",
+    "https://www.calloways.com/wp-content/uploads/G151-03.jpg"
+  ),
+  new Plant(
+    "Peyote",
+    "Its hallucinogen mescaline makes any enemy unable to use its skill for the next round",
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Peyote_Cactus.jpg/800px-Peyote_Cactus.jpg"
+  ),
+  new Plant(
+    "Jewelweed",
+    "Its antidote properties can eliminate any poison effect in an ally",
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Potapsco_fg13.jpg/800px-Potapsco_fg13.jpg"
+  ),
 ];
 
 class Animal {
@@ -39,9 +70,9 @@ const animals = [
     {
       name: "Nibble",
       description:
-        "Crocodile bites its enemy with its strong jaws, weakening the enemy and inflicts 2 extra damage.",
+        "Crocodile bites its enemy with its strong jaws, inflicting 2 extra damage.",
     },
-    { initial: 11, current: 11 },
+    { initial: 10, current: 10 },
     { initial: 10, current: 10 }
   ),
   new Animal(
@@ -165,13 +196,25 @@ const animals = [
     { initial: 5, current: 5 }
   ),
   new Animal(
+    "🦈",
+    "Electric Eel",
+    "https://animalesexotico.org/wp-content/uploads/2019/11/Webp.net-resizeimage-2019-11-16T080704.632.jpg",
+    {
+      name: "Electric shock",
+      description:
+        "Electric Eel can shock an enemy paralyzing it for 2 rounds.",
+    },
+    { initial: 3, current: 3 },
+    { initial: 5, current: 5 }
+  ),
+  new Animal(
     "🦅",
     "Eagle",
     "https://laopinion.com/wp-content/uploads/sites/3/2019/06/andy_morffew_-_bald_eagle_32252960978.jpg?quality=80&strip=all&w=940",
     {
       name: "Free fall",
       description:
-        "Eagle falls from the sky and hardly pecks its enemy making 2 extra damage, or killing it if it's an insect.",
+        "Eagle falls from the sky and pecks its enemy making 2 damage, or killing it if it's an insect.",
     },
     { initial: 8, current: 8 },
     { initial: 7, current: 7 }
@@ -231,7 +274,7 @@ const animals = [
     {
       name: "Revenge",
       description:
-        "Before dying, Scorpion stings its enemy inflicting 1 damage per round for the next 5 rounds.",
+        "Before dying, Scorpion stings its enemy inflicting 1 damage per round for 5 rounds.",
     },
     { initial: 9, current: 9 },
     { initial: 5, current: 5 }
@@ -255,7 +298,7 @@ const animals = [
     {
       name: "Sticky wrapping",
       description:
-        "Spider can weave its web wrapping and paralyzing the enemy, so it can't use its ability for 3 rounds.",
+        "Spider can wrap its enemy paralyzing it, so it can't use its ability for 3 rounds.",
     },
     { initial: 7, current: 7 },
     { initial: 4, current: 4 }
@@ -267,15 +310,15 @@ const animals = [
     {
       name: "Sharp claws",
       description:
-        "Bear nails its claws making enemy bleed, inflicting 10% enemy's current life for the next 2 rounds.",
+        "Bear nails its claws making enemy bleed, inflicting 1 damage per round for 2 rounds.",
     },
-    { initial: 10, current: 10 },
-    { initial: 14, current: 14 }
+    { initial: 9, current: 9 },
+    { initial: 12, current: 12 }
   ),
   new Animal(
     "🐺",
     "Lion",
-    "https://www.bioenciclopedia.com/wp-content/uploads/2011/12/leon-800.jpg",
+    "https://www.euroresidentes.com/suenos/img_suenos/leon-suenos-euroresidentes.jpg",
     {
       name: "Roar",
       description:
@@ -352,6 +395,14 @@ const getCards = () => {
   };
 };
 
+const getPlants = () => {
+  var fourCards = shuffleArr(plants);
+  return {
+    pc: fourCards.slice(0, 2),
+    user: fourCards.slice(2, 4),
+  };
+};
+
 const getAnimalsInfo = () => {
   const getfamilyLength = (emoji) => {
     return animals.filter((animal) => animal.family === emoji).length;
@@ -367,4 +418,4 @@ const getAnimalsInfo = () => {
   );
 };
 
-export { terrains, animals, utilitiesIcons, getCards, getAnimalsInfo };
+export { terrains, getPlants, utilitiesIcons, getCards, getAnimalsInfo };
