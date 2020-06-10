@@ -4,6 +4,7 @@ export const SELECT_CARD = "SELECT_CARD";
 export const COMPUTER_PLAY = "COMPUTER_PLAY";
 export const RESTART_GAME = "RESTART_GAME";
 export const COMPUTER_THINK = "COMPUTER_THINK";
+export const SET_TERRAIN = "SET_TERRAIN";
 
 const Context = React.createContext({});
 
@@ -18,14 +19,17 @@ const initialState = {
 
 const computerDamage = (state) => {
   const { defender, attacker, pcTurn, hands } = state;
-  const statsDiff = defender.life - attacker.attack;
+  const statsDiff = defender.life.current - attacker.attack.current;
   const pcAnswer = `${attacker.species} attacked ${defender.species}`;
   return {
     ...state,
     hands: {
       user: hands.user.map((card) => {
         if (card === defender) {
-          return { ...card, life: statsDiff < 1 ? "DEAD" : statsDiff };
+          return {
+            ...card,
+            life: { ...card.life, current: statsDiff < 1 ? "DEAD" : statsDiff },
+          };
         } else {
           return card;
         }
@@ -41,8 +45,12 @@ const computerDamage = (state) => {
 };
 
 const computerPlay = (state) => {
-  const pcLiveCards = state.hands.pc.filter((card) => card.life !== "DEAD");
-  const userLiveCards = state.hands.user.filter((card) => card.life !== "DEAD");
+  const pcLiveCards = state.hands.pc.filter(
+    (card) => card.life.current !== "DEAD"
+  );
+  const userLiveCards = state.hands.user.filter(
+    (card) => card.life.current !== "DEAD"
+  );
 
   const firstRandomNum = Math.floor(Math.random() * pcLiveCards.length);
   const secondRandomNum = Math.floor(Math.random() * userLiveCards.length);
@@ -56,13 +64,16 @@ const computerPlay = (state) => {
 
 const damageEnemy = (state) => {
   const { hands, defender, attacker, pcTurn } = state;
-  const statsDiff = defender.life - attacker.attack;
+  const statsDiff = defender.life.current - attacker.attack.current;
   return {
     ...state,
     hands: {
       pc: hands.pc.map((card) => {
         if (card === defender) {
-          return { ...card, life: statsDiff < 1 ? "DEAD" : statsDiff };
+          return {
+            ...card,
+            life: { ...card.life, current: statsDiff < 1 ? "DEAD" : statsDiff },
+          };
         } else {
           return card;
         }
@@ -76,12 +87,14 @@ const damageEnemy = (state) => {
 };
 
 const selectCard = (state, species) => {
-  var { hands, attacker } = state;
+  const { hands, attacker } = state;
 
-  var pcLiveCards = hands.pc.filter((card) => card.life !== "DEAD");
-  var userLiveCards = hands.user.filter((card) => card.life !== "DEAD");
+  const pcLiveCards = hands.pc.filter((card) => card.life.current !== "DEAD");
+  const userLiveCards = hands.user.filter(
+    (card) => card.life.current !== "DEAD"
+  );
 
-  var animal = hands.pc
+  const animal = hands.pc
     .concat(hands.user)
     .find((card) => card.species === species);
 
@@ -104,8 +117,40 @@ const selectCard = (state, species) => {
   } else return state;
 };
 
+const setTerrain = (state, familyToBuff) => {
+  const { hands } = state;
+  const pcBuffedCards = hands.pc.map((card) => {
+    if (card.family === familyToBuff) {
+      return {
+        ...card,
+        attack: { ...card.attack, current: card.attack.current + 1 },
+      };
+    } else return card;
+  });
+  const userBuffedCards = hands.user.map((card) => {
+    if (card.family === familyToBuff) {
+      return {
+        ...card,
+        attack: { ...card.attack, current: card.attack.current + 1 },
+      };
+    } else return card;
+  });
+
+  console.log("buffed", userBuffedCards, pcBuffedCards);
+
+  return {
+    ...state,
+    hands: {
+      pc: pcBuffedCards,
+      user: userBuffedCards,
+    },
+  };
+};
+
 const reducer = (state, action) => {
   switch (action.type) {
+    case SET_TERRAIN:
+      return setTerrain(state, action.familyToBuff);
     case SELECT_CARD:
       return selectCard(state, action.species);
     case COMPUTER_PLAY:

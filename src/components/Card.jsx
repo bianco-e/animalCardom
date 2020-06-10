@@ -1,10 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { utilitiesIcons } from "../data/data.jsx";
 import Context, { SELECT_CARD } from "../context/HandsContext";
 
 const Card = ({ attack, life, family, image, skillFn, skill, species }) => {
-  const [initialLife] = useState(life);
   const [state, dispatch] = useContext(Context);
 
   return (
@@ -13,7 +12,7 @@ const Card = ({ attack, life, family, image, skillFn, skill, species }) => {
         !state.pcTurn && dispatch({ type: SELECT_CARD, species });
         skillFn();
       }}
-      opacity={`${life === "DEAD" && "0.5"}`}
+      opacity={`${life.current === "DEAD" && "0.5"}`}
       outline={`${
         state.attacker?.species === species && "7px inset rgba(255, 129, 3, .8)"
       }`}
@@ -35,11 +34,13 @@ const Card = ({ attack, life, family, image, skillFn, skill, species }) => {
 
       <FlexSection>
         <Picture width={"20"} height={"20"} src={utilitiesIcons.attack} />
-        <Text px={"12"}>{attack}</Text>
+        <Text px={"12"} color={`${attack.current > attack.initial && "green"}`}>
+          {attack.current}
+        </Text>
 
         <Picture width={"20"} height={"20"} src={utilitiesIcons.life} />
-        <Text px={"12"} color={`${initialLife > life && "red"}`}>
-          {life}
+        <Text px={"12"} color={`${life.current < life.initial && "red"}`}>
+          {life.current}
         </Text>
       </FlexSection>
     </AnimalCard>

@@ -8,6 +8,18 @@ const utilitiesIcons = {
   fury: furyIcon,
 };
 
+// Add plants to each hand like: antidote, healing plant, poisonous mushroom
+// Add option to set terrains that can benefit animals families: sea, forest, sand, etc...
+
+const terrains = [
+  { terrain: "sea", color: "lightblue", familyToBuff: "🦈" },
+  { terrain: "swamp", color: "darkgreen", familyToBuff: "🐸" },
+  { terrain: "jungle", color: "green", familyToBuff: "🐺" },
+  { terrain: "dessert", color: "brown", familyToBuff: "🦂" },
+  { terrain: "mountain", color: "lightgrey", familyToBuff: "🦅" },
+  { terrain: "forest", color: "lightgreen", familyToBuff: "🦎" },
+];
+
 class Animal {
   constructor(family, species, image, skill, attack, life) {
     this.family = family;
@@ -29,8 +41,8 @@ const animals = [
       description:
         "Crocodile bites its enemy with its strong jaws, weakening the enemy and inflicts 2 extra damage.",
     },
-    11,
-    10
+    { initial: 11, current: 11 },
+    { initial: 10, current: 10 }
   ),
   new Animal(
     "🦎",
@@ -41,8 +53,8 @@ const animals = [
       description:
         "After its first attack, Tortoise can get inside its shell increasing its life by 5.",
     },
-    2,
-    10
+    { initial: 2, current: 2 },
+    { initial: 10, current: 10 }
   ),
   new Animal(
     "🦎",
@@ -53,8 +65,8 @@ const animals = [
       description:
         "Snake can poison and paralyze its enemy for the next 3 rounds, inflicting 1 damage per round.",
     },
-    10,
-    7
+    { initial: 10, current: 10 },
+    { initial: 7, current: 7 }
   ),
   new Animal(
     "🦎",
@@ -65,8 +77,8 @@ const animals = [
       description:
         "Komodo Dragon can bite inflicting 2 extra damage and 1 extra damage on next round.",
     },
-    10,
-    10
+    { initial: 10, current: 10 },
+    { initial: 10, current: 10 }
   ),
   new Animal(
     "🦎",
@@ -77,8 +89,8 @@ const animals = [
       description:
         "Chameleon is untargeteable. Enemy can't see it until it attacks.",
     },
-    3,
-    4
+    { initial: 3, current: 3 },
+    { initial: 4, current: 4 }
   ),
   new Animal(
     "🐸",
@@ -89,8 +101,8 @@ const animals = [
       description:
         "Toad can devorate any insect immediatly. This skill can be used just once.",
     },
-    3,
-    3
+    { initial: 3, current: 3 },
+    { initial: 3, current: 3 }
   ),
   new Animal(
     "🐸",
@@ -101,8 +113,8 @@ const animals = [
       description:
         "Salamander can regenerate any part of its body, healing 1 point per round if damaged.",
     },
-    2,
-    4
+    { initial: 2, current: 2 },
+    { initial: 4, current: 4 }
   ),
   new Animal(
     "🦈",
@@ -113,8 +125,8 @@ const animals = [
       description:
         "Shark can devorate any damaged enemy under 7 life in one bite.",
     },
-    13,
-    12
+    { initial: 13, current: 13 },
+    { initial: 12, current: 12 }
   ),
   new Animal(
     "🦈",
@@ -125,8 +137,8 @@ const animals = [
       description:
         "Stingray can hide from all enemies and can't be attacked till it atacks.",
     },
-    10,
-    6
+    { initial: 10, current: 10 },
+    { initial: 6, current: 6 }
   ),
   new Animal(
     "🦈",
@@ -137,8 +149,8 @@ const animals = [
       description:
         "Orc ejects a waterjet from its back making the enemy unable to see and attack on next round",
     },
-    7,
-    14
+    { initial: 7, current: 7 },
+    { initial: 14, current: 14 }
   ),
   new Animal(
     "🦈",
@@ -149,8 +161,8 @@ const animals = [
       description:
         "Blowfish reflects 3 damage to any enemy that dares to atack it.",
     },
-    3,
-    5
+    { initial: 3, current: 3 },
+    { initial: 5, current: 5 }
   ),
   new Animal(
     "🦅",
@@ -161,8 +173,8 @@ const animals = [
       description:
         "Eagle falls from the sky and hardly pecks its enemy making 2 extra damage, or killing it if it's an insect.",
     },
-    8,
-    7
+    { initial: 8, current: 8 },
+    { initial: 7, current: 7 }
   ),
   new Animal(
     "🦅",
@@ -173,8 +185,8 @@ const animals = [
       description:
         "Vulture's attack will be increased by 5 if there's any dead animal.",
     },
-    3,
-    7
+    { initial: 3, current: 3 },
+    { initial: 7, current: 7 }
   ),
   new Animal(
     "🦅",
@@ -185,8 +197,8 @@ const animals = [
       description:
         "Cassowary uses its casque and claws to knock enemy down and making it lose 1 round.",
     },
-    9,
-    8
+    { initial: 9, current: 9 },
+    { initial: 8, current: 8 }
   ),
   new Animal(
     "🦅",
@@ -197,8 +209,8 @@ const animals = [
       description:
         "When Parrot kills an enemy will automatically copy its skill.",
     },
-    3,
-    4
+    { initial: 3, current: 3 },
+    { initial: 4, current: 4 }
   ),
   new Animal(
     "🦂",
@@ -209,8 +221,8 @@ const animals = [
       description:
         "After its first attack Mosquito will start to drain enemy's life, 2 points per round.",
     },
-    2,
-    1
+    { initial: 2, current: 2 },
+    { initial: 1, current: 1 }
   ),
   new Animal(
     "🦂",
@@ -221,8 +233,8 @@ const animals = [
       description:
         "Before dying, Scorpion stings its enemy inflicting 1 damage per round for the next 5 rounds.",
     },
-    9,
-    5
+    { initial: 9, current: 9 },
+    { initial: 5, current: 5 }
   ),
   new Animal(
     "🦂",
@@ -233,8 +245,8 @@ const animals = [
       description:
         "Bee can sting its enemy making 2 extra damage, but will die after doing it.",
     },
-    6,
-    3
+    { initial: 6, current: 6 },
+    { initial: 3, current: 3 }
   ),
   new Animal(
     "🦂",
@@ -245,8 +257,8 @@ const animals = [
       description:
         "Spider can weave its web wrapping and paralyzing the enemy, so it can't use its ability for 3 rounds.",
     },
-    7,
-    4
+    { initial: 7, current: 7 },
+    { initial: 4, current: 4 }
   ),
   new Animal(
     "🐺",
@@ -257,8 +269,8 @@ const animals = [
       description:
         "Bear nails its claws making enemy bleed, inflicting 10% enemy's current life for the next 2 rounds.",
     },
-    10,
-    14
+    { initial: 10, current: 10 },
+    { initial: 14, current: 14 }
   ),
   new Animal(
     "🐺",
@@ -269,8 +281,8 @@ const animals = [
       description:
         "Lion roars and scares enemy so it can't attack for 3 rounds.",
     },
-    12,
-    12
+    { initial: 12, current: 12 },
+    { initial: 12, current: 12 }
   ),
   new Animal(
     "🐺",
@@ -281,8 +293,8 @@ const animals = [
       description:
         "Gorilla beats its chest scaring the enemy so it can't attack for the next round.",
     },
-    9,
-    12
+    { initial: 9, current: 9 },
+    { initial: 12, current: 12 }
   ),
   new Animal(
     "🐺",
@@ -293,8 +305,8 @@ const animals = [
       description:
         "Cheetah appears from nowhere when some ally is attacked inflicting 2 damage to the enemy.",
     },
-    9,
-    9
+    { initial: 9, current: 9 },
+    { initial: 9, current: 9 }
   ),
   new Animal(
     "🐺",
@@ -304,8 +316,8 @@ const animals = [
       name: "Bite the wound",
       description: "Hyena can bite an injuried enemy, making 2 extra damage.",
     },
-    7,
-    8
+    { initial: 7, current: 7 },
+    { initial: 8, current: 8 }
   ),
   new Animal(
     "🐺",
@@ -316,13 +328,10 @@ const animals = [
       description:
         "Elephant can hardly stomp making all enemies' attack decrease by 1.",
     },
-    6,
-    12
+    { initial: 6, current: 6 },
+    { initial: 12, current: 12 }
   ),
 ];
-
-// Add plants to each hand like: antidote, healing plant, poisonous mushroom
-// Add option to set terrains that can benefit animals families: sea, forest, sand, etc...
 
 const shuffleArr = (array) => {
   var j, x, i;
@@ -344,22 +353,18 @@ const getCards = () => {
 };
 
 const getAnimalsInfo = () => {
-  var reptile = animals.filter((animal) => animal.family === "🦎").length;
-  var amphibian = animals.filter((animal) => animal.family === "🐸").length;
-  var fish = animals.filter((animal) => animal.family === "🦈").length;
-  var bird = animals.filter((animal) => animal.family === "🦅").length;
-  var insect = animals.filter((animal) => animal.family === "🦂").length;
-  var mammal = animals.filter((animal) => animal.family === "🐺").length;
-
+  const getfamilyLength = (emoji) => {
+    return animals.filter((animal) => animal.family === emoji).length;
+  };
   console.log(
     animals.length + " cards,",
-    reptile + " reptiles,",
-    amphibian + " amphibians,",
-    fish + " fishes,",
-    bird + " birds,",
-    insect + " insects,",
-    mammal + " mammals"
+    getfamilyLength("🦎") + " reptiles,",
+    getfamilyLength("🐸") + " amphibians,",
+    getfamilyLength("🦈") + " fishes,",
+    getfamilyLength("🦅") + " birds,",
+    getfamilyLength("🦂") + " insects,",
+    getfamilyLength("🐺") + " mammals"
   );
 };
 
-export { animals, utilitiesIcons, getCards, getAnimalsInfo };
+export { terrains, animals, utilitiesIcons, getCards, getAnimalsInfo };

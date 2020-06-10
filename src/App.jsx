@@ -1,17 +1,31 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import Hand from "./components/Hand";
 import Context, {
   COMPUTER_PLAY,
   RESTART_GAME,
   COMPUTER_THINK,
+  SET_TERRAIN,
 } from "./context/HandsContext";
-import { getAnimalsInfo } from "./data/data.jsx";
-
-getAnimalsInfo();
+import { getAnimalsInfo, terrains } from "./data/data.jsx";
 
 function App() {
   const [state, dispatch] = useContext(Context);
+  const [bgColor, setBgColor] = useState("");
+
+  const setTerrain = () => {
+    const randomNum = Math.floor(Math.random() * terrains.length);
+    dispatch({
+      type: SET_TERRAIN,
+      familyToBuff: terrains[randomNum].familyToBuff,
+    });
+    return terrains[randomNum].color;
+  };
+
+  useEffect(() => {
+    getAnimalsInfo();
+    setBgColor(setTerrain());
+  }, []);
 
   useEffect(() => {
     if (state.hands.pc.every((card) => card.life === "DEAD")) {
@@ -37,7 +51,7 @@ function App() {
   }, [state.pcTurn, state.triggerPcAttack]);
 
   return (
-    <Wrapper>
+    <Wrapper bgColor={bgColor}>
       <Hand arrayToRender={state.hands.pc} />
       <ComputerMessage>{state.pcPlay}</ComputerMessage>
       <Hand arrayToRender={state.hands.user} />
@@ -50,6 +64,7 @@ const Wrapper = styled.div({
   flexDirection: "column",
   justifyContent: "space-between",
   height: "100vh",
+  backgroundColor: (props) => props.bgColor,
 });
 const ComputerMessage = styled.h4({
   textAlign: "center",
