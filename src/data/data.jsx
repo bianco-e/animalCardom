@@ -1,6 +1,7 @@
 import attIcon from "../images/attackIcon.png";
 import furyIcon from "../images/furyIcon.png";
 import lifeIcon from "../images/lifeIcon.png";
+import plantsFunctions from "./plantsFunctions";
 
 const utilitiesIcons = {
   attack: attIcon,
@@ -21,10 +22,11 @@ const terrains = [
 ];
 
 class Plant {
-  constructor(name, description, image) {
+  constructor(name, description, image, toDo) {
     this.name = name;
     this.description = description;
     this.image = image;
+    this.toDo = toDo;
   }
 }
 
@@ -32,22 +34,26 @@ const plants = [
   new Plant(
     "Ricinum",
     "Highly poisonous seeds: can poison any enemy making 1 damage per round, for 3 rounds",
-    "https://1.bp.blogspot.com/-zSHJ8wTmG14/WEMxdEhIDGI/AAAAAAAAQbU/EzJQttXOuU4_iyLzzel2fK-XiURsoJcVgCLcB/s1600/ricinus-minor.jpg"
+    "https://1.bp.blogspot.com/-zSHJ8wTmG14/WEMxdEhIDGI/AAAAAAAAQbU/EzJQttXOuU4_iyLzzel2fK-XiURsoJcVgCLcB/s1600/ricinus-minor.jpg",
+    plantsFunctions.ricinum
   ),
   new Plant(
     "Aloe",
     "Very effective in treating wounds: can heal any ally restoring 2 life points",
-    "https://www.calloways.com/wp-content/uploads/G151-03.jpg"
+    "https://www.calloways.com/wp-content/uploads/G151-03.jpg",
+    plantsFunctions.aloe
   ),
   new Plant(
     "Peyote",
     "Its hallucinogen mescaline makes any enemy unable to use its skill for the next round",
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Peyote_Cactus.jpg/800px-Peyote_Cactus.jpg"
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Peyote_Cactus.jpg/800px-Peyote_Cactus.jpg",
+    plantsFunctions.peyote
   ),
   new Plant(
     "Jewelweed",
     "Its antidote properties can eliminate any poison effect in an ally",
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Potapsco_fg13.jpg/800px-Potapsco_fg13.jpg"
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Potapsco_fg13.jpg/800px-Potapsco_fg13.jpg",
+    plantsFunctions.jewelweed
   ),
 ];
 

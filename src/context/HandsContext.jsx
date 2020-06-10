@@ -13,10 +13,11 @@ const initialState = {
   hands: getCards(),
   plants: getPlants(),
   selectedPlant: undefined,
-  pcTurn: false,
-  triggerPcAttack: false,
+  usedPlants: [],
   attacker: undefined,
   defender: undefined,
+  pcTurn: false,
+  triggerPcAttack: false,
   pcPlay: "",
 };
 
@@ -103,7 +104,7 @@ const selectCard = (state, species) => {
     .find((card) => card.species === species);
 
   if (selectedPlant && !attacker) {
-    return plantAction({ ...state, animalToTreat: animal });
+    return selectedPlant.toDo({ ...state, animalToTreat: animal });
   }
   if (attacker) {
     if (pcLiveCards.includes(animal)) {
@@ -124,14 +125,8 @@ const selectCard = (state, species) => {
   } else return state;
 };
 
-const plantAction = (state) => {
-  const { selectedPlant, animalToTreat } = state;
-  console.log(selectedPlant, animalToTreat);
-  return { ...state, selectedPlant: undefined, animalToTreat: undefined };
-};
-
 const selectPlant = (state, plant) => {
-  const { plants, selectedPlant } = state;
+  const { plants, selectedPlant, attacker } = state;
   if (selectedPlant) {
     if (selectedPlant === plant) {
       return {
@@ -141,7 +136,7 @@ const selectPlant = (state, plant) => {
     } else {
       return state;
     }
-  } else if (plants.user.includes(plant)) {
+  } else if (plants.user.includes(plant) && !attacker) {
     return {
       ...state,
       selectedPlant: plant,

@@ -4,15 +4,19 @@ import Context, { SELECT_PLANT } from "../context/HandsContext";
 
 const Plant = ({ plant }) => {
   const [state, dispatch] = useContext(Context);
+  const { selectedPlant, pcTurn, usedPlants } = state;
   const { name, description, image } = plant;
   return (
     <PlantCard
       outline={`${
-        state.selectedPlant?.name === name && "2px inset rgba(255, 129, 3, .8)"
+        selectedPlant?.name === name && "3px inset rgba(255, 129, 3, .8)"
       }`}
       onClick={() => {
-        !state.pcTurn && dispatch({ type: SELECT_PLANT, plant });
+        !pcTurn &&
+          !usedPlants.includes(plant) &&
+          dispatch({ type: SELECT_PLANT, plant });
       }}
+      opacity={usedPlants.includes(plant) && "0.6"}
     >
       <PlantName>{name}</PlantName>
       <Picture alt={name} title={description} src={image}></Picture>
@@ -29,6 +33,7 @@ const PlantCard = styled.button({
   borderRadius: "5px",
   cursor: "pointer",
   boxShadow: "inset 0px 0px 2px black",
+  opacity: (props) => props.opacity,
   outline: (props) => props.outline,
   ["&:hover"]: {
     boxShadow: "4px 4px 4px #b9935a, inset 0px 0px 5px black",
