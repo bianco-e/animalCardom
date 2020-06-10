@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
+import Context, { SELECT_PLANT } from "../context/HandsContext";
 
 const Plant = ({ plant }) => {
+  const [state, dispatch] = useContext(Context);
   const { name, description, image } = plant;
   return (
-    <PlantCard>
+    <PlantCard
+      outline={`${
+        state.selectedPlant?.name === name && "2px inset rgba(255, 129, 3, .8)"
+      }`}
+      onClick={() => {
+        !state.pcTurn && dispatch({ type: SELECT_PLANT, plant });
+      }}
+    >
       <PlantName>{name}</PlantName>
       <Picture alt={name} title={description} src={image}></Picture>
     </PlantCard>
@@ -20,6 +29,7 @@ const PlantCard = styled.button({
   borderRadius: "5px",
   cursor: "pointer",
   boxShadow: "inset 0px 0px 2px black",
+  outline: (props) => props.outline,
   ["&:hover"]: {
     boxShadow: "4px 4px 4px #b9935a, inset 0px 0px 5px black",
   },

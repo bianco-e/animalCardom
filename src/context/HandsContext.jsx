@@ -5,12 +5,14 @@ export const COMPUTER_PLAY = "COMPUTER_PLAY";
 export const RESTART_GAME = "RESTART_GAME";
 export const COMPUTER_THINK = "COMPUTER_THINK";
 export const SET_TERRAIN = "SET_TERRAIN";
+export const SELECT_PLANT = "SELECT_PLANT";
 
 const Context = React.createContext({});
 
 const initialState = {
   hands: getCards(),
   plants: getPlants(),
+  selectedPlant: undefined,
   pcTurn: false,
   triggerPcAttack: false,
   attacker: undefined,
@@ -89,7 +91,7 @@ const damageEnemy = (state) => {
 };
 
 const selectCard = (state, species) => {
-  const { hands, attacker } = state;
+  const { hands, attacker, selectedPlant } = state;
 
   const pcLiveCards = hands.pc.filter((card) => card.life.current !== "DEAD");
   const userLiveCards = hands.user.filter(
@@ -100,6 +102,9 @@ const selectCard = (state, species) => {
     .concat(hands.user)
     .find((card) => card.species === species);
 
+  if (selectedPlant && !attacker) {
+    return plantAction({ ...state, animalToTreat: animal });
+  }
   if (attacker) {
     if (pcLiveCards.includes(animal)) {
       return damageEnemy({ ...state, defender: animal });
@@ -115,6 +120,31 @@ const selectCard = (state, species) => {
     return {
       ...state,
       attacker: animal,
+    };
+  } else return state;
+};
+
+const plantAction = (state) => {
+  const { selectedPlant, animalToTreat } = state;
+  console.log(selectedPlant, animalToTreat);
+  return { ...state, selectedPlant: undefined, animalToTreat: undefined };
+};
+
+const selectPlant = (state, plant) => {
+  const { plants, selectedPlant } = state;
+  if (selectedPlant) {
+    if (selectedPlant === plant) {
+      return {
+        ...state,
+        selectedPlant: undefined,
+      };
+    } else {
+      return state;
+    }
+  } else if (plants.user.includes(plant)) {
+    return {
+      ...state,
+      selectedPlant: plant,
     };
   } else return state;
 };
@@ -153,6 +183,8 @@ const reducer = (state, action) => {
       return setTerrain(state, action.familyToBuff);
     case SELECT_CARD:
       return selectCard(state, action.species);
+    case SELECT_PLANT:
+      return selectPlant(state, action.plant);
     case COMPUTER_PLAY:
       return computerPlay(state);
     case COMPUTER_THINK:

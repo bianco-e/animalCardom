@@ -75,7 +75,6 @@ const Wrapper = styled.div({
 const LeftPanel = styled.div({
   display: "flex",
   flexDirection: "column",
-  height: "100vh",
   backgroundColor: "#EEE8AA",
   width: "90px",
   border: "2px solid #CD853F",

@@ -14,7 +14,7 @@ const Panel = ({ plants, player }) => {
 };
 
 const HalfPanel = styled.div({
-  height: "50vh",
+  height: "49vh",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",

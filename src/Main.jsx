@@ -5,7 +5,7 @@ import { HandsContext } from "./context/HandsContext";
 const Main = () => {
   return (
     <HandsContext>
-      <App></App>;
+      <App></App>
     </HandsContext>
   );
 };
