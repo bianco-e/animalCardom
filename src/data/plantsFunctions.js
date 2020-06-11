@@ -1,7 +1,7 @@
 const ricinumFn = (state) => {
   const { animalToTreat, hands, usedPlants, selectedPlant } = state;
-  if (hands.pc.includes(animalToTreat)) {
-    const pcHandWithPoisonedCard = hands.pc.map((card) => {
+  const handWithPoisonedCard = (arr) => {
+    return arr.map((card) => {
       if (card === animalToTreat) {
         return {
           ...card,
@@ -12,9 +12,11 @@ const ricinumFn = (state) => {
         };
       } else return card;
     });
+  };
+  if (hands.pc.includes(animalToTreat)) {
     return {
       ...state,
-      hands: { ...hands, pc: pcHandWithPoisonedCard },
+      hands: { ...hands, pc: handWithPoisonedCard(hands.pc) },
       animalToTreat: undefined,
       selectedPlant: undefined,
       usedPlants: [...usedPlants, selectedPlant],
@@ -24,13 +26,12 @@ const ricinumFn = (state) => {
 
 const aloeFn = (state) => {
   const { animalToTreat, hands, selectedPlant, usedPlants } = state;
-  if (hands.user.includes(animalToTreat)) {
+  if (
+    hands.user.includes(animalToTreat) &&
+    animalToTreat.life.current < animalToTreat.life.initial
+  ) {
     const userHandWithHealthedCard = hands.user.map((card) => {
-      if (
-        card === animalToTreat &&
-        card.life.current < card.life.initial &&
-        card.life.current !== "DEAD"
-      ) {
+      if (card === animalToTreat) {
         return {
           ...card,
           life: {

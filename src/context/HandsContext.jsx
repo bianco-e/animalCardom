@@ -77,12 +77,10 @@ const damageEnemy = (state) => {
 
 const selectCard = (state, species) => {
   const { hands, attacker, selectedPlant } = state;
-
   const pcLiveCards = hands.pc.filter((card) => card.life.current !== "DEAD");
   const userLiveCards = hands.user.filter(
     (card) => card.life.current !== "DEAD"
   );
-
   const animal = hands.pc
     .concat(hands.user)
     .find((card) => card.species === species);
@@ -98,9 +96,7 @@ const selectCard = (state, species) => {
         ...state,
         attacker: undefined,
       };
-    } else {
-      return state;
-    }
+    } else return state;
   } else if (userLiveCards.includes(animal)) {
     return {
       ...state,
@@ -117,9 +113,7 @@ const selectPlant = (state, plant) => {
         ...state,
         selectedPlant: undefined,
       };
-    } else {
-      return state;
-    }
+    } else return state;
   } else if (plants.user.includes(plant) && !attacker) {
     return {
       ...state,
@@ -166,29 +160,21 @@ const applyPoisonDamage = (arr) => {
 };
 
 const setTerrain = (state, familyToBuff) => {
-  const { hands } = state;
-  const pcBuffedCards = hands.pc.map((card) => {
-    if (card.family === familyToBuff) {
-      return {
-        ...card,
-        attack: { ...card.attack, current: card.attack.current + 1 },
-      };
-    } else return card;
-  });
-  const userBuffedCards = hands.user.map((card) => {
-    if (card.family === familyToBuff) {
-      return {
-        ...card,
-        attack: { ...card.attack, current: card.attack.current + 1 },
-      };
-    } else return card;
-  });
-
+  const buffCards = (arr) => {
+    return arr.map((card) => {
+      if (card.family === familyToBuff) {
+        return {
+          ...card,
+          attack: { ...card.attack, current: card.attack.current + 1 },
+        };
+      } else return card;
+    });
+  };
   return {
     ...state,
     hands: {
-      pc: pcBuffedCards,
-      user: userBuffedCards,
+      pc: buffCards(state.hands.pc),
+      user: buffCards(state.hands.user),
     },
   };
 };
