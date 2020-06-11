@@ -5,9 +5,9 @@ const ricinumFn = (state) => {
       if (card === animalToTreat) {
         return {
           ...card,
-          life: {
-            ...card.life,
-            current: card.life.current - 1 < 1 ? "DEAD" : card.life.current - 1,
+          poisoned: {
+            damage: 1,
+            rounds: 3,
           },
         };
       } else return card;

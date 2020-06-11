@@ -14,7 +14,8 @@ const Hand = ({ arrayToRender, clicked, setClicked, setPcPlay }) => {
             family={animal.family}
             image={animal.image}
             key={animal.species}
-            skillFn={() => {}}
+            poisoned={animal.poisoned}
+            skillFn={animal.toDo}
             setClicked={setClicked}
             skill={animal.skill}
             species={animal.species}

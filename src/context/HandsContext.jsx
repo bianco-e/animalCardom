@@ -6,6 +6,7 @@ export const RESTART_GAME = "RESTART_GAME";
 export const COMPUTER_THINK = "COMPUTER_THINK";
 export const SET_TERRAIN = "SET_TERRAIN";
 export const SELECT_PLANT = "SELECT_PLANT";
+export const DAMAGE_POISONED = "DAMAGE_POISONED";
 
 const Context = React.createContext({});
 
@@ -28,17 +29,10 @@ const computerDamage = (state) => {
   return {
     ...state,
     hands: {
-      user: hands.user.map((card) => {
-        if (card === defender) {
-          return {
-            ...card,
-            life: { ...card.life, current: statsDiff < 1 ? "DEAD" : statsDiff },
-          };
-        } else {
-          return card;
-        }
-      }),
-      pc: hands.pc,
+      ...hands,
+      user: applyPoisonDamage(
+        applyAttackDamage(hands.user, statsDiff, defender)
+      ),
     },
     attacker: undefined,
     defender: undefined,
@@ -69,21 +63,11 @@ const computerPlay = (state) => {
 const damageEnemy = (state) => {
   const { hands, defender, attacker, pcTurn } = state;
   const statsDiff = defender.life.current - attacker.attack.current;
-
   return {
     ...state,
     hands: {
-      pc: hands.pc.map((card) => {
-        if (card === defender) {
-          return {
-            ...card,
-            life: { ...card.life, current: statsDiff < 1 ? "DEAD" : statsDiff },
-          };
-        } else {
-          return card;
-        }
-      }),
-      user: hands.user,
+      ...hands,
+      pc: applyPoisonDamage(applyAttackDamage(hands.pc, statsDiff, defender)),
     },
     attacker: undefined,
     defender: undefined,
@@ -142,6 +126,43 @@ const selectPlant = (state, plant) => {
       selectedPlant: plant,
     };
   } else return state;
+};
+
+const applyAttackDamage = (arr, statsDiff, defender) => {
+  return arr.map((card) => {
+    if (card === defender) {
+      return {
+        ...card,
+        life: {
+          ...card.life,
+          current: statsDiff < 1 ? "DEAD" : statsDiff,
+        },
+      };
+    } else {
+      return card;
+    }
+  });
+};
+
+const applyPoisonDamage = (arr) => {
+  return arr.map((card) => {
+    if (card.poisoned.rounds > 0) {
+      return {
+        ...card,
+        life: {
+          ...card.life,
+          current:
+            card.life.current - card.poisoned.damage < 1
+              ? "DEAD"
+              : card.life.current - card.poisoned.damage,
+        },
+        poisoned: {
+          ...card.poisoned,
+          rounds: card.poisoned.rounds - 1,
+        },
+      };
+    } else return card;
+  });
 };
 
 const setTerrain = (state, familyToBuff) => {

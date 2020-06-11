@@ -3,43 +3,65 @@ import styled from "styled-components";
 import { utilitiesIcons } from "../data/data.jsx";
 import Context, { SELECT_CARD } from "../context/HandsContext";
 
-const Card = ({ attack, life, family, image, skillFn, skill, species }) => {
+const Card = ({ attack, life, family, image, skill, species, poisoned }) => {
   const [state, dispatch] = useContext(Context);
 
   return (
     <AnimalCard
       onClick={() => {
         !state.pcTurn && dispatch({ type: SELECT_CARD, species });
-        skillFn();
       }}
       opacity={`${life.current === "DEAD" && "0.5"}`}
       outline={`${
         state.attacker?.species === species && "7px inset rgba(255, 129, 3, .8)"
       }`}
     >
-      <FamilyIcon>{family}</FamilyIcon>
+      <CornerIcon>{family}</CornerIcon>
 
-      <Text px={"20"}>{species}</Text>
+      <Text margin={"0"} px={"20"}>
+        {species}
+      </Text>
 
       <Picture width={"180"} height={"130"} src={image} />
 
       <FlexSection justify={"center"}>
         <Picture width={"20"} height={"20"} src={utilitiesIcons.fury} />
-        <Text px={"12"}>{skill.name}</Text>
+        <Text margin={"0"} px={"12"}>
+          {skill.name}
+        </Text>
       </FlexSection>
 
       <DescriptionDiv>
-        <Text px={"8"}>{skill.description}</Text>
+        <Text margin={"0"} px={"8"}>
+          {skill.description}
+        </Text>
       </DescriptionDiv>
 
       <FlexSection>
         <Picture width={"20"} height={"20"} src={utilitiesIcons.attack} />
-        <Text px={"14"} color={`${attack.current > attack.initial && "green"}`}>
+        <Text
+          margin={"0"}
+          px={"14"}
+          color={`${attack.current > attack.initial && "green"}`}
+        >
           {attack.current}
         </Text>
 
-        <Picture width={"20"} height={"20"} src={utilitiesIcons.life} />
-        <Text px={"14"} color={`${life.current < life.initial && "red"}`}>
+        {poisoned.rounds === 0 ? (
+          <Text margin={"2px"} px={"14"}>
+            🖤
+          </Text>
+        ) : (
+          <Text margin={"2px"} px={"14"}>
+            💚
+          </Text>
+        )}
+
+        <Text
+          margin={"0"}
+          px={"14"}
+          color={`${life.current < life.initial && "red"}`}
+        >
           {life.current}
         </Text>
       </FlexSection>
@@ -68,8 +90,7 @@ const AnimalCard = styled.button({
     boxShadow: "inset 0px 0px 40px black",
   },
 });
-
-const FamilyIcon = styled.span({
+const CornerIcon = styled.span({
   fontSize: "25px",
   position: "absolute",
   top: "3px",
@@ -83,7 +104,7 @@ const Picture = styled.img({
 const Text = styled.h3({
   color: (props) => props.color,
   fontSize: (props) => `${props.px}px`,
-  margin: "0",
+  margin: (props) => props.margin,
   textAlign: "center",
 });
 const FlexSection = styled.div({

@@ -7,6 +7,7 @@ import Context, {
   RESTART_GAME,
   COMPUTER_THINK,
   SET_TERRAIN,
+  DAMAGE_POISONED,
 } from "./context/HandsContext";
 import { getAnimalsInfo, terrains } from "./data/data.jsx";
 

@@ -1,16 +1,12 @@
 import attIcon from "../images/attackIcon.png";
 import furyIcon from "../images/furyIcon.png";
-import lifeIcon from "../images/lifeIcon.png";
 import plantsFunctions from "./plantsFunctions";
+import skillsFunctions from "./skillsFunctions";
 
 const utilitiesIcons = {
   attack: attIcon,
-  life: lifeIcon,
   fury: furyIcon,
 };
-
-// Add plants to each hand like: antidote, healing plant, poisonous mushroom
-// Add option to set terrains that can benefit animals families: sea, forest, sand, etc...
 
 const terrains = [
   { terrain: "sea", color: "#87CEEB", familyToBuff: "🦈" },
@@ -58,13 +54,24 @@ const plants = [
 ];
 
 class Animal {
-  constructor(family, species, image, skill, attack, life) {
+  constructor(
+    family,
+    species,
+    image,
+    skill,
+    attack,
+    life,
+    poisoned,
+    paralyzed
+  ) {
     this.family = family;
     this.species = species;
     this.image = image;
     this.skill = skill;
     this.attack = attack;
     this.life = life;
+    this.poisoned = poisoned;
+    this.paralyzed = paralyzed;
   }
 }
 
@@ -77,9 +84,12 @@ const animals = [
       name: "Nibble",
       description:
         "Crocodile bites its enemy with its strong jaws, inflicting 2 extra damage.",
+      toDo: skillsFunctions.crocodile,
     },
     { initial: 10, current: 10 },
-    { initial: 10, current: 10 }
+    { initial: 10, current: 10 },
+    { damage: 0, rounds: 0 },
+    0
   ),
   new Animal(
     "🦎",
@@ -89,9 +99,12 @@ const animals = [
       name: "Hibernate",
       description:
         "After its first attack, Tortoise can get inside its shell increasing its life by 5.",
+      toDo: skillsFunctions.tortoise,
     },
     { initial: 2, current: 2 },
-    { initial: 10, current: 10 }
+    { initial: 10, current: 10 },
+    { damage: 0, rounds: 0 },
+    0
   ),
   new Animal(
     "🦎",
@@ -101,9 +114,12 @@ const animals = [
       name: "Venom",
       description:
         "Snake can poison and paralyze its enemy for the next 3 rounds, inflicting 1 damage per round.",
+      toDo: skillsFunctions.snake,
     },
-    { initial: 10, current: 10 },
-    { initial: 7, current: 7 }
+    { initial: 8, current: 8 },
+    { initial: 7, current: 7 },
+    { damage: 0, rounds: 0 },
+    0
   ),
   new Animal(
     "🦎",
@@ -112,10 +128,13 @@ const animals = [
     {
       name: "Poisonous saliva",
       description:
-        "Komodo Dragon can bite inflicting 2 extra damage and 1 extra damage on next round.",
+        "Komodo Dragon can bite inflicting 1 extra damage and poisoning it for 1 round.",
+      toDo: skillsFunctions.komododragon,
     },
     { initial: 10, current: 10 },
-    { initial: 10, current: 10 }
+    { initial: 10, current: 10 },
+    { damage: 0, rounds: 0 },
+    0
   ),
   new Animal(
     "🦎",
@@ -124,10 +143,13 @@ const animals = [
     {
       name: "Mimicry",
       description:
-        "Chameleon is untargeteable. Enemy can't see it until it attacks.",
+        "Chameleon is untargeteable. Can't be seen until it attacks.",
+      toDo: skillsFunctions.chameleon,
     },
     { initial: 3, current: 3 },
-    { initial: 4, current: 4 }
+    { initial: 4, current: 4 },
+    { damage: 0, rounds: 0 },
+    0
   ),
   new Animal(
     "🐸",
@@ -137,9 +159,12 @@ const animals = [
       name: "Sticky tongue",
       description:
         "Toad can devorate any insect immediatly. This skill can be used just once.",
+      toDo: skillsFunctions.toad,
     },
     { initial: 3, current: 3 },
-    { initial: 3, current: 3 }
+    { initial: 3, current: 3 },
+    { damage: 0, rounds: 0 },
+    0
   ),
   new Animal(
     "🐸",
@@ -149,9 +174,12 @@ const animals = [
       name: "Tissue regeneration",
       description:
         "Salamander can regenerate any part of its body, healing 1 point per round if damaged.",
+      toDo: skillsFunctions.salamander,
     },
     { initial: 2, current: 2 },
-    { initial: 4, current: 4 }
+    { initial: 4, current: 4 },
+    { damage: 0, rounds: 0 },
+    0
   ),
   new Animal(
     "🦈",
@@ -161,9 +189,12 @@ const animals = [
       name: "Bloodseeker",
       description:
         "Shark can devorate any damaged enemy under 7 life in one bite.",
+      toDo: skillsFunctions.shark,
     },
     { initial: 13, current: 13 },
-    { initial: 12, current: 12 }
+    { initial: 12, current: 12 },
+    { damage: 0, rounds: 0 },
+    0
   ),
   new Animal(
     "🦈",
@@ -173,9 +204,12 @@ const animals = [
       name: "Camouflage",
       description:
         "Stingray can hide from all enemies and can't be attacked till it atacks.",
+      toDo: skillsFunctions.stingray,
     },
     { initial: 10, current: 10 },
-    { initial: 6, current: 6 }
+    { initial: 6, current: 6 },
+    { damage: 0, rounds: 0 },
+    0
   ),
   new Animal(
     "🦈",
@@ -185,9 +219,12 @@ const animals = [
       name: "Waterjet",
       description:
         "Orc ejects a waterjet from its back making the enemy unable to see and attack on next round",
+      toDo: skillsFunctions.orc,
     },
     { initial: 7, current: 7 },
-    { initial: 14, current: 14 }
+    { initial: 14, current: 14 },
+    { damage: 0, rounds: 0 },
+    0
   ),
   new Animal(
     "🦈",
@@ -197,9 +234,12 @@ const animals = [
       name: "Self-defence",
       description:
         "Blowfish reflects 3 damage to any enemy that dares to atack it.",
+      toDo: skillsFunctions.blowfish,
     },
     { initial: 3, current: 3 },
-    { initial: 5, current: 5 }
+    { initial: 5, current: 5 },
+    { damage: 0, rounds: 0 },
+    0
   ),
   new Animal(
     "🦈",
@@ -209,9 +249,12 @@ const animals = [
       name: "Electric shock",
       description:
         "Electric Eel can shock an enemy paralyzing it for 2 rounds.",
+      toDo: skillsFunctions.electriceel,
     },
     { initial: 3, current: 3 },
-    { initial: 5, current: 5 }
+    { initial: 5, current: 5 },
+    { damage: 0, rounds: 0 },
+    0
   ),
   new Animal(
     "🦅",
@@ -221,9 +264,12 @@ const animals = [
       name: "Free fall",
       description:
         "Eagle falls from the sky and pecks its enemy making 2 damage, or killing it if it's an insect.",
+      toDo: skillsFunctions.eagle,
     },
     { initial: 8, current: 8 },
-    { initial: 7, current: 7 }
+    { initial: 7, current: 7 },
+    { damage: 0, rounds: 0 },
+    0
   ),
   new Animal(
     "🦅",
@@ -233,9 +279,12 @@ const animals = [
       name: "Carrion",
       description:
         "Vulture's attack will be increased by 5 if there's any dead animal.",
+      toDo: skillsFunctions.carrion,
     },
     { initial: 3, current: 3 },
-    { initial: 7, current: 7 }
+    { initial: 7, current: 7 },
+    { damage: 0, rounds: 0 },
+    0
   ),
   new Animal(
     "🦅",
@@ -245,9 +294,12 @@ const animals = [
       name: "Assault",
       description:
         "Cassowary uses its casque and claws to knock enemy down and making it lose 1 round.",
+      toDo: skillsFunctions.cassowary,
     },
     { initial: 9, current: 9 },
-    { initial: 8, current: 8 }
+    { initial: 8, current: 8 },
+    { damage: 0, rounds: 0 },
+    0
   ),
   new Animal(
     "🦅",
@@ -257,9 +309,12 @@ const animals = [
       name: "Echo",
       description:
         "When Parrot kills an enemy will automatically copy its skill.",
+      toDo: skillsFunctions.parrot,
     },
     { initial: 3, current: 3 },
-    { initial: 4, current: 4 }
+    { initial: 4, current: 4 },
+    { damage: 0, rounds: 0 },
+    0
   ),
   new Animal(
     "🦂",
@@ -269,9 +324,12 @@ const animals = [
       name: "Life drain",
       description:
         "After its first attack Mosquito will start to drain enemy's life, 2 points per round.",
+      toDo: skillsFunctions.mosquito,
     },
     { initial: 2, current: 2 },
-    { initial: 1, current: 1 }
+    { initial: 1, current: 1 },
+    { damage: 0, rounds: 0 },
+    0
   ),
   new Animal(
     "🦂",
@@ -280,10 +338,13 @@ const animals = [
     {
       name: "Revenge",
       description:
-        "Before dying, Scorpion stings its enemy inflicting 1 damage per round for 5 rounds.",
+        "Before dying, Scorpion stings its enemy inflicting 1 damage per round for 3 rounds.",
+      toDo: skillsFunctions.scorpion,
     },
     { initial: 9, current: 9 },
-    { initial: 5, current: 5 }
+    { initial: 5, current: 5 },
+    { damage: 0, rounds: 0 },
+    0
   ),
   new Animal(
     "🦂",
@@ -293,9 +354,12 @@ const animals = [
       name: "Life or Death",
       description:
         "Bee can sting its enemy making 2 extra damage, but will die after doing it.",
+      toDo: skillsFunctions.bee,
     },
     { initial: 6, current: 6 },
-    { initial: 3, current: 3 }
+    { initial: 3, current: 3 },
+    { damage: 0, rounds: 0 },
+    0
   ),
   new Animal(
     "🦂",
@@ -304,10 +368,13 @@ const animals = [
     {
       name: "Sticky wrapping",
       description:
-        "Spider can wrap its enemy paralyzing it, so it can't use its ability for 3 rounds.",
+        "Spider can wrap its enemy paralyzing it, so it can't use its ability for 2 rounds.",
+      toDo: skillsFunctions.spider,
     },
     { initial: 7, current: 7 },
-    { initial: 4, current: 4 }
+    { initial: 4, current: 4 },
+    { damage: 0, rounds: 0 },
+    0
   ),
   new Animal(
     "🐺",
@@ -317,9 +384,12 @@ const animals = [
       name: "Sharp claws",
       description:
         "Bear nails its claws making enemy bleed, inflicting 1 damage per round for 2 rounds.",
+      toDo: skillsFunctions.bear,
     },
     { initial: 9, current: 9 },
-    { initial: 12, current: 12 }
+    { initial: 12, current: 12 },
+    { damage: 0, rounds: 0 },
+    0
   ),
   new Animal(
     "🐺",
@@ -329,9 +399,12 @@ const animals = [
       name: "Roar",
       description:
         "Lion roars and scares enemy so it can't attack for 3 rounds.",
+      toDo: skillsFunctions.lion,
     },
     { initial: 12, current: 12 },
-    { initial: 12, current: 12 }
+    { initial: 12, current: 12 },
+    { damage: 0, rounds: 0 },
+    0
   ),
   new Animal(
     "🐺",
@@ -341,9 +414,12 @@ const animals = [
       name: "Chest beating",
       description:
         "Gorilla beats its chest scaring the enemy so it can't attack for the next round.",
+      toDo: skillsFunctions.gorilla,
     },
     { initial: 9, current: 9 },
-    { initial: 12, current: 12 }
+    { initial: 12, current: 12 },
+    { damage: 0, rounds: 0 },
+    0
   ),
   new Animal(
     "🐺",
@@ -353,9 +429,12 @@ const animals = [
       name: "Ambush",
       description:
         "Cheetah appears from nowhere when some ally is attacked inflicting 2 damage to the enemy.",
+      toDo: skillsFunctions.cheetah,
     },
     { initial: 9, current: 9 },
-    { initial: 9, current: 9 }
+    { initial: 9, current: 9 },
+    { damage: 0, rounds: 0 },
+    0
   ),
   new Animal(
     "🐺",
@@ -364,9 +443,12 @@ const animals = [
     {
       name: "Bite the wound",
       description: "Hyena can bite an injuried enemy, making 2 extra damage.",
+      toDo: skillsFunctions.hyena,
     },
     { initial: 7, current: 7 },
-    { initial: 8, current: 8 }
+    { initial: 8, current: 8 },
+    { damage: 0, rounds: 0 },
+    0
   ),
   new Animal(
     "🐺",
@@ -376,9 +458,12 @@ const animals = [
       name: "Stomp",
       description:
         "Elephant can hardly stomp making all enemies' attack decrease by 1.",
+      toDo: skillsFunctions.elephant,
     },
     { initial: 6, current: 6 },
-    { initial: 12, current: 12 }
+    { initial: 12, current: 12 },
+    { damage: 0, rounds: 0 },
+    0
   ),
 ];
 
