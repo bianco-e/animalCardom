@@ -12,6 +12,91 @@ const poisonEnemy = (arr, defender, { damageAmount, roundsNumber }) => {
   });
 };
 
+const bearFn = (state) => {
+  return state;
+};
+
+const beeFn = (state) => {
+  return state;
+};
+
+const blowfishFn = (state) => {
+  return state;
+};
+
+const cassowaryFn = (state) => {
+  return state;
+};
+
+const chameleonFn = (state) => {
+  return state;
+};
+
+const cheetahFn = (state) => {
+  return state;
+};
+
+const crocodileFn = (state) => {
+  return state;
+};
+
+const eagleFn = (state) => {
+  return state;
+};
+
+const electriceelFn = (state) => {
+  return state;
+};
+
+const elephantFn = (state) => {
+  return state;
+};
+
+const gorillaFn = (state) => {
+  return state;
+};
+
+const hyenaFn = (state) => {
+  return state;
+};
+
+const komododragonFn = (state) => {
+  return state;
+};
+
+const lionFn = (state) => {
+  return state;
+};
+
+const mosquitoFn = (state) => {
+  return state;
+};
+
+const orcFn = (state) => {
+  return state;
+};
+
+const parrotFn = (state) => {
+  return state;
+};
+
+const salamanderFn = (state) => {
+  return state;
+};
+
+const scorpionFn = (state) => {
+  const { hands, defender } = state;
+  const poison = { damageAmount: 1, roundsNumber: 3 };
+  return {
+    ...state,
+    hands: { ...hands, pc: poisonEnemy(hands.pc, defender, poison) },
+  };
+};
+
+const sharkFn = (state) => {
+  return state;
+};
+
 const snakeFn = (state) => {
   const { hands, defender } = state;
   const poison = { damageAmount: 1, roundsNumber: 3 };
@@ -21,37 +106,53 @@ const snakeFn = (state) => {
   };
 };
 
-const doNothing = (state) => {
+const spiderFn = (state) => {
+  return state;
+};
+
+const stingrayFn = (state) => {
+  return state;
+};
+
+const toadFn = (state) => {
+  return state;
+};
+
+const tortoiseFn = (state) => {
+  return state;
+};
+
+const vultureFn = (state) => {
   return state;
 };
 
 const skillsFunctions = {
-  crocodile: doNothing,
-  tortoise: doNothing,
-  snake: snakeFn,
-  komododragon: doNothing,
-  chameleon: doNothing,
-  toad: doNothing,
-  salamander: doNothing,
-  shark: doNothing,
-  stingray: doNothing,
-  orc: doNothing,
-  blowfish: doNothing,
-  electriceel: doNothing,
-  eagle: doNothing,
-  vulture: doNothing,
-  cassowary: doNothing,
-  parrot: doNothing,
-  mosquito: doNothing,
-  scorpion: doNothing,
-  bee: doNothing,
-  spider: doNothing,
-  bear: doNothing,
-  lion: doNothing,
-  gorilla: doNothing,
-  cheetah: doNothing,
-  hyena: doNothing,
-  elephant: doNothing,
+  crocodileFn,
+  tortoiseFn,
+  snakeFn,
+  komododragonFn,
+  chameleonFn,
+  toadFn,
+  salamanderFn,
+  sharkFn,
+  stingrayFn,
+  orcFn,
+  blowfishFn,
+  electriceelFn,
+  eagleFn,
+  vultureFn,
+  cassowaryFn,
+  parrotFn,
+  mosquitoFn,
+  scorpionFn,
+  beeFn,
+  spiderFn,
+  bearFn,
+  lionFn,
+  gorillaFn,
+  cheetahFn,
+  hyenaFn,
+  elephantFn,
 };
 
 export default skillsFunctions;

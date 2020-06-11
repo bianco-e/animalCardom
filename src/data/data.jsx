@@ -9,12 +9,12 @@ const utilitiesIcons = {
 };
 
 const terrains = [
-  { terrain: "sea", color: "#87CEEB", familyToBuff: "🦈" },
-  { terrain: "swamp", color: "#228B22", familyToBuff: "🐸" },
-  { terrain: "jungle", color: "#006400", familyToBuff: "🐺" },
-  { terrain: "dessert", color: "#DEB887", familyToBuff: "🦂" },
-  { terrain: "mountain", color: "#C0C0C0", familyToBuff: "🦅" },
-  { terrain: "forest", color: "#2E8B57", familyToBuff: "🦎" },
+  { terrain: "Sea", color: "#87CEEB", familyToBuff: "🦈" },
+  { terrain: "Swamp", color: "#228B22", familyToBuff: "🐸" },
+  { terrain: "Jungle", color: "#006400", familyToBuff: "🐺" },
+  { terrain: "Dessert", color: "#DEB887", familyToBuff: "🦂" },
+  { terrain: "Mountain", color: "#C0C0C0", familyToBuff: "🦅" },
+  { terrain: "Forest", color: "#2E8B57", familyToBuff: "🦎" },
 ];
 
 class Plant {
@@ -31,25 +31,37 @@ const plants = [
     "Ricinum",
     "Highly poisonous seeds: can poison any enemy making 1 damage per round, for 3 rounds",
     "https://1.bp.blogspot.com/-zSHJ8wTmG14/WEMxdEhIDGI/AAAAAAAAQbU/EzJQttXOuU4_iyLzzel2fK-XiURsoJcVgCLcB/s1600/ricinus-minor.jpg",
-    plantsFunctions.ricinum
+    plantsFunctions.ricinumFn
   ),
   new Plant(
     "Aloe",
     "Very effective in treating wounds: can heal any ally restoring 2 life points",
     "https://www.calloways.com/wp-content/uploads/G151-03.jpg",
-    plantsFunctions.aloe
+    plantsFunctions.aloeFn
   ),
   new Plant(
     "Peyote",
     "Its hallucinogen mescaline makes any enemy unable to use its skill for the next round",
     "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Peyote_Cactus.jpg/800px-Peyote_Cactus.jpg",
-    plantsFunctions.peyote
+    plantsFunctions.peyoteFn
   ),
   new Plant(
     "Jewelweed",
     "Its antidote properties can eliminate any poison effect in an ally",
     "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Potapsco_fg13.jpg/800px-Potapsco_fg13.jpg",
-    plantsFunctions.jewelweed
+    plantsFunctions.jewelweedFn
+  ),
+  new Plant(
+    "Coffee",
+    "Coffe bean given to an animal can immediately wake all its senses, making it free from any paralyzing effect",
+    "https://wikifaunia.com/wp-content/uploads/2015/08/cafe-300x225.jpg",
+    plantsFunctions.coffeeFn
+  ),
+  new Plant(
+    "Withania",
+    "Its fruit has been always used as a natural energizer which makes animals as strong as rock increasing its attack by 1",
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/WithaniaFruit.jpg/220px-WithaniaFruit.jpg",
+    plantsFunctions.withaniaFn
   ),
 ];
 
@@ -84,7 +96,7 @@ const animals = [
       name: "Nibble",
       description:
         "Crocodile bites its enemy with its strong jaws, inflicting 2 extra damage.",
-      toDo: skillsFunctions.crocodile,
+      toDo: skillsFunctions.crocodileFn,
     },
     { initial: 10, current: 10 },
     { initial: 10, current: 10 },
@@ -99,7 +111,7 @@ const animals = [
       name: "Hibernate",
       description:
         "After its first attack, Tortoise can get inside its shell increasing its life by 5.",
-      toDo: skillsFunctions.tortoise,
+      toDo: skillsFunctions.tortoiseFn,
     },
     { initial: 2, current: 2 },
     { initial: 10, current: 10 },
@@ -114,7 +126,7 @@ const animals = [
       name: "Venom",
       description:
         "Snake can poison and paralyze its enemy for the next 3 rounds, inflicting 1 damage per round.",
-      toDo: skillsFunctions.snake,
+      toDo: skillsFunctions.snakeFn,
     },
     { initial: 8, current: 8 },
     { initial: 7, current: 7 },
@@ -129,7 +141,7 @@ const animals = [
       name: "Poisonous saliva",
       description:
         "Komodo Dragon can bite inflicting 1 extra damage and poisoning it for 1 round.",
-      toDo: skillsFunctions.komododragon,
+      toDo: skillsFunctions.komododragonFn,
     },
     { initial: 10, current: 10 },
     { initial: 10, current: 10 },
@@ -144,7 +156,7 @@ const animals = [
       name: "Mimicry",
       description:
         "Chameleon is untargeteable. Can't be seen until it attacks.",
-      toDo: skillsFunctions.chameleon,
+      toDo: skillsFunctions.chameleonFn,
     },
     { initial: 3, current: 3 },
     { initial: 4, current: 4 },
@@ -159,7 +171,7 @@ const animals = [
       name: "Sticky tongue",
       description:
         "Toad can devorate any insect immediatly. This skill can be used just once.",
-      toDo: skillsFunctions.toad,
+      toDo: skillsFunctions.toadFn,
     },
     { initial: 3, current: 3 },
     { initial: 3, current: 3 },
@@ -174,7 +186,7 @@ const animals = [
       name: "Tissue regeneration",
       description:
         "Salamander can regenerate any part of its body, healing 1 point per round if damaged.",
-      toDo: skillsFunctions.salamander,
+      toDo: skillsFunctions.salamanderFn,
     },
     { initial: 2, current: 2 },
     { initial: 4, current: 4 },
@@ -189,7 +201,7 @@ const animals = [
       name: "Bloodseeker",
       description:
         "Shark can devorate any damaged enemy under 7 life in one bite.",
-      toDo: skillsFunctions.shark,
+      toDo: skillsFunctions.sharkFn,
     },
     { initial: 13, current: 13 },
     { initial: 12, current: 12 },
@@ -204,7 +216,7 @@ const animals = [
       name: "Camouflage",
       description:
         "Stingray can hide from all enemies and can't be attacked till it atacks.",
-      toDo: skillsFunctions.stingray,
+      toDo: skillsFunctions.stingrayFn,
     },
     { initial: 10, current: 10 },
     { initial: 6, current: 6 },
@@ -219,7 +231,7 @@ const animals = [
       name: "Waterjet",
       description:
         "Orc ejects a waterjet from its back making the enemy unable to see and attack on next round",
-      toDo: skillsFunctions.orc,
+      toDo: skillsFunctions.orcFn,
     },
     { initial: 7, current: 7 },
     { initial: 14, current: 14 },
@@ -234,7 +246,7 @@ const animals = [
       name: "Self-defence",
       description:
         "Blowfish reflects 3 damage to any enemy that dares to atack it.",
-      toDo: skillsFunctions.blowfish,
+      toDo: skillsFunctions.blowfishFn,
     },
     { initial: 3, current: 3 },
     { initial: 5, current: 5 },
@@ -249,7 +261,7 @@ const animals = [
       name: "Electric shock",
       description:
         "Electric Eel can shock an enemy paralyzing it for 2 rounds.",
-      toDo: skillsFunctions.electriceel,
+      toDo: skillsFunctions.electriceelFn,
     },
     { initial: 3, current: 3 },
     { initial: 5, current: 5 },
@@ -264,7 +276,7 @@ const animals = [
       name: "Free fall",
       description:
         "Eagle falls from the sky and pecks its enemy making 2 damage, or killing it if it's an insect.",
-      toDo: skillsFunctions.eagle,
+      toDo: skillsFunctions.eagleFn,
     },
     { initial: 8, current: 8 },
     { initial: 7, current: 7 },
@@ -279,7 +291,7 @@ const animals = [
       name: "Carrion",
       description:
         "Vulture's attack will be increased by 5 if there's any dead animal.",
-      toDo: skillsFunctions.carrion,
+      toDo: skillsFunctions.carrionFn,
     },
     { initial: 3, current: 3 },
     { initial: 7, current: 7 },
@@ -294,7 +306,7 @@ const animals = [
       name: "Assault",
       description:
         "Cassowary uses its casque and claws to knock enemy down and making it lose 1 round.",
-      toDo: skillsFunctions.cassowary,
+      toDo: skillsFunctions.cassowaryFn,
     },
     { initial: 9, current: 9 },
     { initial: 8, current: 8 },
@@ -309,7 +321,7 @@ const animals = [
       name: "Echo",
       description:
         "When Parrot kills an enemy will automatically copy its skill.",
-      toDo: skillsFunctions.parrot,
+      toDo: skillsFunctions.parrotFn,
     },
     { initial: 3, current: 3 },
     { initial: 4, current: 4 },
@@ -324,7 +336,7 @@ const animals = [
       name: "Life drain",
       description:
         "After its first attack Mosquito will start to drain enemy's life, 2 points per round.",
-      toDo: skillsFunctions.mosquito,
+      toDo: skillsFunctions.mosquitoFn,
     },
     { initial: 2, current: 2 },
     { initial: 1, current: 1 },
@@ -339,7 +351,7 @@ const animals = [
       name: "Revenge",
       description:
         "Before dying, Scorpion stings its enemy inflicting 1 damage per round for 3 rounds.",
-      toDo: skillsFunctions.scorpion,
+      toDo: skillsFunctions.scorpionFn,
     },
     { initial: 9, current: 9 },
     { initial: 5, current: 5 },
@@ -354,7 +366,7 @@ const animals = [
       name: "Life or Death",
       description:
         "Bee can sting its enemy making 2 extra damage, but will die after doing it.",
-      toDo: skillsFunctions.bee,
+      toDo: skillsFunctions.beeFn,
     },
     { initial: 6, current: 6 },
     { initial: 3, current: 3 },
@@ -369,7 +381,7 @@ const animals = [
       name: "Sticky wrapping",
       description:
         "Spider can wrap its enemy paralyzing it, so it can't use its ability for 2 rounds.",
-      toDo: skillsFunctions.spider,
+      toDo: skillsFunctions.spiderFn,
     },
     { initial: 7, current: 7 },
     { initial: 4, current: 4 },
@@ -384,7 +396,7 @@ const animals = [
       name: "Sharp claws",
       description:
         "Bear nails its claws making enemy bleed, inflicting 1 damage per round for 2 rounds.",
-      toDo: skillsFunctions.bear,
+      toDo: skillsFunctions.bearFn,
     },
     { initial: 9, current: 9 },
     { initial: 12, current: 12 },
@@ -399,7 +411,7 @@ const animals = [
       name: "Roar",
       description:
         "Lion roars and scares enemy so it can't attack for 3 rounds.",
-      toDo: skillsFunctions.lion,
+      toDo: skillsFunctions.lionFn,
     },
     { initial: 12, current: 12 },
     { initial: 12, current: 12 },
@@ -414,7 +426,7 @@ const animals = [
       name: "Chest beating",
       description:
         "Gorilla beats its chest scaring the enemy so it can't attack for the next round.",
-      toDo: skillsFunctions.gorilla,
+      toDo: skillsFunctions.gorillaFn,
     },
     { initial: 9, current: 9 },
     { initial: 12, current: 12 },
@@ -429,7 +441,7 @@ const animals = [
       name: "Ambush",
       description:
         "Cheetah appears from nowhere when some ally is attacked inflicting 2 damage to the enemy.",
-      toDo: skillsFunctions.cheetah,
+      toDo: skillsFunctions.cheetahFn,
     },
     { initial: 9, current: 9 },
     { initial: 9, current: 9 },
@@ -443,7 +455,7 @@ const animals = [
     {
       name: "Bite the wound",
       description: "Hyena can bite an injuried enemy, making 2 extra damage.",
-      toDo: skillsFunctions.hyena,
+      toDo: skillsFunctions.hyenaFn,
     },
     { initial: 7, current: 7 },
     { initial: 8, current: 8 },
@@ -458,7 +470,7 @@ const animals = [
       name: "Stomp",
       description:
         "Elephant can hardly stomp making all enemies' attack decrease by 1.",
-      toDo: skillsFunctions.elephant,
+      toDo: skillsFunctions.elephantFn,
     },
     { initial: 6, current: 6 },
     { initial: 12, current: 12 },
@@ -489,8 +501,8 @@ const getCards = () => {
 const getPlants = () => {
   var fourCards = shuffleArr(plants);
   return {
-    pc: fourCards.slice(0, 2),
-    user: fourCards.slice(2, 4),
+    pc: fourCards.slice(0, 3),
+    user: fourCards.slice(3, 6),
   };
 };
 

@@ -7,27 +7,26 @@ import Context, {
   RESTART_GAME,
   COMPUTER_THINK,
   SET_TERRAIN,
-  DAMAGE_POISONED,
 } from "./context/HandsContext";
 import { getAnimalsInfo, terrains } from "./data/data.jsx";
 
 function App() {
   const [state, dispatch] = useContext(Context);
-  const [bgColor, setBgColor] = useState("");
+  const [terrain, setTerrain] = useState("");
   const { hands, plants, pcTurn, pcPlay, triggerPcAttack } = state;
 
-  const setTerrain = () => {
+  const getTerrain = () => {
     const randomNum = Math.floor(Math.random() * terrains.length);
     dispatch({
       type: SET_TERRAIN,
       familyToBuff: terrains[randomNum].familyToBuff,
     });
-    return terrains[randomNum].color;
+    return terrains[randomNum];
   };
 
   useEffect(() => {
     getAnimalsInfo();
-    setBgColor(setTerrain());
+    setTerrain(getTerrain());
   }, []);
 
   useEffect(() => {
@@ -39,7 +38,7 @@ function App() {
       alert("Computer wins!");
       dispatch({ type: RESTART_GAME });
     }
-  }, [hands]);
+  }, [hands.pc, hands.user]);
 
   // THE useEffect TO ANNOUNCE THE WINNER IS NOT WORKING PROPERLY
 
@@ -59,11 +58,14 @@ function App() {
     <Wrapper>
       <LeftPanel>
         <Panel player={"PC"} plants={plants.pc} />
+        <Text color={terrain.color} margin={"20px 0px 25px 0px"}>
+          {terrain.terrain}
+        </Text>
         <Panel player={"USER"} plants={plants.user} />
       </LeftPanel>
-      <Board bgColor={bgColor}>
+      <Board bgColor={terrain.color}>
         <Hand arrayToRender={hands.pc} />
-        <ComputerMessage>{pcPlay}</ComputerMessage>
+        <Text>{pcPlay}</Text>
         <Hand arrayToRender={hands.user} />
       </Board>
     </Wrapper>
@@ -89,8 +91,10 @@ const Board = styled.div({
   width: "100%",
   backgroundColor: (props) => props.bgColor,
 });
-const ComputerMessage = styled.h4({
+const Text = styled.h4({
+  margin: (props) => props.margin,
   textAlign: "center",
+  color: (props) => props.color,
 });
 
 export default App;

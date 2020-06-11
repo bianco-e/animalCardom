@@ -63,11 +63,12 @@ const computerPlay = (state) => {
 const damageEnemy = (state) => {
   const { hands, defender, attacker, pcTurn } = state;
   const statsDiff = defender.life.current - attacker.attack.current;
+  const appliedPoison = applyPoisonDamage(hands.pc);
   return {
     ...state,
     hands: {
       ...hands,
-      pc: applyPoisonDamage(applyAttackDamage(hands.pc, statsDiff, defender)),
+      pc: applyAttackDamage(appliedPoison, statsDiff, defender),
     },
     attacker: undefined,
     defender: undefined,
@@ -90,7 +91,8 @@ const selectCard = (state, species) => {
   }
   if (attacker) {
     if (pcLiveCards.includes(animal)) {
-      return damageEnemy({ ...state, defender: animal });
+      const newState = attacker.skill.toDo({ ...state, defender: animal });
+      return damageEnemy(newState);
     } else if (attacker === animal) {
       return {
         ...state,

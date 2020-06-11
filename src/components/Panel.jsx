@@ -14,7 +14,7 @@ const Panel = ({ plants, player }) => {
 };
 
 const HalfPanel = styled.div({
-  height: "49vh",
+  height: "44vh",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -22,7 +22,7 @@ const HalfPanel = styled.div({
 const PlayerName = styled.h3({
   margin: "0",
   padding: "5px",
-  fontSize: "20px",
+  fontSize: "18px",
 });
 
 export default Panel;

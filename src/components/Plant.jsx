@@ -29,7 +29,7 @@ const PlantCard = styled.button({
   padding: "2px",
   backgroundColor: "#d4a257",
   border: "none",
-  minWidth: "70px",
+  minWidth: "60px",
   borderRadius: "5px",
   cursor: "pointer",
   boxShadow: "inset 0px 0px 2px black",
@@ -44,11 +44,11 @@ const PlantCard = styled.button({
 });
 const PlantName = styled.h6({
   margin: "0",
-  fontSice: "10px",
+  fontSize: "10px",
 });
 const Picture = styled.img({
-  width: "55px",
-  height: "55px",
+  width: "45px",
+  height: "45px",
   alt: (props) => props.alt,
   borderRadius: "5px",
 });
