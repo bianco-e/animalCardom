@@ -291,7 +291,7 @@ const animals = [
       name: "Carrion",
       description:
         "Vulture's attack will be increased by 5 if there's any dead animal.",
-      toDo: skillsFunctions.carrionFn,
+      toDo: skillsFunctions.vultureFn,
     },
     { initial: 3, current: 3 },
     { initial: 7, current: 7 },

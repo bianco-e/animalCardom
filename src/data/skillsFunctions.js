@@ -12,6 +12,31 @@ const poisonEnemy = (arr, defender, { damageAmount, roundsNumber }) => {
   });
 };
 
+const makeExtraDamage = (arr, defender, damageAmount) => {
+  return arr.map((card) => {
+    if (card === defender) {
+      return {
+        ...card,
+        life: {
+          ...card.life,
+          current: card.life.current - damageAmount,
+        },
+      };
+    } else return card;
+  });
+};
+
+const paralyzeEnemy = (arr, defender, roundsNumber) => {
+  return arr.map((card) => {
+    if (card === defender) {
+      return {
+        ...card,
+        paralyzed: roundsNumber,
+      };
+    } else return card;
+  });
+};
+
 const bearFn = (state) => {
   return state;
 };

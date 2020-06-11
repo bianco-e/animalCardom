@@ -26,6 +26,7 @@ const computerDamage = (state) => {
   const { defender, attacker, pcTurn, hands } = state;
   const statsDiff = defender.life.current - attacker.attack.current;
   const pcAnswer = `${attacker.species} attacked ${defender.species}`;
+
   return {
     ...state,
     hands: {
@@ -63,12 +64,12 @@ const computerPlay = (state) => {
 const damageEnemy = (state) => {
   const { hands, defender, attacker, pcTurn } = state;
   const statsDiff = defender.life.current - attacker.attack.current;
-  const appliedPoison = applyPoisonDamage(hands.pc);
+
   return {
     ...state,
     hands: {
       ...hands,
-      pc: applyAttackDamage(appliedPoison, statsDiff, defender),
+      pc: applyPoisonDamage(applyAttackDamage(hands.pc, statsDiff, defender)),
     },
     attacker: undefined,
     defender: undefined,
@@ -91,8 +92,7 @@ const selectCard = (state, species) => {
   }
   if (attacker) {
     if (pcLiveCards.includes(animal)) {
-      const newState = attacker.skill.toDo({ ...state, defender: animal });
-      return damageEnemy(newState);
+      return damageEnemy({ ...state, defender: animal });
     } else if (attacker === animal) {
       return {
         ...state,
@@ -142,7 +142,7 @@ const applyAttackDamage = (arr, statsDiff, defender) => {
 
 const applyPoisonDamage = (arr) => {
   return arr.map((card) => {
-    if (card.poisoned.rounds > 0) {
+    if (card.poisoned.rounds > 0 && card.life.current !== "DEAD") {
       return {
         ...card,
         life: {
