@@ -30,17 +30,18 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (hands.pc.every((card) => card.life === "DEAD")) {
-      alert("You win!");
+    const getLiveCards = (hand) => {
+      return hand.filter((card) => card.life.current !== "DEAD");
+    };
+    if (getLiveCards(hands.pc).length === 0) {
+      alert("You win");
       dispatch({ type: RESTART_GAME });
     }
-    if (hands.user.every((card) => card.life === "DEAD")) {
-      alert("Computer wins!");
+    if (getLiveCards(hands.user).length === 0) {
+      alert("Computer wins");
       dispatch({ type: RESTART_GAME });
     }
   }, [hands.pc, hands.user]);
-
-  // THE useEffect TO ANNOUNCE THE WINNER IS NOT WORKING PROPERLY
 
   useEffect(() => {
     if (pcTurn) {

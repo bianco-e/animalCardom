@@ -6,7 +6,6 @@ export const RESTART_GAME = "RESTART_GAME";
 export const COMPUTER_THINK = "COMPUTER_THINK";
 export const SET_TERRAIN = "SET_TERRAIN";
 export const SELECT_PLANT = "SELECT_PLANT";
-export const DAMAGE_POISONED = "DAMAGE_POISONED";
 
 const Context = React.createContext({});
 
@@ -53,7 +52,6 @@ const computerPlay = (state) => {
 
   const firstRandomNum = Math.floor(Math.random() * pcLiveCards.length);
   const secondRandomNum = Math.floor(Math.random() * userLiveCards.length);
-
   return computerDamage({
     ...state,
     attacker: pcLiveCards[firstRandomNum],
@@ -198,7 +196,17 @@ const reducer = (state, action) => {
         pcPlay: "Thinking...",
       };
     case RESTART_GAME:
-      return initialState;
+      return {
+        hands: getCards(),
+        plants: getPlants(),
+        selectedPlant: undefined,
+        usedPlants: [],
+        attacker: undefined,
+        defender: undefined,
+        pcTurn: false,
+        triggerPcAttack: false,
+        pcPlay: "",
+      };
     default:
       return state;
   }

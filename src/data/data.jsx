@@ -305,10 +305,10 @@ const animals = [
     {
       name: "Assault",
       description:
-        "Cassowary uses its casque and claws to knock enemy down and making it lose 1 round.",
+        "Cassowary uses its casque and claws to knock enemy down and paralyzing it for 1 round.",
       toDo: skillsFunctions.cassowaryFn,
     },
-    { initial: 9, current: 9 },
+    { initial: 8, current: 8 },
     { initial: 8, current: 8 },
     { damage: 0, rounds: 0 },
     0
@@ -444,7 +444,7 @@ const animals = [
       toDo: skillsFunctions.cheetahFn,
     },
     { initial: 9, current: 9 },
-    { initial: 9, current: 9 },
+    { initial: 8, current: 8 },
     { damage: 0, rounds: 0 },
     0
   ),
