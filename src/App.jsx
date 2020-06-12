@@ -90,7 +90,7 @@ const Board = styled.div({
   justifyContent: "space-between",
   height: "100vh",
   width: "100%",
-  backgroundColor: (props) => props.bgColor,
+  background: (props) => props.bgColor,
 });
 const Text = styled.h4({
   margin: (props) => props.margin,

@@ -12,14 +12,17 @@ const poisonEnemy = (arr, defender, { damageAmount, roundsNumber }) => {
   });
 };
 
-const makeExtraDamage = (arr, defender, damageAmount) => {
+const makeExtraDamage = (arr, defender, damage) => {
   return arr.map((card) => {
     if (card.species === defender.species) {
       return {
         ...card,
         life: {
           ...card.life,
-          current: card.life.current - damageAmount,
+          current:
+            card.life.current - damage < 1 || card.life.current === "DEAD"
+              ? "DEAD"
+              : card.life.current - damage,
         },
       };
     } else return card;
@@ -61,8 +64,16 @@ const cheetahFn = (state) => {
   return state;
 };
 
-const crocodileFn = (state) => {
-  return state;
+const crocodileFn = (state, hand) => {
+  const { hands, defender } = state;
+  const damage = 2;
+  return {
+    ...state,
+    hands: {
+      ...hands,
+      [hand]: makeExtraDamage(hands[hand], defender, damage),
+    },
+  };
 };
 
 const eagleFn = (state) => {
@@ -109,12 +120,15 @@ const salamanderFn = (state) => {
   return state;
 };
 
-const scorpionFn = (state) => {
+const scorpionFn = (state, hand) => {
   const { hands, defender } = state;
   const poison = { damageAmount: 1, roundsNumber: 3 };
   return {
     ...state,
-    hands: { ...hands, pc: poisonEnemy(hands.pc, defender, poison) },
+    hands: {
+      ...hands,
+      [hand]: poisonEnemy(hands[hand], defender, poison),
+    },
   };
 };
 
@@ -122,12 +136,15 @@ const sharkFn = (state) => {
   return state;
 };
 
-const snakeFn = (state) => {
+const snakeFn = (state, hand) => {
   const { hands, defender } = state;
   const poison = { damageAmount: 1, roundsNumber: 3 };
   return {
     ...state,
-    hands: { ...hands, pc: poisonEnemy(hands.pc, defender, poison) },
+    hands: {
+      ...hands,
+      [hand]: poisonEnemy(hands[hand], defender, poison),
+    },
   };
 };
 

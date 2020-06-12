@@ -28,7 +28,6 @@ const initialState = newGame();
 const attackAndApplySkill = (state, hand) => {
   const { defender, attacker, hands } = state;
   const statsDiff = defender.life.current - attacker.attack.current;
-  console.log(hands[hand]);
   const newState = {
     ...state,
     hands: {
@@ -38,7 +37,9 @@ const attackAndApplySkill = (state, hand) => {
       ),
     },
   };
-  return attacker.paralyzed > 0 ? newState : attacker.skill.toDo(newState);
+  return attacker.paralyzed > 0
+    ? newState
+    : attacker.skill.toDo(newState, hand);
 };
 
 const computerDamage = (state) => {

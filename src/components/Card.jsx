@@ -3,7 +3,16 @@ import styled from "styled-components";
 import { utilitiesIcons } from "../data/data.jsx";
 import Context, { SELECT_CARD } from "../context/HandsContext";
 
-const Card = ({ attack, life, family, image, skill, species, poisoned }) => {
+const Card = ({
+  attack,
+  life,
+  family,
+  image,
+  skill,
+  species,
+  poisoned,
+  paralyzed,
+}) => {
   const [state, dispatch] = useContext(Context);
 
   return (
@@ -26,13 +35,21 @@ const Card = ({ attack, life, family, image, skill, species, poisoned }) => {
 
       <FlexSection justify={"center"}>
         <Picture width={"20"} height={"20"} src={utilitiesIcons.fury} />
-        <Text margin={"0"} px={"12"}>
+        <Text
+          margin={"0"}
+          px={"12"}
+          textDeco={`${paralyzed > 0 && "line-through 1px red"}`}
+        >
           {skill.name}
         </Text>
       </FlexSection>
 
       <DescriptionDiv>
-        <Text margin={"0"} px={"8"}>
+        <Text
+          margin={"0"}
+          px={"8"}
+          textDeco={`${paralyzed > 0 && "line-through 1px red"}`}
+        >
           {skill.description}
         </Text>
       </DescriptionDiv>
@@ -106,6 +123,7 @@ const Text = styled.h3({
   fontSize: (props) => `${props.px}px`,
   margin: (props) => props.margin,
   textAlign: "center",
+  textDecoration: (props) => props.textDeco,
 });
 const FlexSection = styled.div({
   display: "flex",
