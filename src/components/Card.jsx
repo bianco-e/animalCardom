@@ -59,7 +59,11 @@ const Card = ({
         <Text
           margin={"0"}
           px={"14"}
-          color={`${attack.current > attack.initial && "green"}`}
+          color={`${
+            attack.current > attack.initial
+              ? "green"
+              : attack.current < attack.initial && "red"
+          }`}
         >
           {attack.current}
         </Text>
@@ -77,7 +81,11 @@ const Card = ({
         <Text
           margin={"0"}
           px={"14"}
-          color={`${life.current < life.initial && "red"}`}
+          color={`${
+            life.current > life.initial
+              ? "green"
+              : life.current < life.initial && "red"
+          }`}
         >
           {life.current}
         </Text>

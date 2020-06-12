@@ -110,7 +110,7 @@ const animals = [
     {
       name: "Hibernate",
       description:
-        "After its first attack, Tortoise can get inside its shell increasing its life by 5.",
+        "After Tortoise attacks, it can get inside its shell increasing its life by 2.",
       toDo: skillsFunctions.tortoiseFn,
     },
     { initial: 2, current: 2 },
@@ -125,7 +125,7 @@ const animals = [
     {
       name: "Venom",
       description:
-        "Snake can poison and paralyze its enemy for the next 3 rounds, inflicting 1 damage per round.",
+        "Snake can poison its enemy for the next 3 rounds, inflicting 1 damage per round.",
       toDo: skillsFunctions.snakeFn,
     },
     { initial: 8, current: 8 },
@@ -185,7 +185,7 @@ const animals = [
     {
       name: "Tissue regeneration",
       description:
-        "Salamander can regenerate any part of its body, healing 1 point per round if damaged.",
+        "Salamander can regenerate any part of its body after attacking, healing 1 life point if damaged.",
       toDo: skillsFunctions.salamanderFn,
     },
     { initial: 2, current: 2 },
@@ -200,10 +200,10 @@ const animals = [
     {
       name: "Bloodseeker",
       description:
-        "Shark can devorate any damaged enemy under 7 life in one bite.",
+        "If there's any damaged enemy under 3 life, Shark's attack will increase by 3 after attacking.",
       toDo: skillsFunctions.sharkFn,
     },
-    { initial: 12, current: 12 },
+    { initial: 10, current: 10 },
     { initial: 11, current: 11 },
     { damage: 0, rounds: 0 },
     0
@@ -230,7 +230,7 @@ const animals = [
     {
       name: "Waterjet",
       description:
-        "Orc ejects a waterjet from its back making the enemy unable to see and attack on next round",
+        "Orc ejects a waterjet from its back making the enemy unable to see paralyzing it for one round",
       toDo: skillsFunctions.orcFn,
     },
     { initial: 7, current: 7 },
@@ -278,7 +278,7 @@ const animals = [
         "Eagle falls from the sky and pecks its enemy making 2 damage, or killing it if it's an insect.",
       toDo: skillsFunctions.eagleFn,
     },
-    { initial: 7, current: 7 },
+    { initial: 6, current: 6 },
     { initial: 7, current: 7 },
     { damage: 0, rounds: 0 },
     0
@@ -290,7 +290,7 @@ const animals = [
     {
       name: "Carrion",
       description:
-        "Vulture's attack will be increased by 5 if there's any dead animal.",
+        "Vulture's attack will be increased by 4 if there's any dead animal.",
       toDo: skillsFunctions.vultureFn,
     },
     { initial: 3, current: 3 },
@@ -305,7 +305,7 @@ const animals = [
     {
       name: "Assault",
       description:
-        "Cassowary uses its casque and claws to knock enemy down and paralyzing it for 1 round.",
+        "Cassowary uses its casque and claws to knock enemy and paralyze it for 1 round.",
       toDo: skillsFunctions.cassowaryFn,
     },
     { initial: 8, current: 8 },
@@ -335,7 +335,7 @@ const animals = [
     {
       name: "Life drain",
       description:
-        "After its first attack Mosquito will start to drain enemy's life, 2 points per round.",
+        "When attacking, Mosquito drains enemy's life points adding it to its life.",
       toDo: skillsFunctions.mosquitoFn,
     },
     { initial: 2, current: 2 },
@@ -365,10 +365,10 @@ const animals = [
     {
       name: "Life or Death",
       description:
-        "Bee can sting its enemy making 2 extra damage, but will die after doing it.",
+        "Bee can sting its enemy making 3 extra damage, but will die after doing it.",
       toDo: skillsFunctions.beeFn,
     },
-    { initial: 5, current: 5 },
+    { initial: 4, current: 4 },
     { initial: 3, current: 3 },
     { damage: 0, rounds: 0 },
     0
