@@ -9,31 +9,44 @@ export const SELECT_PLANT = "SELECT_PLANT";
 
 const Context = React.createContext({});
 
-const initialState = {
-  hands: getCards(),
-  plants: getPlants(),
-  selectedPlant: undefined,
-  usedPlants: [],
-  attacker: undefined,
-  defender: undefined,
-  pcTurn: false,
-  triggerPcAttack: false,
-  pcPlay: "",
+const newGame = () => {
+  return {
+    hands: getCards(),
+    plants: getPlants(),
+    selectedPlant: undefined,
+    usedPlants: [],
+    attacker: undefined,
+    defender: undefined,
+    pcTurn: false,
+    triggerPcAttack: false,
+    pcPlay: "",
+  };
 };
 
-const computerDamage = (state) => {
-  const { defender, attacker, pcTurn, hands } = state;
-  const statsDiff = defender.life.current - attacker.attack.current;
-  const pcAnswer = `${attacker.species} attacked ${defender.species}`;
+const initialState = newGame();
 
-  return {
+const attackAndApplySkill = (state, hand) => {
+  const { defender, attacker, hands } = state;
+  const statsDiff = defender.life.current - attacker.attack.current;
+  console.log(hands[hand]);
+  const newState = {
     ...state,
     hands: {
       ...hands,
-      user: applyPoisonDamage(
-        applyAttackDamage(hands.user, statsDiff, defender)
+      [hand]: restParalyzedRound(
+        applyPoisonDamage(applyAttackDamage(hands[hand], statsDiff, defender))
       ),
     },
+  };
+  return attacker.paralyzed > 0 ? newState : attacker.skill.toDo(newState);
+};
+
+const computerDamage = (state) => {
+  const { defender, attacker, pcTurn } = state;
+  const pcAnswer = `${attacker.species} attacked ${defender.species}`;
+  const newState = attackAndApplySkill(state, "user");
+  return {
+    ...newState,
     attacker: undefined,
     defender: undefined,
     pcTurn: !pcTurn,
@@ -60,18 +73,12 @@ const computerPlay = (state) => {
 };
 
 const damageEnemy = (state) => {
-  const { hands, defender, attacker, pcTurn } = state;
-  const statsDiff = defender.life.current - attacker.attack.current;
-
+  const newState = attackAndApplySkill(state, "pc");
   return {
-    ...state,
-    hands: {
-      ...hands,
-      pc: applyPoisonDamage(applyAttackDamage(hands.pc, statsDiff, defender)),
-    },
+    ...newState,
     attacker: undefined,
     defender: undefined,
-    pcTurn: !pcTurn,
+    pcTurn: !state.pcTurn,
   };
 };
 
@@ -91,7 +98,7 @@ const selectCard = (state, species) => {
   if (attacker) {
     if (pcLiveCards.includes(animal)) {
       return damageEnemy({ ...state, defender: animal });
-    } else if (attacker === animal) {
+    } else if (attacker.species === animal.species) {
       return {
         ...state,
         attacker: undefined,
@@ -108,7 +115,7 @@ const selectCard = (state, species) => {
 const selectPlant = (state, plant) => {
   const { plants, selectedPlant, attacker } = state;
   if (selectedPlant) {
-    if (selectedPlant === plant) {
+    if (selectedPlant.name === plant.name) {
       return {
         ...state,
         selectedPlant: undefined,
@@ -122,9 +129,20 @@ const selectPlant = (state, plant) => {
   } else return state;
 };
 
+const restParalyzedRound = (arr) => {
+  return arr.map((card) => {
+    if (card.paralyzed > 0) {
+      return {
+        ...card,
+        paralyzed: card.paralyzed - 1,
+      };
+    } else return card;
+  });
+};
+
 const applyAttackDamage = (arr, statsDiff, defender) => {
   return arr.map((card) => {
-    if (card === defender) {
+    if (card.species === defender.species) {
       return {
         ...card,
         life: {
@@ -196,17 +214,7 @@ const reducer = (state, action) => {
         pcPlay: "Thinking...",
       };
     case RESTART_GAME:
-      return {
-        hands: getCards(),
-        plants: getPlants(),
-        selectedPlant: undefined,
-        usedPlants: [],
-        attacker: undefined,
-        defender: undefined,
-        pcTurn: false,
-        triggerPcAttack: false,
-        pcPlay: "",
-      };
+      return newGame();
     default:
       return state;
   }

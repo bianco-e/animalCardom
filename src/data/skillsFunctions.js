@@ -1,6 +1,6 @@
 const poisonEnemy = (arr, defender, { damageAmount, roundsNumber }) => {
   return arr.map((card) => {
-    if (card === defender) {
+    if (card.species === defender.species) {
       return {
         ...card,
         poisoned: {
@@ -14,7 +14,7 @@ const poisonEnemy = (arr, defender, { damageAmount, roundsNumber }) => {
 
 const makeExtraDamage = (arr, defender, damageAmount) => {
   return arr.map((card) => {
-    if (card === defender) {
+    if (card.species === defender.species) {
       return {
         ...card,
         life: {
@@ -28,7 +28,7 @@ const makeExtraDamage = (arr, defender, damageAmount) => {
 
 const paralyzeEnemy = (arr, defender, roundsNumber) => {
   return arr.map((card) => {
-    if (card === defender) {
+    if (card.species === defender.species) {
       return {
         ...card,
         paralyzed: roundsNumber,

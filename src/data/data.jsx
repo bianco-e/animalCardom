@@ -114,7 +114,7 @@ const animals = [
       toDo: skillsFunctions.tortoiseFn,
     },
     { initial: 2, current: 2 },
-    { initial: 10, current: 10 },
+    { initial: 9, current: 9 },
     { damage: 0, rounds: 0 },
     0
   ),
@@ -203,8 +203,8 @@ const animals = [
         "Shark can devorate any damaged enemy under 7 life in one bite.",
       toDo: skillsFunctions.sharkFn,
     },
-    { initial: 13, current: 13 },
     { initial: 12, current: 12 },
+    { initial: 11, current: 11 },
     { damage: 0, rounds: 0 },
     0
   ),
@@ -218,7 +218,7 @@ const animals = [
         "Stingray can hide from all enemies and can't be attacked till it atacks.",
       toDo: skillsFunctions.stingrayFn,
     },
-    { initial: 10, current: 10 },
+    { initial: 9, current: 9 },
     { initial: 6, current: 6 },
     { damage: 0, rounds: 0 },
     0
@@ -234,7 +234,7 @@ const animals = [
       toDo: skillsFunctions.orcFn,
     },
     { initial: 7, current: 7 },
-    { initial: 14, current: 14 },
+    { initial: 13, current: 13 },
     { damage: 0, rounds: 0 },
     0
   ),
@@ -278,7 +278,7 @@ const animals = [
         "Eagle falls from the sky and pecks its enemy making 2 damage, or killing it if it's an insect.",
       toDo: skillsFunctions.eagleFn,
     },
-    { initial: 8, current: 8 },
+    { initial: 7, current: 7 },
     { initial: 7, current: 7 },
     { damage: 0, rounds: 0 },
     0
@@ -294,7 +294,7 @@ const animals = [
       toDo: skillsFunctions.vultureFn,
     },
     { initial: 3, current: 3 },
-    { initial: 7, current: 7 },
+    { initial: 6, current: 6 },
     { damage: 0, rounds: 0 },
     0
   ),
@@ -309,7 +309,7 @@ const animals = [
       toDo: skillsFunctions.cassowaryFn,
     },
     { initial: 8, current: 8 },
-    { initial: 8, current: 8 },
+    { initial: 7, current: 7 },
     { damage: 0, rounds: 0 },
     0
   ),
@@ -368,7 +368,7 @@ const animals = [
         "Bee can sting its enemy making 2 extra damage, but will die after doing it.",
       toDo: skillsFunctions.beeFn,
     },
-    { initial: 6, current: 6 },
+    { initial: 5, current: 5 },
     { initial: 3, current: 3 },
     { damage: 0, rounds: 0 },
     0
@@ -383,7 +383,7 @@ const animals = [
         "Spider can wrap its enemy paralyzing it, so it can't use its ability for 2 rounds.",
       toDo: skillsFunctions.spiderFn,
     },
-    { initial: 7, current: 7 },
+    { initial: 6, current: 6 },
     { initial: 4, current: 4 },
     { damage: 0, rounds: 0 },
     0
@@ -399,7 +399,7 @@ const animals = [
       toDo: skillsFunctions.bearFn,
     },
     { initial: 9, current: 9 },
-    { initial: 12, current: 12 },
+    { initial: 11, current: 11 },
     { damage: 0, rounds: 0 },
     0
   ),
@@ -413,8 +413,8 @@ const animals = [
         "Lion roars and scares enemy so it can't attack for 3 rounds.",
       toDo: skillsFunctions.lionFn,
     },
-    { initial: 12, current: 12 },
-    { initial: 12, current: 12 },
+    { initial: 11, current: 11 },
+    { initial: 10, current: 10 },
     { damage: 0, rounds: 0 },
     0
   ),
@@ -429,7 +429,7 @@ const animals = [
       toDo: skillsFunctions.gorillaFn,
     },
     { initial: 9, current: 9 },
-    { initial: 12, current: 12 },
+    { initial: 11, current: 11 },
     { damage: 0, rounds: 0 },
     0
   ),
@@ -443,7 +443,7 @@ const animals = [
         "Cheetah appears from nowhere when some ally is attacked inflicting 2 damage to the enemy.",
       toDo: skillsFunctions.cheetahFn,
     },
-    { initial: 9, current: 9 },
+    { initial: 8, current: 8 },
     { initial: 8, current: 8 },
     { damage: 0, rounds: 0 },
     0
