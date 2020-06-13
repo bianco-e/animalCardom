@@ -320,7 +320,7 @@ const animals = [
     {
       name: "Echo",
       description:
-        "When Parrot kills an enemy will automatically copy its skill.",
+        "When Parrot kills its first enemy automatically copies its skill.",
       toDo: skillsFunctions.parrotFn,
     },
     { initial: 3, current: 3 },

@@ -99,6 +99,20 @@ const decreaseEnemiesAttack = (arr, attackAmount) => {
   });
 };
 
+const copyDefenderSkill = (arr, defender, attacker) => {
+  console.log(arr, defender, attacker);
+  return arr.map((card) => {
+    if (card.species === attacker.species) {
+      return {
+        ...card,
+        skill: defender.skill,
+      };
+    } else return card;
+  });
+};
+
+// skills TO DO stingray, cheetah, chameleon, blowfish, bear
+
 const bearFn = (state) => {
   return state;
 };
@@ -197,8 +211,16 @@ const elephantFn = (state, hand) => {
   };
 };
 
-const gorillaFn = (state) => {
-  return state;
+const gorillaFn = (state, hand) => {
+  const { hands, defender } = state;
+  const roundsNumber = 1;
+  return {
+    ...state,
+    hands: {
+      ...hands,
+      [hand]: paralyzeEnemy(hands[hand], defender, roundsNumber),
+    },
+  };
 };
 
 const hyenaFn = (state, hand) => {
@@ -265,8 +287,21 @@ const orcFn = (state, hand) => {
   };
 };
 
-const parrotFn = (state) => {
-  return state;
+const parrotFn = (state, hand) => {
+  const { hands, defender, attacker } = state;
+  const newHand = hand === "pc" ? "user" : "pc";
+  const refreshedDefender = hands[hand].find(
+    (card) => card.species === defender.species
+  );
+  if (refreshedDefender.life.current === "DEAD") {
+    return {
+      ...state,
+      hands: {
+        ...hands,
+        [newHand]: copyDefenderSkill(hands[newHand], defender, attacker),
+      },
+    };
+  } else return state;
 };
 
 const salamanderFn = (state, hand) => {
@@ -348,8 +383,17 @@ const stingrayFn = (state) => {
   return state;
 };
 
-const toadFn = (state) => {
-  return state;
+const toadFn = (state, hand) => {
+  const { hands, defender, attacker } = state;
+  if (attacker.family !== "🦂") {
+    return {
+      ...state,
+      hands: {
+        ...hands,
+        [hand]: killInstantly(hands[hand], defender),
+      },
+    };
+  }
 };
 
 const tortoiseFn = (state, hand) => {
@@ -369,7 +413,11 @@ const vultureFn = (state, hand) => {
   const { hands, attacker } = state;
   const attackAmount = 4;
   const newHand = hand === "pc" ? "user" : "pc";
-  if (hands[hand].some((card) => card.life.current === "DEAD")) {
+  if (
+    hands[hand]
+      .concat(hands[newHand])
+      .some((card) => card.life.current === "DEAD")
+  ) {
     return {
       ...state,
       hands: {
