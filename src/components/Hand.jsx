@@ -21,6 +21,7 @@ const Hand = ({ arrayToRender, clicked, setClicked, setPcPlay }) => {
             skill={animal.skill}
             species={animal.species}
             setPcPlay={setPcPlay}
+            targeteable={animal.targeteable}
           />
         );
       })}

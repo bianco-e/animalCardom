@@ -74,7 +74,8 @@ class Animal {
     attack,
     life,
     poisoned,
-    paralyzed
+    paralyzed,
+    targeteable = true
   ) {
     this.family = family;
     this.species = species;
@@ -84,6 +85,7 @@ class Animal {
     this.life = life;
     this.poisoned = poisoned;
     this.paralyzed = paralyzed;
+    this.targeteable = targeteable;
   }
 }
 
@@ -161,7 +163,8 @@ const animals = [
     { initial: 3, current: 3 },
     { initial: 4, current: 4 },
     { damage: 0, rounds: 0 },
-    0
+    0,
+    false
   ),
   new Animal(
     "🐸",
@@ -213,12 +216,12 @@ const animals = [
     "Stingray",
     "https://e00-marca.uecdn.es/blogs/bajo-el-mar/imagenes_posts/2016/10/07/174515_570x347.jpg",
     {
-      name: "Camouflage",
+      name: "Barbed sting",
       description:
-        "Stingray can hide from all enemies and can't be attacked till it atacks.",
+        "Stingray's venom glands leave poison in enemy's body, inflicting 1 damage on next round'.",
       toDo: skillsFunctions.stingrayFn,
     },
-    { initial: 9, current: 9 },
+    { initial: 8, current: 8 },
     { initial: 6, current: 6 },
     { damage: 0, rounds: 0 },
     0
@@ -243,12 +246,12 @@ const animals = [
     "Blowfish",
     "https://www.aquariumcostadealmeria.com/wp-content/uploads/2019/02/shutterstock_127967549.gif",
     {
-      name: "Self-defence",
+      name: "Puff up",
       description:
-        "Blowfish reflects 3 damage to any enemy that dares to atack it.",
+        "Blowfish can puff up, increasing its attack by 2 after attacking.",
       toDo: skillsFunctions.blowfishFn,
     },
-    { initial: 3, current: 3 },
+    { initial: 2, current: 2 },
     { initial: 5, current: 5 },
     { damage: 0, rounds: 0 },
     0
@@ -308,7 +311,7 @@ const animals = [
         "Cassowary uses its casque and claws to knock enemy and paralyze it for 1 round.",
       toDo: skillsFunctions.cassowaryFn,
     },
-    { initial: 8, current: 8 },
+    { initial: 7, current: 7 },
     { initial: 7, current: 7 },
     { damage: 0, rounds: 0 },
     0
@@ -425,10 +428,10 @@ const animals = [
     {
       name: "Chest beating",
       description:
-        "Gorilla beats its chest scaring the enemy so it can't attack for the next round.",
+        "Gorilla beats its chest getting motivation from nowhere, increasing its attack by 1.",
       toDo: skillsFunctions.gorillaFn,
     },
-    { initial: 9, current: 9 },
+    { initial: 8, current: 8 },
     { initial: 11, current: 11 },
     { damage: 0, rounds: 0 },
     0

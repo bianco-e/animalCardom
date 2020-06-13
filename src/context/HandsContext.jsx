@@ -57,19 +57,18 @@ const computerDamage = (state) => {
 };
 
 const computerPlay = (state) => {
-  const pcLiveCards = state.hands.pc.filter(
-    (card) => card.life.current !== "DEAD"
+  const { hands, plants } = state;
+  const pcLiveCards = hands.pc.filter((card) => card.life.current !== "DEAD");
+  const userLiveCards = hands.user.filter(
+    (card) => card.life.current !== "DEAD" && card.targeteable
   );
-  const userLiveCards = state.hands.user.filter(
-    (card) => card.life.current !== "DEAD"
-  );
-
-  const firstRandomNum = Math.floor(Math.random() * pcLiveCards.length);
-  const secondRandomNum = Math.floor(Math.random() * userLiveCards.length);
+  const getRandomIdx = (arr) => {
+    return arr[Math.floor(Math.random() * arr.length)];
+  };
   return computerDamage({
     ...state,
-    attacker: pcLiveCards[firstRandomNum],
-    defender: userLiveCards[secondRandomNum],
+    attacker: getRandomIdx(pcLiveCards),
+    defender: getRandomIdx(userLiveCards),
   });
 };
 
@@ -97,7 +96,7 @@ const selectCard = (state, species) => {
     return selectedPlant.toDo({ ...state, animalToTreat: animal });
   }
   if (attacker) {
-    if (pcLiveCards.includes(animal)) {
+    if (pcLiveCards.includes(animal) && animal.targeteable) {
       return damageEnemy({ ...state, defender: animal });
     } else if (attacker.species === animal.species) {
       return {

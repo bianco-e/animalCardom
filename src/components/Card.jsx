@@ -12,6 +12,7 @@ const Card = ({
   species,
   poisoned,
   paralyzed,
+  targeteable,
 }) => {
   const [state, dispatch] = useContext(Context);
 
@@ -25,7 +26,8 @@ const Card = ({
         state.attacker?.species === species && "7px inset rgba(255, 129, 3, .8)"
       }`}
     >
-      <CornerIcon>{family}</CornerIcon>
+      <CornerIcon leftDist={"3px"}>{family}</CornerIcon>
+      <CornerIcon leftDist={"185px"}>{!targeteable && "🚫"}</CornerIcon>
 
       <Text margin={"0"} px={"20"}>
         {species}
@@ -119,7 +121,7 @@ const CornerIcon = styled.span({
   fontSize: "25px",
   position: "absolute",
   top: "3px",
-  left: "3px",
+  left: (props) => props.leftDist,
 });
 const Picture = styled.img({
   width: (props) => `${props.width}px`,

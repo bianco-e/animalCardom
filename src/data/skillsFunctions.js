@@ -100,7 +100,6 @@ const decreaseEnemiesAttack = (arr, attackAmount) => {
 };
 
 const copyDefenderSkill = (arr, defender, attacker) => {
-  console.log(arr, defender, attacker);
   return arr.map((card) => {
     if (card.species === attacker.species) {
       return {
@@ -111,9 +110,20 @@ const copyDefenderSkill = (arr, defender, attacker) => {
   });
 };
 
-// skills TO DO stingray, cheetah, chameleon, blowfish, bear
+const setTargeteableAsTrue = (arr, animal) => {
+  return arr.map((card) => {
+    if (card.species === animal.species) {
+      return {
+        ...card,
+        targeteable: true,
+      };
+    } else return card;
+  });
+};
 
-const bearFn = (state) => {
+// skills TO DO: cheetah, bear
+
+const bearFn = (state, hand) => {
   return state;
 };
 
@@ -130,8 +140,22 @@ const beeFn = (state, hand) => {
   };
 };
 
-const blowfishFn = (state) => {
-  return state;
+const blowfishFn = (state, hand) => {
+  const { hands, attacker } = state;
+  const attackAmount = 2;
+  const newHand = hand === "pc" ? "user" : "pc";
+  return {
+    ...state,
+    hands: {
+      ...hands,
+      [newHand]: modifyAnimalAttack(
+        hands[newHand],
+        attacker,
+        attackAmount,
+        "+"
+      ),
+    },
+  };
 };
 
 const cassowaryFn = (state, hand) => {
@@ -146,11 +170,19 @@ const cassowaryFn = (state, hand) => {
   };
 };
 
-const chameleonFn = (state) => {
-  return state;
+const chameleonFn = (state, hand) => {
+  const { hands, attacker } = state;
+  const newHand = hand === "pc" ? "user" : "pc";
+  return {
+    ...state,
+    hands: {
+      ...hands,
+      [newHand]: setTargeteableAsTrue(hands[newHand], attacker),
+    },
+  };
 };
 
-const cheetahFn = (state) => {
+const cheetahFn = (state, hand) => {
   return state;
 };
 
@@ -212,13 +244,19 @@ const elephantFn = (state, hand) => {
 };
 
 const gorillaFn = (state, hand) => {
-  const { hands, defender } = state;
-  const roundsNumber = 1;
+  const { hands, attacker } = state;
+  const attackAmount = 1;
+  const newHand = hand === "pc" ? "user" : "pc";
   return {
     ...state,
     hands: {
       ...hands,
-      [hand]: paralyzeEnemy(hands[hand], defender, roundsNumber),
+      [newHand]: modifyAnimalAttack(
+        hands[newHand],
+        attacker,
+        attackAmount,
+        "+"
+      ),
     },
   };
 };
@@ -379,8 +417,16 @@ const spiderFn = (state, hand) => {
   };
 };
 
-const stingrayFn = (state) => {
-  return state;
+const stingrayFn = (state, hand) => {
+  const { hands, defender } = state;
+  const poison = { damageAmount: 1, roundsNumber: 1 };
+  return {
+    ...state,
+    hands: {
+      ...hands,
+      [hand]: poisonEnemy(hands[hand], defender, poison),
+    },
+  };
 };
 
 const toadFn = (state, hand) => {
