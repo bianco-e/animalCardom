@@ -12,6 +12,17 @@ const poisonEnemy = (arr, defender, { damageAmount, roundsNumber }) => {
   });
 };
 
+const makeEnemyBleed = (arr, defender) => {
+  return arr.map((card) => {
+    if (card.species === defender.species && card.life.current !== "DEAD") {
+      return {
+        ...card,
+        bleeding: true,
+      };
+    } else return card;
+  });
+};
+
 const makeExtraDamage = (arr, defender, damage) => {
   return arr.map((card) => {
     if (card.species === defender.species) {
@@ -121,10 +132,15 @@ const setTargeteableAsTrue = (arr, animal) => {
   });
 };
 
-// skills TO DO: cheetah, bear
-
 const bearFn = (state, hand) => {
-  return state;
+  const { hands, defender } = state;
+  return {
+    ...state,
+    hands: {
+      ...hands,
+      [hand]: makeEnemyBleed(hands[hand], defender),
+    },
+  };
 };
 
 const beeFn = (state, hand) => {
@@ -183,7 +199,15 @@ const chameleonFn = (state, hand) => {
 };
 
 const cheetahFn = (state, hand) => {
-  return state;
+  const { hands, attacker } = state;
+  const newHand = hand === "pc" ? "user" : "pc";
+  return {
+    ...state,
+    hands: {
+      ...hands,
+      [newHand]: setTargeteableAsTrue(hands[newHand], attacker),
+    },
+  };
 };
 
 const crocodileFn = (state, hand) => {
@@ -371,19 +395,15 @@ const scorpionFn = (state, hand) => {
 
 const sharkFn = (state, hand) => {
   const { hands, attacker } = state;
-  const attackAmount = 4;
-  const newHand = hand === "pc" ? "user" : "pc";
-  if (
-    hands[hand].some(
-      (card) => card.life.current < 3 && card.life.current !== card.life.initial
-    )
-  ) {
+  const attackAmount = 2;
+  const otherHand = hand === "pc" ? "user" : "pc";
+  if (hands[hand].concat(hands[otherHand]).some((card) => card.bleeding)) {
     return {
       ...state,
       hands: {
         ...hands,
-        [newHand]: modifyAnimalAttack(
-          hands[newHand],
+        [otherHand]: modifyAnimalAttack(
+          hands[otherHand],
           attacker,
           attackAmount,
           "+"

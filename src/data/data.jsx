@@ -1,11 +1,13 @@
 import attIcon from "../images/attackIcon.png";
 import furyIcon from "../images/furyIcon.png";
+import bloodIcon from "../images/bloodIcon.png";
 import plantsFunctions from "./plantsFunctions";
 import skillsFunctions from "./skillsFunctions";
 
 const utilitiesIcons = {
   attack: attIcon,
   fury: furyIcon,
+  blood: bloodIcon,
 };
 
 const terrains = [
@@ -75,7 +77,8 @@ class Animal {
     life,
     poisoned,
     paralyzed,
-    targeteable = true
+    targeteable = true,
+    bleeding = false
   ) {
     this.family = family;
     this.species = species;
@@ -86,6 +89,7 @@ class Animal {
     this.poisoned = poisoned;
     this.paralyzed = paralyzed;
     this.targeteable = targeteable;
+    this.bleeding = bleeding;
   }
 }
 
@@ -203,10 +207,10 @@ const animals = [
     {
       name: "Bloodseeker",
       description:
-        "If there's any damaged enemy under 3 life, Shark's attack will increase by 3 after attacking.",
+        "If there's any animal bleeding, Shark's attack will increase by 2 after attacking.",
       toDo: skillsFunctions.sharkFn,
     },
-    { initial: 10, current: 10 },
+    { initial: 9, current: 9 },
     { initial: 11, current: 11 },
     { damage: 0, rounds: 0 },
     0
@@ -398,10 +402,10 @@ const animals = [
     {
       name: "Sharp claws",
       description:
-        "Bear nails its claws making enemy bleed, inflicting 1 damage per round for 2 rounds.",
+        "Bear nails its claws making enemy bleed, inflicting 1 damage per round until it dies.",
       toDo: skillsFunctions.bearFn,
     },
-    { initial: 9, current: 9 },
+    { initial: 8, current: 8 },
     { initial: 11, current: 11 },
     { damage: 0, rounds: 0 },
     0
@@ -443,13 +447,14 @@ const animals = [
     {
       name: "Ambush",
       description:
-        "Cheetah appears from nowhere when some ally is attacked inflicting 2 damage to the enemy.",
+        "Cheetah is hidden behind bush. Can't be targeted until it attacks first.",
       toDo: skillsFunctions.cheetahFn,
     },
-    { initial: 8, current: 8 },
-    { initial: 8, current: 8 },
+    { initial: 7, current: 7 },
+    { initial: 7, current: 7 },
     { damage: 0, rounds: 0 },
-    0
+    0,
+    false
   ),
   new Animal(
     "🐺",

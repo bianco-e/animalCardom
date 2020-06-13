@@ -36,7 +36,7 @@ const attackAndApplySkill = (state, hand) => {
     ...state,
     hands: {
       ...hands,
-      [hand]: restParalyzedRound(
+      [hand]: restRoundAndBleedingDmg(
         applyPoisonDamage(applyAttackDamage(hands[hand], statsDiff, defender))
       ),
     },
@@ -83,6 +83,7 @@ const checkWhatPlantToUse = (state) => {
   const peyotePlant = findAPlant("Peyote");
   const ricinumPlant = findAPlant("Ricinum");
   const randomNum = Math.floor(Math.random() * 10);
+  const randomAlly = getRandomIdx(pcLiveCards);
   const randomEnemy = getRandomIdx(userLiveCards);
 
   if (damagedCard && aloePlant) {
@@ -92,7 +93,7 @@ const checkWhatPlantToUse = (state) => {
   } else if (paralyzedCard && coffeePlant) {
     return applyPlantToCard(coffeePlant, paralyzedCard, state, "user");
   } else if (randomNum > 3 && withaniaPlant) {
-    return applyPlantToCard(withaniaPlant, randomEnemy, state, "user");
+    return applyPlantToCard(withaniaPlant, randomAlly, state, "user");
   } else if (randomNum > 3 && peyotePlant) {
     return applyPlantToCard(peyotePlant, randomEnemy, state, "user");
   } else if (randomNum > 3 && ricinumPlant) {
@@ -183,12 +184,34 @@ const selectPlant = (state, plant) => {
   } else return state;
 };
 
-const restParalyzedRound = (arr) => {
-  return arr.map((card) => {
+const restRoundAndBleedingDmg = (arr) => {
+  const restParalyzedRound = arr.map((card) => {
     if (card.paralyzed > 0) {
       return {
         ...card,
         paralyzed: card.paralyzed - 1,
+      };
+    } else return card;
+  });
+  const restPoisonedRound = restParalyzedRound.map((card) => {
+    if (card.poisoned.rounds > 0) {
+      return {
+        ...card,
+        poisoned: {
+          ...card.poisoned,
+          rounds: card.poisoned.rounds - 1,
+        },
+      };
+    } else return card;
+  });
+  return restPoisonedRound.map((card) => {
+    if (card.bleeding && card.life.current !== "DEAD") {
+      return {
+        ...card,
+        life: {
+          ...card.life,
+          current: card.life.current - 1 < 1 ? "DEAD" : card.life.current - 1,
+        },
       };
     } else return card;
   });
@@ -221,10 +244,6 @@ const applyPoisonDamage = (arr) => {
             card.life.current - card.poisoned.damage < 1
               ? "DEAD"
               : card.life.current - card.poisoned.damage,
-        },
-        poisoned: {
-          ...card.poisoned,
-          rounds: card.poisoned.rounds - 1,
         },
       };
     } else return card;

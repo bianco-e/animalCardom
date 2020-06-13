@@ -13,6 +13,7 @@ const Card = ({
   poisoned,
   paralyzed,
   targeteable,
+  bleeding,
 }) => {
   const [state, dispatch] = useContext(Context);
 
@@ -27,7 +28,12 @@ const Card = ({
       }`}
     >
       <CornerIcon leftDist={"3px"}>{family}</CornerIcon>
-      <CornerIcon leftDist={"185px"}>{!targeteable && "🚫"}</CornerIcon>
+      <CornerIcon leftDist={"186px"}>{!targeteable && "🚫"}</CornerIcon>
+      {bleeding && (
+        <CornerIcon leftDist={"186px"}>
+          <Picture width={"25"} height={"25"} src={utilitiesIcons.blood} />
+        </CornerIcon>
+      )}
 
       <Text margin={"0"} px={"20"}>
         {species}

@@ -9,6 +9,7 @@ const Hand = ({ arrayToRender, clicked, setClicked, setPcPlay }) => {
         return (
           <Card
             attack={animal.attack}
+            bleeding={animal.bleeding}
             clicked={clicked}
             life={animal.life}
             family={animal.family}
