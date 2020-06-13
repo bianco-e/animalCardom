@@ -25,6 +25,10 @@ const newGame = () => {
 
 const initialState = newGame();
 
+const getRandomIdx = (arr) => {
+  return arr[Math.floor(Math.random() * arr.length)];
+};
+
 const attackAndApplySkill = (state, hand) => {
   const { defender, attacker, hands } = state;
   const statsDiff = defender.life.current - attacker.attack.current;
@@ -42,29 +46,81 @@ const attackAndApplySkill = (state, hand) => {
     : attacker.skill.toDo(newState, hand);
 };
 
+const applyPlantToCard = (plant, card, state, hand) => {
+  const plantMessage = ` and used ${plant.name} on ${card.species}`;
+  return plant.toDo(
+    {
+      ...state,
+      selectedPlant: plant,
+      animalToTreat: card,
+      pcPlay: state.pcPlay + plantMessage,
+    },
+    hand
+  );
+};
+
+const checkWhatPlantToUse = (state) => {
+  const { plants, usedPlants, hands } = state;
+  const pcLiveCards = hands.pc.filter((card) => card.life.current !== "DEAD");
+  const userLiveCards = hands.user.filter(
+    (card) => card.life.current !== "DEAD"
+  );
+  const damagedCard = pcLiveCards.find(
+    (card) => card.life.current <= card.life.initial - 2
+  );
+  const poisonedCard = pcLiveCards.find((card) => card.poisoned.rounds > 0);
+  const paralyzedCard = pcLiveCards.find((card) => card.paralyzed > 0);
+
+  const findAPlant = (plantName) => {
+    return plants.pc.find(
+      (plant) => plant.name === plantName && !usedPlants.includes(plant)
+    );
+  };
+  const aloePlant = findAPlant("Aloe");
+  const jewelweedPlant = findAPlant("Jewelweed");
+  const coffeePlant = findAPlant("Coffee");
+  const withaniaPlant = findAPlant("Withania");
+  const peyotePlant = findAPlant("Peyote");
+  const ricinumPlant = findAPlant("Ricinum");
+  const randomNum = Math.floor(Math.random() * 10);
+  const randomEnemy = getRandomIdx(userLiveCards);
+
+  if (damagedCard && aloePlant) {
+    return applyPlantToCard(aloePlant, damagedCard, state, "user");
+  } else if (poisonedCard && jewelweedPlant) {
+    return applyPlantToCard(jewelweedPlant, poisonedCard, state, "user");
+  } else if (paralyzedCard && coffeePlant) {
+    return applyPlantToCard(coffeePlant, paralyzedCard, state, "user");
+  } else if (randomNum > 3 && withaniaPlant) {
+    return applyPlantToCard(withaniaPlant, randomEnemy, state, "user");
+  } else if (randomNum > 3 && peyotePlant) {
+    return applyPlantToCard(peyotePlant, randomEnemy, state, "user");
+  } else if (randomNum > 3 && ricinumPlant) {
+    return applyPlantToCard(ricinumPlant, randomEnemy, state, "user");
+  } else return state;
+};
+
 const computerDamage = (state) => {
   const { defender, attacker, pcTurn } = state;
   const pcAnswer = `${attacker.species} attacked ${defender.species}`;
   const newState = attackAndApplySkill(state, "user");
-  return {
+
+  return checkWhatPlantToUse({
     ...newState,
     attacker: undefined,
     defender: undefined,
     pcTurn: !pcTurn,
     triggerPcAttack: false,
     pcPlay: pcAnswer,
-  };
+  });
 };
 
 const computerPlay = (state) => {
-  const { hands, plants } = state;
+  const { hands } = state;
   const pcLiveCards = hands.pc.filter((card) => card.life.current !== "DEAD");
   const userLiveCards = hands.user.filter(
     (card) => card.life.current !== "DEAD" && card.targeteable
   );
-  const getRandomIdx = (arr) => {
-    return arr[Math.floor(Math.random() * arr.length)];
-  };
   return computerDamage({
     ...state,
     attacker: getRandomIdx(pcLiveCards),
@@ -93,7 +149,7 @@ const selectCard = (state, species) => {
     .find((card) => card.species === species);
 
   if (selectedPlant && !attacker) {
-    return selectedPlant.toDo({ ...state, animalToTreat: animal });
+    return applyPlantToCard(selectedPlant, animal, state, "pc");
   }
   if (attacker) {
     if (pcLiveCards.includes(animal) && animal.targeteable) {
@@ -114,13 +170,11 @@ const selectCard = (state, species) => {
 
 const selectPlant = (state, plant) => {
   const { plants, selectedPlant, attacker } = state;
-  if (selectedPlant) {
-    if (selectedPlant.name === plant.name) {
-      return {
-        ...state,
-        selectedPlant: undefined,
-      };
-    } else return state;
+  if (selectedPlant && selectedPlant.name === plant.name) {
+    return {
+      ...state,
+      selectedPlant: undefined,
+    };
   } else if (plants.user.includes(plant) && !attacker) {
     return {
       ...state,

@@ -58,15 +58,15 @@ const setAttackInAHand = (arr, attackAmount, animalToTreat) => {
   });
 };
 
-const ricinumFn = (state) => {
+const ricinumFn = (state, hand) => {
   const { animalToTreat, hands, usedPlants, selectedPlant } = state;
   const poison = { damageAmount: 1, roundsNumber: 3 };
-  if (hands.pc.includes(animalToTreat)) {
+  if (hands[hand].includes(animalToTreat)) {
     return {
       ...state,
       hands: {
         ...hands,
-        pc: setPoisonedInAHand(hands.pc, poison, animalToTreat),
+        [hand]: setPoisonedInAHand(hands[hand], poison, animalToTreat),
       },
       animalToTreat: undefined,
       selectedPlant: undefined,
@@ -75,15 +75,19 @@ const ricinumFn = (state) => {
   } else return state;
 };
 
-const aloeFn = (state) => {
+const aloeFn = (state, hand) => {
   const { animalToTreat, hands, selectedPlant, usedPlants } = state;
+  const otherHand = hand === "pc" ? "user" : "pc";
   if (
-    hands.user.includes(animalToTreat) &&
+    hands[otherHand].includes(animalToTreat) &&
     animalToTreat.life.current < animalToTreat.life.initial
   ) {
     return {
       ...state,
-      hands: { ...hands, user: healCardInAHand(hands.user, 2, animalToTreat) },
+      hands: {
+        ...hands,
+        [otherHand]: healCardInAHand(hands[otherHand], 2, animalToTreat),
+      },
       animalToTreat: undefined,
       selectedPlant: undefined,
       usedPlants: [...usedPlants, selectedPlant],
@@ -91,12 +95,15 @@ const aloeFn = (state) => {
   } else return state;
 };
 
-const peyoteFn = (state) => {
+const peyoteFn = (state, hand) => {
   const { animalToTreat, hands, selectedPlant, usedPlants } = state;
-  if (hands.pc.includes(animalToTreat) && animalToTreat.paralyzed === 0) {
+  if (hands[hand].includes(animalToTreat) && animalToTreat.paralyzed === 0) {
     return {
       ...state,
-      hands: { ...hands, pc: setParalyzedInAHand(hands.pc, 1, animalToTreat) },
+      hands: {
+        ...hands,
+        [hand]: setParalyzedInAHand(hands[hand], 1, animalToTreat),
+      },
       animalToTreat: undefined,
       selectedPlant: undefined,
       usedPlants: [...usedPlants, selectedPlant],
@@ -104,15 +111,23 @@ const peyoteFn = (state) => {
   } else return state;
 };
 
-const jewelweedFn = (state) => {
+const jewelweedFn = (state, hand) => {
   const { animalToTreat, hands, usedPlants, selectedPlant } = state;
   const poison = { damageAmount: 0, roundsNumber: 0 };
-  if (hands.user.includes(animalToTreat) && animalToTreat.poisoned.rounds > 0) {
+  const otherHand = hand === "pc" ? "user" : "pc";
+  if (
+    hands[otherHand].includes(animalToTreat) &&
+    animalToTreat.poisoned.rounds > 0
+  ) {
     return {
       ...state,
       hands: {
         ...hands,
-        user: setPoisonedInAHand(hands.user, poison, animalToTreat),
+        [otherHand]: setPoisonedInAHand(
+          hands[otherHand],
+          poison,
+          animalToTreat
+        ),
       },
       animalToTreat: undefined,
       selectedPlant: undefined,
@@ -121,14 +136,15 @@ const jewelweedFn = (state) => {
   } else return state;
 };
 
-const coffeeFn = (state) => {
+const coffeeFn = (state, hand) => {
   const { animalToTreat, hands, selectedPlant, usedPlants } = state;
-  if (hands.user.includes(animalToTreat) && animalToTreat.paralyzed > 0) {
+  const otherHand = hand === "pc" ? "user" : "pc";
+  if (hands[otherHand].includes(animalToTreat) && animalToTreat.paralyzed > 0) {
     return {
       ...state,
       hands: {
         ...hands,
-        user: setParalyzedInAHand(hands.user, 0, animalToTreat),
+        [otherHand]: setParalyzedInAHand(hands[otherHand], 0, animalToTreat),
       },
       animalToTreat: undefined,
       selectedPlant: undefined,
@@ -137,12 +153,16 @@ const coffeeFn = (state) => {
   } else return state;
 };
 
-const withaniaFn = (state) => {
+const withaniaFn = (state, hand) => {
   const { animalToTreat, hands, selectedPlant, usedPlants } = state;
-  if (hands.user.includes(animalToTreat)) {
+  const otherHand = hand === "pc" ? "user" : "pc";
+  if (hands[otherHand].includes(animalToTreat)) {
     return {
       ...state,
-      hands: { ...hands, user: setAttackInAHand(hands.user, 1, animalToTreat) },
+      hands: {
+        ...hands,
+        [otherHand]: setAttackInAHand(hands[otherHand], 1, animalToTreat),
+      },
       animalToTreat: undefined,
       selectedPlant: undefined,
       usedPlants: [...usedPlants, selectedPlant],

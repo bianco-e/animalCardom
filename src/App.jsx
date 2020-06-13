@@ -48,7 +48,7 @@ function App() {
       if (triggerPcAttack) {
         setTimeout(() => {
           dispatch({ type: COMPUTER_PLAY });
-        }, 1400);
+        }, 1300);
       } else {
         dispatch({ type: COMPUTER_THINK });
       }
