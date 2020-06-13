@@ -1,11 +1,11 @@
 import React from "react";
-import App from "./App";
+import MainRouter from "./MainRouter";
 import { HandsContext } from "./context/HandsContext";
 
 const Main = () => {
   return (
     <HandsContext>
-      <App></App>
+      <MainRouter></MainRouter>
     </HandsContext>
   );
 };

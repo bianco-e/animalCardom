@@ -9,8 +9,10 @@ import Context, {
   SET_TERRAIN,
 } from "./context/HandsContext";
 import { getAnimalsInfo, terrains } from "./data/data.jsx";
+import { useParams } from "react-router-dom";
 
-function App() {
+function App({ userName }) {
+  let { username } = useParams();
   const [state, dispatch] = useContext(Context);
   const [terrain, setTerrain] = useState("");
   const { hands, plants, pcTurn, pcPlay, triggerPcAttack } = state;
@@ -62,7 +64,7 @@ function App() {
         <Text color={terrain.color} margin={"20px 0px 25px 0px"}>
           {terrain.terrain}
         </Text>
-        <Panel player={"USER"} plants={plants.user} />
+        <Panel player={username} plants={plants.user} />
       </LeftPanel>
       <Board bgColor={terrain.color}>
         <Hand arrayToRender={hands.pc} />
