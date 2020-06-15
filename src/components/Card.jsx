@@ -28,7 +28,7 @@ const Card = ({
       }`}
     >
       <CornerIcon leftDist={"3px"}>{family}</CornerIcon>
-      <CornerIcon leftDist={"186px"}>{!targeteable && "🚫"}</CornerIcon>
+      <CornerIcon leftDist={"185px"}>{!targeteable && "🚫"}</CornerIcon>
       {bleeding && (
         <CornerIcon leftDist={"186px"}>
           <Picture width={"25"} height={"25"} src={utilitiesIcons.blood} />
@@ -39,7 +39,7 @@ const Card = ({
         {species}
       </Text>
 
-      <Picture width={"180"} height={"130"} src={image} />
+      <Picture width={"170"} height={"120"} src={image} />
 
       <FlexSection justify={"center"}>
         <Picture width={"20"} height={"20"} src={utilitiesIcons.fury} />
@@ -147,7 +147,7 @@ const FlexSection = styled.div({
   justifyContent: (props) => props.justify,
 });
 const DescriptionDiv = styled.div({
-  width: "185px",
+  width: "180px",
   padding: "5px",
   backgroundColor: "#b9935a",
   boxShadow: "inset 0px 0px 5px white",

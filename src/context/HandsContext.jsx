@@ -28,6 +28,9 @@ const initialState = newGame();
 const getRandomIdx = (arr) => {
   return arr[Math.floor(Math.random() * arr.length)];
 };
+const getLiveCards = (arr) => {
+  return arr.filter((card) => card.life.current !== "DEAD");
+};
 
 const attackAndApplySkill = (state, hand) => {
   const { defender, attacker, hands } = state;
@@ -49,23 +52,24 @@ const attackAndApplySkill = (state, hand) => {
 const applyPlantToCard = (plant, card, state, hand) => {
   const plantMessage =
     hand === "user" ? ` and used ${plant.name} on ${card.species}` : "";
-  return plant.toDo(
-    {
-      ...state,
-      selectedPlant: plant,
-      animalToTreat: card,
-      pcPlay: state.pcPlay + plantMessage,
-    },
-    hand
-  );
+  if (card.targeteable) {
+    return plant.toDo(
+      {
+        ...state,
+        selectedPlant: plant,
+        animalToTreat: card,
+        pcPlay: state.pcPlay + plantMessage,
+      },
+      hand
+    );
+  } else return state;
 };
 
 const checkWhatPlantToUse = (state) => {
   const { plants, usedPlants, hands } = state;
-  const pcLiveCards = hands.pc.filter((card) => card.life.current !== "DEAD");
-  const userLiveCards = hands.user.filter(
-    (card) => card.life.current !== "DEAD"
-  );
+  const pcLiveCards = getLiveCards(hands.pc);
+  const userLiveCards = getLiveCards(hands.user);
+
   const damagedCard = pcLiveCards.find(
     (card) => card.life.current <= card.life.initial - 2
   );
@@ -119,7 +123,7 @@ const computerDamage = (state) => {
 
 const computerPlay = (state) => {
   const { hands } = state;
-  const pcLiveCards = hands.pc.filter((card) => card.life.current !== "DEAD");
+  const pcLiveCards = getLiveCards(hands.pc);
   const userLiveCards = hands.user.filter(
     (card) => card.life.current !== "DEAD" && card.targeteable
   );
@@ -142,10 +146,8 @@ const damageEnemy = (state) => {
 
 const selectCard = (state, species) => {
   const { hands, attacker, selectedPlant } = state;
-  const pcLiveCards = hands.pc.filter((card) => card.life.current !== "DEAD");
-  const userLiveCards = hands.user.filter(
-    (card) => card.life.current !== "DEAD"
-  );
+  const pcLiveCards = getLiveCards(hands.pc);
+  const userLiveCards = getLiveCards(hands.user);
   const animal = hands.pc
     .concat(hands.user)
     .find((card) => card.species === species);

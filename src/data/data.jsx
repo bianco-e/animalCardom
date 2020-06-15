@@ -116,7 +116,7 @@ const animals = [
     {
       name: "Hibernate",
       description:
-        "After Tortoise attacks, it can get inside its shell increasing its life by 2.",
+        "After Tortoise attacks, it can get inside its shell increasing its total life by 2.",
       toDo: skillsFunctions.tortoiseFn,
     },
     { initial: 2, current: 2 },
@@ -177,7 +177,7 @@ const animals = [
     {
       name: "Sticky tongue",
       description:
-        "Toad can devorate any insect immediatly. This skill can be used just once.",
+        "Toad can use its large tongue to devorate any insect immediatly.",
       toDo: skillsFunctions.toadFn,
     },
     { initial: 3, current: 3 },
@@ -192,7 +192,7 @@ const animals = [
     {
       name: "Tissue regeneration",
       description:
-        "Salamander can regenerate any part of its body after attacking, healing 1 life point if damaged.",
+        "Salamander can regenerate its own body after attacking, healing 1 life point if damaged.",
       toDo: skillsFunctions.salamanderFn,
     },
     { initial: 2, current: 2 },
@@ -222,7 +222,7 @@ const animals = [
     {
       name: "Barbed sting",
       description:
-        "Stingray's venom glands leave poison in enemy's body, inflicting 1 damage on next round'.",
+        "Stingray's venom glands poison enemy, inflicting 1 damage on next round'.",
       toDo: skillsFunctions.stingrayFn,
     },
     { initial: 8, current: 8 },
@@ -237,7 +237,7 @@ const animals = [
     {
       name: "Waterjet",
       description:
-        "Orc ejects a waterjet from its back making the enemy unable to see paralyzing it for one round",
+        "Orc's waterjet makes enemy unable to see paralyzing it for one round",
       toDo: skillsFunctions.orcFn,
     },
     { initial: 7, current: 7 },
@@ -312,7 +312,7 @@ const animals = [
     {
       name: "Assault",
       description:
-        "Cassowary uses its casque and claws to knock enemy and paralyze it for 1 round.",
+        "Cassowary uses its casque and claws to knock enemy paralyzing it for 1 round.",
       toDo: skillsFunctions.cassowaryFn,
     },
     { initial: 7, current: 7 },

@@ -82,7 +82,7 @@ const ricinumFn = (state, hand) => {
 };
 
 const aloeFn = (state, hand) => {
-  const { animalToTreat, hands, selectedPlant, usedPlants } = state;
+  const { animalToTreat, hands } = state;
   const otherHand = hand === "pc" ? "user" : "pc";
   if (
     hands[otherHand].includes(animalToTreat) &&
@@ -94,15 +94,15 @@ const aloeFn = (state, hand) => {
 };
 
 const peyoteFn = (state, hand) => {
-  const { animalToTreat, hands, selectedPlant, usedPlants } = state;
+  const { animalToTreat, hands } = state;
   if (hands[hand].includes(animalToTreat) && animalToTreat.paralyzed === 0) {
-    const newHand = paralyzeCardInAHand(hands[hand], 1, animalToTreat);
+    const newHand = paralyzeCardInAHand(hands[hand], 2, animalToTreat);
     return setHandInState(state, hand, newHand);
   } else return state;
 };
 
 const jewelweedFn = (state, hand) => {
-  const { animalToTreat, hands, usedPlants, selectedPlant } = state;
+  const { animalToTreat, hands } = state;
   const poison = { damageAmount: 0, roundsNumber: 0 };
   const otherHand = hand === "pc" ? "user" : "pc";
   if (
@@ -115,7 +115,7 @@ const jewelweedFn = (state, hand) => {
 };
 
 const coffeeFn = (state, hand) => {
-  const { animalToTreat, hands, selectedPlant, usedPlants } = state;
+  const { animalToTreat, hands } = state;
   const otherHand = hand === "pc" ? "user" : "pc";
   if (hands[otherHand].includes(animalToTreat) && animalToTreat.paralyzed > 0) {
     const newHand = paralyzeCardInAHand(hands[otherHand], 0, animalToTreat);
@@ -124,7 +124,7 @@ const coffeeFn = (state, hand) => {
 };
 
 const withaniaFn = (state, hand) => {
-  const { animalToTreat, hands, selectedPlant, usedPlants } = state;
+  const { animalToTreat, hands } = state;
   const otherHand = hand === "pc" ? "user" : "pc";
   if (hands[otherHand].includes(animalToTreat)) {
     const newHand = setCardAttackInAHand(hands[otherHand], 1, animalToTreat);
