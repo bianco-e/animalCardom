@@ -132,25 +132,30 @@ const setTargeteableAsTrue = (arr, animal) => {
   });
 };
 
-const bearFn = (state, hand) => {
-  const { hands, defender } = state;
+const setHandInState = (state, hand, newHand) => {
   return {
     ...state,
     hands: {
-      ...hands,
-      [hand]: makeEnemyBleed(hands[hand], defender),
+      ...state.hands,
+      [hand]: newHand,
     },
   };
+};
+
+const bearFn = (state, hand) => {
+  const { hands, defender } = state;
+  const newHand = makeEnemyBleed(hands[hand], defender);
+  return setHandInState(state, hand, newHand);
 };
 
 const beeFn = (state, hand) => {
   const { hands, defender, attacker } = state;
   const damage = 3;
-  const newHand = hand === "pc" ? "user" : "pc";
+  const otherHand = hand === "pc" ? "user" : "pc";
   return {
     ...state,
     hands: {
-      [newHand]: killInstantly(hands[newHand], attacker),
+      [otherHand]: killInstantly(hands[otherHand], attacker),
       [hand]: makeExtraDamage(hands[hand], defender, damage),
     },
   };
@@ -159,143 +164,89 @@ const beeFn = (state, hand) => {
 const blowfishFn = (state, hand) => {
   const { hands, attacker } = state;
   const attackAmount = 2;
-  const newHand = hand === "pc" ? "user" : "pc";
-  return {
-    ...state,
-    hands: {
-      ...hands,
-      [newHand]: modifyAnimalAttack(
-        hands[newHand],
-        attacker,
-        attackAmount,
-        "+"
-      ),
-    },
-  };
+  const otherHand = hand === "pc" ? "user" : "pc";
+  const newHand = modifyAnimalAttack(
+    hands[otherHand],
+    attacker,
+    attackAmount,
+    "+"
+  );
+  return setHandInState(state, otherHand, newHand);
 };
 
 const cassowaryFn = (state, hand) => {
   const { hands, defender } = state;
   const roundsNumber = 1;
-  return {
-    ...state,
-    hands: {
-      ...hands,
-      [hand]: paralyzeEnemy(hands[hand], defender, roundsNumber),
-    },
-  };
+  const newHand = paralyzeEnemy(hands[hand], defender, roundsNumber);
+  return setHandInState(state, hand, newHand);
 };
 
 const chameleonFn = (state, hand) => {
   const { hands, attacker } = state;
-  const newHand = hand === "pc" ? "user" : "pc";
-  return {
-    ...state,
-    hands: {
-      ...hands,
-      [newHand]: setTargeteableAsTrue(hands[newHand], attacker),
-    },
-  };
+  const otherHand = hand === "pc" ? "user" : "pc";
+  const newHand = setTargeteableAsTrue(hands[otherHand], attacker);
+  return setHandInState(state, otherHand, newHand);
 };
 
 const cheetahFn = (state, hand) => {
   const { hands, attacker } = state;
-  const newHand = hand === "pc" ? "user" : "pc";
-  return {
-    ...state,
-    hands: {
-      ...hands,
-      [newHand]: setTargeteableAsTrue(hands[newHand], attacker),
-    },
-  };
+  const otherHand = hand === "pc" ? "user" : "pc";
+  const newHand = setTargeteableAsTrue(hands[otherHand], attacker);
+  return setHandInState(state, otherHand, newHand);
 };
 
 const crocodileFn = (state, hand) => {
   const { hands, defender } = state;
   const damage = 2;
-  return {
-    ...state,
-    hands: {
-      ...hands,
-      [hand]: makeExtraDamage(hands[hand], defender, damage),
-    },
-  };
+  const newHand = makeExtraDamage(hands[hand], defender, damage);
+  return setHandInState(state, hand, newHand);
 };
 
 const eagleFn = (state, hand) => {
   const { hands, defender, attacker } = state;
   const damage = 2;
   if (attacker.family !== "🦂") {
-    return {
-      ...state,
-      hands: {
-        ...hands,
-        [hand]: makeExtraDamage(hands[hand], defender, damage),
-      },
-    };
-  } else
-    return {
-      ...state,
-      hands: {
-        ...hands,
-        [hand]: killInstantly(hands[hand], defender),
-      },
-    };
+    var newHand = makeExtraDamage(hands[hand], defender, damage);
+    return setHandInState(state, hand, newHand);
+  } else {
+    var newHand = killInstantly(hands[hand], defender);
+    return setHandInState(state, hand, newHand);
+  }
 };
 
 const electriceelFn = (state, hand) => {
   const { hands, defender } = state;
   const roundsNumber = 2;
-  return {
-    ...state,
-    hands: {
-      ...hands,
-      [hand]: paralyzeEnemy(hands[hand], defender, roundsNumber),
-    },
-  };
+  const newHand = paralyzeEnemy(hands[hand], defender, roundsNumber);
+  return setHandInState(state, hand, newHand);
 };
 
 const elephantFn = (state, hand) => {
   const { hands } = state;
   const attackAmount = 1;
-  return {
-    ...state,
-    hands: {
-      ...hands,
-      [hand]: decreaseEnemiesAttack(hands[hand], attackAmount),
-    },
-  };
+  const newHand = decreaseEnemiesAttack(hands[hand], attackAmount);
+  return setHandInState(state, hand, newHand);
 };
 
 const gorillaFn = (state, hand) => {
   const { hands, attacker } = state;
   const attackAmount = 1;
-  const newHand = hand === "pc" ? "user" : "pc";
-  return {
-    ...state,
-    hands: {
-      ...hands,
-      [newHand]: modifyAnimalAttack(
-        hands[newHand],
-        attacker,
-        attackAmount,
-        "+"
-      ),
-    },
-  };
+  const otherHand = hand === "pc" ? "user" : "pc";
+  const newHand = modifyAnimalAttack(
+    hands[otherHand],
+    attacker,
+    attackAmount,
+    "+"
+  );
+  return setHandInState(state, otherHand, newHand);
 };
 
 const hyenaFn = (state, hand) => {
   const { hands, defender } = state;
   const damage = 2;
   if (defender.life.current < defender.life.initial) {
-    return {
-      ...state,
-      hands: {
-        ...hands,
-        [hand]: makeExtraDamage(hands[hand], defender, damage),
-      },
-    };
+    const newHand = makeExtraDamage(hands[hand], defender, damage);
+    return setHandInState(state, hand, newHand);
   } else return state;
 };
 
@@ -304,93 +255,62 @@ const komododragonFn = (state, hand) => {
   const poison = { damageAmount: 1, roundsNumber: 1 };
   const damage = 1;
   const poisonedHand = poisonEnemy(hands[hand], defender, poison);
-  return {
-    ...state,
-    hands: {
-      ...hands,
-      [hand]: makeExtraDamage(poisonedHand, defender, damage),
-    },
-  };
+  const newHand = makeExtraDamage(poisonedHand, defender, damage);
+  return setHandInState(state, hand, newHand);
 };
 
 const lionFn = (state, hand) => {
   const { hands, defender } = state;
   const roundsNumber = 3;
-  return {
-    ...state,
-    hands: {
-      ...hands,
-      [hand]: paralyzeEnemy(hands[hand], defender, roundsNumber),
-    },
-  };
+  const newHand = paralyzeEnemy(hands[hand], defender, roundsNumber);
+  return setHandInState(state, hand, newHand);
 };
 
 const mosquitoFn = (state, hand) => {
   const { hands, attacker } = state;
-  const newHand = hand === "pc" ? "user" : "pc";
-  return {
-    ...state,
-    hands: {
-      ...hands,
-      [newHand]: healItself(hands[newHand], attacker, attacker.attack.current),
-    },
-  };
+  const otherHand = hand === "pc" ? "user" : "pc";
+  const newHand = healItself(
+    hands[otherHand],
+    attacker,
+    attacker.attack.current
+  );
+  return setHandInState(state, otherHand, newHand);
 };
 
 const orcFn = (state, hand) => {
   const { hands, defender } = state;
   const roundsNumber = 1;
-  return {
-    ...state,
-    hands: {
-      ...hands,
-      [hand]: paralyzeEnemy(hands[hand], defender, roundsNumber),
-    },
-  };
+  const newHand = paralyzeEnemy(hands[hand], defender, roundsNumber);
+  return setHandInState(state, hand, newHand);
 };
 
 const parrotFn = (state, hand) => {
   const { hands, defender, attacker } = state;
-  const newHand = hand === "pc" ? "user" : "pc";
-  const refreshedDefender = hands[hand].find(
+  const otherHand = hand === "pc" ? "user" : "pc";
+  const updatedDefender = hands[hand].find(
     (card) => card.species === defender.species
   );
-  if (refreshedDefender.life.current === "DEAD") {
-    return {
-      ...state,
-      hands: {
-        ...hands,
-        [newHand]: copyDefenderSkill(hands[newHand], defender, attacker),
-      },
-    };
+  if (updatedDefender.life.current === "DEAD") {
+    const newHand = copyDefenderSkill(hands[otherHand], defender, attacker);
+    return setHandInState(state, otherHand, newHand);
   } else return state;
 };
 
 const salamanderFn = (state, hand) => {
   const { hands, attacker } = state;
   const healthAmount = 1;
-  const newHand = hand === "pc" ? "user" : "pc";
+  const otherHand = hand === "pc" ? "user" : "pc";
   if (attacker.life.current < attacker.life.initial) {
-    return {
-      ...state,
-      hands: {
-        ...hands,
-        [newHand]: healItself(hands[newHand], attacker, healthAmount),
-      },
-    };
+    const newHand = healItself(hands[otherHand], attacker, healthAmount);
+    return setHandInState(state, otherHand, newHand);
   } else return state;
 };
 
 const scorpionFn = (state, hand) => {
   const { hands, defender } = state;
   const poison = { damageAmount: 1, roundsNumber: 3 };
-  return {
-    ...state,
-    hands: {
-      ...hands,
-      [hand]: poisonEnemy(hands[hand], defender, poison),
-    },
-  };
+  const newHand = poisonEnemy(hands[hand], defender, poison);
+  return setHandInState(state, hand, newHand);
 };
 
 const sharkFn = (state, hand) => {
@@ -398,104 +318,69 @@ const sharkFn = (state, hand) => {
   const attackAmount = 2;
   const otherHand = hand === "pc" ? "user" : "pc";
   if (hands[hand].concat(hands[otherHand]).some((card) => card.bleeding)) {
-    return {
-      ...state,
-      hands: {
-        ...hands,
-        [otherHand]: modifyAnimalAttack(
-          hands[otherHand],
-          attacker,
-          attackAmount,
-          "+"
-        ),
-      },
-    };
+    const newHand = modifyAnimalAttack(
+      hands[otherHand],
+      attacker,
+      attackAmount,
+      "+"
+    );
+    return setHandInState(state, otherHand, newHand);
   } else return state;
 };
 
 const snakeFn = (state, hand) => {
   const { hands, defender } = state;
   const poison = { damageAmount: 1, roundsNumber: 3 };
-  return {
-    ...state,
-    hands: {
-      ...hands,
-      [hand]: poisonEnemy(hands[hand], defender, poison),
-    },
-  };
+  const newHand = poisonEnemy(hands[hand], defender, poison);
+  return setHandInState(state, hand, newHand);
 };
 
 const spiderFn = (state, hand) => {
   const { hands, defender } = state;
   const roundsNumber = 2;
-  return {
-    ...state,
-    hands: {
-      ...hands,
-      [hand]: paralyzeEnemy(hands[hand], defender, roundsNumber),
-    },
-  };
+  const newHand = paralyzeEnemy(hands[hand], defender, roundsNumber);
+  return setHandInState(state, hand, newHand);
 };
 
 const stingrayFn = (state, hand) => {
   const { hands, defender } = state;
   const poison = { damageAmount: 1, roundsNumber: 1 };
-  return {
-    ...state,
-    hands: {
-      ...hands,
-      [hand]: poisonEnemy(hands[hand], defender, poison),
-    },
-  };
+  const newHand = poisonEnemy(hands[hand], defender, poison);
+  return setHandInState(state, hand, newHand);
 };
 
 const toadFn = (state, hand) => {
   const { hands, defender, attacker } = state;
   if (attacker.family === "🦂") {
-    return {
-      ...state,
-      hands: {
-        ...hands,
-        [hand]: killInstantly(hands[hand], defender),
-      },
-    };
-  }
+    const newHand = killInstantly(hands[hand], defender);
+    return setHandInState(state, hand, newHand);
+  } else return state;
 };
 
 const tortoiseFn = (state, hand) => {
   const { hands, attacker } = state;
   const healthAmount = 2;
-  const newHand = hand === "pc" ? "user" : "pc";
-  return {
-    ...state,
-    hands: {
-      ...hands,
-      [newHand]: healItself(hands[newHand], attacker, healthAmount),
-    },
-  };
+  const otherHand = hand === "pc" ? "user" : "pc";
+  const newHand = healItself(hands[otherHand], attacker, healthAmount);
+  return setHandInState(state, otherHand, newHand);
 };
 
 const vultureFn = (state, hand) => {
   const { hands, attacker } = state;
   const attackAmount = 4;
-  const newHand = hand === "pc" ? "user" : "pc";
+  const otherHand = hand === "pc" ? "user" : "pc";
   if (
     hands[hand]
-      .concat(hands[newHand])
+      .concat(hands[otherHand])
       .some((card) => card.life.current === "DEAD")
   ) {
-    return {
-      ...state,
-      hands: {
-        ...hands,
-        [newHand]: modifyAnimalAttack(
-          hands[newHand],
-          attacker,
-          attackAmount,
-          "+"
-        ),
-      },
-    };
+    const newHand = modifyAnimalAttack(
+      hands[otherHand],
+      attacker,
+      attackAmount,
+      "+"
+    );
+    return setHandInState(state, otherHand, newHand);
   } else return state;
 };
 
