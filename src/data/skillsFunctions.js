@@ -451,7 +451,7 @@ const stingrayFn = (state, hand) => {
 
 const toadFn = (state, hand) => {
   const { hands, defender, attacker } = state;
-  if (attacker.family !== "🦂") {
+  if (attacker.family === "🦂") {
     return {
       ...state,
       hands: {

@@ -47,7 +47,8 @@ const attackAndApplySkill = (state, hand) => {
 };
 
 const applyPlantToCard = (plant, card, state, hand) => {
-  const plantMessage = ` and used ${plant.name} on ${card.species}`;
+  const plantMessage =
+    hand === "user" ? ` and used ${plant.name} on ${card.species}` : "";
   return plant.toDo(
     {
       ...state,
