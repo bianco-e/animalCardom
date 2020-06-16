@@ -350,8 +350,8 @@ const stingrayFn = (state, hand) => {
 };
 
 const toadFn = (state, hand) => {
-  const { hands, defender, attacker } = state;
-  if (attacker.family === "🦂") {
+  const { hands, defender } = state;
+  if (defender.family === "🦂") {
     const newHand = killInstantly(hands[hand], defender);
     return setHandInState(state, hand, newHand);
   } else return state;
