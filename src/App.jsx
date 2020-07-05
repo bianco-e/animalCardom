@@ -17,6 +17,9 @@ function App({ userName }) {
   const [terrain, setTerrain] = useState("");
   const { hands, plants, pcTurn, pcPlay, triggerPcAttack } = state;
 
+  const getLiveCards = (hand) => {
+    return hand.filter((card) => card.life.current !== "DEAD");
+  };
   const getTerrain = () => {
     const randomNum = Math.floor(Math.random() * terrains.length);
     dispatch({
@@ -32,9 +35,6 @@ function App({ userName }) {
   }, []);
 
   useEffect(() => {
-    const getLiveCards = (hand) => {
-      return hand.filter((card) => card.life.current !== "DEAD");
-    };
     if (getLiveCards(hands.pc).length === 0) {
       alert("You win");
       dispatch({ type: RESTART_GAME });

@@ -31,6 +31,9 @@ const getRandomIdx = (arr) => {
 const getLiveCards = (arr) => {
   return arr.filter((card) => card.life.current !== "DEAD");
 };
+const sortHandByAttack = (hand) => {
+  return hand.sort((a, b) => a.attack.current < b.attack.current);
+};
 
 const attackAndApplySkill = (state, hand) => {
   const { defender, attacker, hands } = state;
@@ -129,19 +132,25 @@ const computerPlay = (state) => {
   );
   return computerDamage({
     ...state,
-    attacker: getRandomIdx(pcLiveCards),
-    defender: getRandomIdx(userLiveCards),
+    attacker: sortHandByAttack(pcLiveCards)[0],
+    defender: sortHandByAttack(userLiveCards)[0],
   });
 };
 
 const damageEnemy = (state) => {
   const newState = attackAndApplySkill(state, "pc");
-  return {
-    ...newState,
-    attacker: undefined,
-    defender: undefined,
-    pcTurn: !state.pcTurn,
-  };
+  return getLiveCards(newState.hands.pc).length === 0
+    ? {
+        ...newState,
+        attacker: undefined,
+        defender: undefined,
+      }
+    : {
+        ...newState,
+        attacker: undefined,
+        defender: undefined,
+        pcTurn: !state.pcTurn,
+      };
 };
 
 const selectCard = (state, species) => {
