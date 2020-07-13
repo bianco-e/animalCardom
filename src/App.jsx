@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import Hand from "./components/Hand";
 import Panel from "./components/Panel";
+import SimpleModal from "./components/SimpleModal";
 import Context, {
   COMPUTER_PLAY,
   RESTART_GAME,
@@ -11,10 +12,12 @@ import Context, {
 import { getAnimalsInfo, terrains } from "./data/data.jsx";
 import { useParams } from "react-router-dom";
 
-function App({ userName }) {
+function App() {
   let { username } = useParams();
   const [state, dispatch] = useContext(Context);
   const [terrain, setTerrain] = useState("");
+  const [userWins, setUserWins] = useState(false);
+  const [pcWins, setPcWins] = useState(false);
   const { hands, plants, pcTurn, pcPlay, triggerPcAttack } = state;
 
   const getLiveCards = (hand) => {
@@ -36,11 +39,11 @@ function App({ userName }) {
 
   useEffect(() => {
     if (getLiveCards(hands.pc).length === 0) {
-      alert("You win");
+      setUserWins(true);
       dispatch({ type: RESTART_GAME });
     }
     if (getLiveCards(hands.user).length === 0) {
-      alert("Computer wins");
+      setPcWins(true);
       dispatch({ type: RESTART_GAME });
     }
   }, [hands.pc, hands.user]);
@@ -61,12 +64,16 @@ function App({ userName }) {
     <Wrapper>
       <LeftPanel>
         <Panel player={"PC"} plants={plants.pc} />
-        <Text color={terrain.color} margin={"20px 0px 25px 0px"}>
-          {terrain.terrain}
-        </Text>
+        <Text color={terrain.color}>{terrain.type}</Text>
         <Panel player={username} plants={plants.user} />
       </LeftPanel>
       <Board bgColor={terrain.color}>
+        {userWins && (
+          <SimpleModal setShowModal={setUserWins} sign="win" width="60%" />
+        )}
+        {pcWins && (
+          <SimpleModal setShowModal={setPcWins} sign="lose" width="60%" />
+        )}
         <Hand arrayToRender={hands.pc} />
         <Text>{pcPlay}</Text>
         <Hand arrayToRender={hands.user} />
@@ -93,9 +100,9 @@ const Board = styled.div({
   height: "100vh",
   width: "100%",
   background: (props) => props.bgColor,
+  position: "relative",
 });
 const Text = styled.h4({
-  margin: (props) => props.margin,
   textAlign: "center",
   color: (props) => props.color,
 });

@@ -52,6 +52,7 @@ const attackAndApplySkill = (state, hand) => {
     : attacker.skill.toDo(newState, hand);
 };
 
+// Check why it's breaking here when computer wins and also wants to use a plant at the same time
 const applyPlantToCard = (plant, card, state, hand) => {
   const plantMessage =
     hand === "user" ? ` and used ${plant.name} on ${card.species}` : "";

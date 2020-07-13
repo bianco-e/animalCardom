@@ -11,12 +11,12 @@ const utilitiesIcons = {
 };
 
 const terrains = [
-  { terrain: "Sea", color: "#87CEEB", familyToBuff: "🦈" },
-  { terrain: "Swamp", color: "#228B22", familyToBuff: "🐸" },
-  { terrain: "Jungle", color: "#006400", familyToBuff: "🐺" },
-  { terrain: "Dessert", color: "#DEB887", familyToBuff: "🦂" },
-  { terrain: "Mountain", color: "#C0C0C0", familyToBuff: "🦅" },
-  { terrain: "Forest", color: "#2E8B57", familyToBuff: "🦎" },
+  { type: "Sea", color: "#87CEEB", familyToBuff: "🦈" },
+  { type: "Swamp", color: "#228B22", familyToBuff: "🐸" },
+  { type: "Jungle", color: "#006400", familyToBuff: "🐺" },
+  { type: "Dessert", color: "#DEB887", familyToBuff: "🦂" },
+  { type: "Mountain", color: "#C0C0C0", familyToBuff: "🦅" },
+  { type: "Forest", color: "#2E8B57", familyToBuff: "🦎" },
 ];
 
 class Plant {
