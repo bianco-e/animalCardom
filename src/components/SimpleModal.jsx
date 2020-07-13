@@ -35,7 +35,11 @@ const SimpleModal = ({ setShowModal, sign, width }) => {
   };
 
   return (
-    <Wrapper width={width}>
+    <Wrapper
+      width={width}
+      top={(sign === "win" || sign === "lose") && "35%"}
+      left={(sign === "win" || sign === "lose") && "18%"}
+    >
       <Text fFamily="Fondamento, cursive" weight="bold">
         {modalsText[sign].title}
       </Text>
@@ -58,8 +62,8 @@ const Wrapper = styled.div({
   padding: "0 1.3em 0 1.3em",
   zIndex: "2",
   position: "absolute",
-  top: "35%",
-  left: "18%",
+  top: (props) => props.top,
+  left: (props) => props.left,
   backgroundColor: "#d4a257",
   border: "2px solid #b9935a",
   borderRadius: "5px",

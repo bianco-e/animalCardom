@@ -61,13 +61,13 @@ function App() {
   }, [pcTurn, triggerPcAttack]);
 
   return (
-    <Wrapper>
+    <Wrapper bgColor={terrain.color}>
       <LeftPanel>
         <Panel player={"PC"} plants={plants.pc} />
         <Text color={terrain.color}>{terrain.type}</Text>
         <Panel player={username} plants={plants.user} />
       </LeftPanel>
-      <Board bgColor={terrain.color}>
+      <Board>
         {userWins && (
           <SimpleModal setShowModal={setUserWins} sign="win" width="60%" />
         )}
@@ -84,6 +84,7 @@ function App() {
 const Wrapper = styled.div({
   display: "flex",
   flexStart: "left",
+  background: (props) => props.bgColor,
 });
 const LeftPanel = styled.div({
   display: "flex",
@@ -99,7 +100,6 @@ const Board = styled.div({
   justifyContent: "space-between",
   height: "100vh",
   width: "100%",
-  background: (props) => props.bgColor,
   position: "relative",
 });
 const Text = styled.h4({

@@ -35,6 +35,9 @@ const PlantCard = styled.button({
   boxShadow: "inset 0px 0px 2px black",
   opacity: (props) => props.opacity,
   outline: (props) => props.outline,
+  ["&:lastchild"]: {
+    marginBottom: "0",
+  },
   ["&:hover"]: {
     boxShadow: "4px 4px 4px #b9935a, inset 0px 0px 5px black",
   },
