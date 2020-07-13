@@ -52,7 +52,6 @@ const attackAndApplySkill = (state, hand) => {
     : attacker.skill.toDo(newState, hand);
 };
 
-// Check why it's breaking here when computer wins and also wants to use a plant at the same time
 const applyPlantToCard = (plant, card, state, hand) => {
   const plantMessage =
     hand === "user" ? ` and used ${plant.name} on ${card.species}` : "";
@@ -111,25 +110,27 @@ const checkWhatPlantToUse = (state) => {
 };
 
 const computerDamage = (state) => {
-  const { defender, attacker, pcTurn } = state;
+  const { defender, attacker, pcTurn, hands } = state;
   const pcAnswer = `${attacker.species} attacked ${defender.species}`;
   const newState = attackAndApplySkill(state, "user");
 
-  return checkWhatPlantToUse({
-    ...newState,
-    attacker: undefined,
-    defender: undefined,
-    pcTurn: !pcTurn,
-    triggerPcAttack: false,
-    pcPlay: pcAnswer,
-  });
+  if (getLiveCards(hands.user).length > 0) {
+    return checkWhatPlantToUse({
+      ...newState,
+      attacker: undefined,
+      defender: undefined,
+      pcTurn: !pcTurn,
+      triggerPcAttack: false,
+      pcPlay: pcAnswer,
+    });
+  } else return state;
 };
 
 const computerPlay = (state) => {
   const { hands } = state;
   const pcLiveCards = getLiveCards(hands.pc);
-  const userLiveCards = hands.user.filter(
-    (card) => card.life.current !== "DEAD" && card.targeteable
+  const userLiveCards = getLiveCards(hands.user).filter(
+    (card) => card.targeteable
   );
   return computerDamage({
     ...state,
