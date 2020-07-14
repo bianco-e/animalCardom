@@ -22,7 +22,8 @@ const Card = ({
     <>
       <Media
         queries={{
-          sm: "(max-width: 1150px)",
+          sm: "(max-width: 850px)",
+          med: "(max-width: 1150px)",
         }}
       >
         {(matches) => (
@@ -36,54 +37,65 @@ const Card = ({
                 state.attacker?.species === species &&
                 "7px inset rgba(255, 129, 3, .8)"
               }`}
-              padding={matches.sm && "9px"}
+              padding={matches.sm ? "6px" : matches.med && "9px"}
             >
-              <CornerIcon fSize={matches.sm && "20px"} leftDist="3px">
+              <CornerIcon
+                fSize={matches.sm ? "16" : matches.med && "20px"}
+                leftDist="3px"
+              >
                 {family}
               </CornerIcon>
               <CornerIcon
-                fSize={matches.sm && "20px"}
-                leftDist={matches.sm ? "147px" : "185px"}
+                fSize={matches.sm ? "16" : matches.med && "20px"}
+                leftDist={
+                  matches.sm ? "118px" : matches.med ? "147px" : "185px"
+                }
               >
                 {!targeteable && "🚫"}
               </CornerIcon>
               {bleeding && (
                 <CornerIcon
-                  fSize={matches.sm && "20px"}
-                  leftDist={matches.sm ? "147px" : "185px"}
+                  fSize={matches.sm ? "16" : matches.med && "20px"}
+                  leftDist={
+                    matches.sm ? "118px" : matches.med ? "147px" : "185px"
+                  }
                 >
                   <Picture
-                    width={matches.sm ? "20" : "25"}
-                    height={matches.sm ? "20" : "25"}
+                    width={matches.sm ? "17" : matches.med ? "20" : "25"}
+                    height={matches.sm ? "17" : matches.med ? "20" : "25"}
                     src={utilitiesIcons.blood}
                   />
                 </CornerIcon>
               )}
 
-              <Text fSize={matches.sm ? "15px" : "20px"}>{species}</Text>
+              <Text fSize={matches.sm ? "13px" : matches.med ? "15px" : "20px"}>
+                {species}
+              </Text>
 
               <Picture
-                width={matches.sm ? "130" : "170"}
-                height={matches.sm ? "90" : "120"}
+                width={matches.sm ? "110" : matches.med ? "130" : "170"}
+                height={matches.sm ? "80" : matches.med ? "90" : "120"}
                 src={image}
               />
 
-              <DescriptionDiv width={matches.sm && "145px"}>
+              <DescriptionDiv
+                width={matches.sm ? "115px" : matches.med && "145px"}
+              >
                 <FlexSection>
                   <Picture
-                    width={matches.sm ? "17" : "20"}
-                    height={matches.sm ? "17" : "20"}
+                    width={matches.sm ? "15" : matches.med ? "17" : "20"}
+                    height={matches.sm ? "15" : matches.med ? "17" : "20"}
                     src={utilitiesIcons.fury}
                   />
                   <Text
-                    fSize={matches.sm ? "10px" : "12px"}
+                    fSize={matches.sm ? "9px" : matches.med ? "10px" : "12px"}
                     textDeco={`${paralyzed > 0 && "line-through 1px red"}`}
                   >
                     {skill.name}
                   </Text>
                 </FlexSection>
                 <Text
-                  fSize={matches.sm ? "9px" : "10px"}
+                  fSize={matches.sm ? "8px" : matches.med ? "9px" : "10px"}
                   textDeco={`${paralyzed > 0 && "line-through 1px red"}`}
                 >
                   {skill.description}
@@ -92,12 +104,12 @@ const Card = ({
 
               <FlexSection>
                 <Picture
-                  width={matches.sm ? "17" : "20"}
-                  height={matches.sm ? "17" : "20"}
+                  width={matches.sm ? "15" : matches.med ? "17" : "20"}
+                  height={matches.sm ? "15" : matches.med ? "17" : "20"}
                   src={utilitiesIcons.attack}
                 />
                 <Text
-                  fSize={matches.sm ? "13px" : "16px"}
+                  fSize={matches.sm ? "12px" : matches.med ? "13px" : "16px"}
                   color={`${
                     attack.current > attack.initial
                       ? "green"
@@ -108,17 +120,23 @@ const Card = ({
                 </Text>
 
                 {poisoned.rounds === 0 ? (
-                  <Text fSize={matches.sm && "13px"} margin={"2px"}>
+                  <Text
+                    fSize={matches.sm ? "12px" : matches.med && "13px"}
+                    margin={"2px"}
+                  >
                     🖤
                   </Text>
                 ) : (
-                  <Text fSize={matches.sm && "13px"} margin={"2px"}>
+                  <Text
+                    fSize={matches.sm ? "12px" : matches.med && "13px"}
+                    margin={"2px"}
+                  >
                     💚
                   </Text>
                 )}
 
                 <Text
-                  fSize={matches.sm ? "13px" : "16px"}
+                  fSize={matches.sm ? "12px" : matches.med ? "13px" : "16px"}
                   color={`${
                     life.current > life.initial
                       ? "green"

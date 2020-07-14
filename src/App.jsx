@@ -86,7 +86,7 @@ function App() {
 const Wrapper = styled.div({
   display: "flex",
   flexStart: "left",
-  background: (props) => props.bgColor,
+  backgroundColor: (props) => props.bgColor,
 });
 const LeftPanel = styled.div({
   display: "flex",

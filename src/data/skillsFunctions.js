@@ -98,7 +98,7 @@ const modifyAnimalAttack = (arr, animal, attackAmount, operator) => {
 
 const decreaseEnemiesAttack = (arr, attackAmount) => {
   return arr.map((card) => {
-    if (card.life.current !== "DEAD") {
+    if (card.life.current !== "DEAD" && card.attack.current > 1) {
       return {
         ...card,
         attack: {

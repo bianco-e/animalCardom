@@ -477,7 +477,7 @@ const animals = [
     {
       name: "Stomp",
       description:
-        "Elephant can hardly stomp making all enemies' attack decrease by 1.",
+        "Elephant can hardly stomp making all enemies' attack decrease by 1. Enemies' attack can't be lower than 1.",
       toDo: skillsFunctions.elephantFn,
     },
     { initial: 6, current: 6 },
