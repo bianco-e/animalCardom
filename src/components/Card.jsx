@@ -64,7 +64,7 @@ const Card = ({
 
               <Picture
                 width={matches.sm ? "130" : "170"}
-                height={matches.sm ? "100" : "120"}
+                height={matches.sm ? "90" : "120"}
                 src={image}
               />
 

@@ -1,31 +1,52 @@
-import React, { useContext } from "react";
+import React, { useContext, Fragment } from "react";
 import styled from "styled-components";
 import Context, { SELECT_PLANT } from "../context/HandsContext";
+import Media from "react-media";
 
 const Plant = ({ plant }) => {
   const [state, dispatch] = useContext(Context);
   const { selectedPlant, pcTurn, usedPlants } = state;
   const { name, description, image } = plant;
   return (
-    <PlantCard
-      outline={`${
-        selectedPlant?.name === name && "3px inset rgba(255, 129, 3, .8)"
-      }`}
-      onClick={() => {
-        !pcTurn &&
-          !usedPlants.includes(plant) &&
-          dispatch({ type: SELECT_PLANT, plant });
-      }}
-      opacity={usedPlants.includes(plant) && "0.6"}
-    >
-      <PlantName>{name}</PlantName>
-      <Picture alt={name} title={description} src={image}></Picture>
-    </PlantCard>
+    <>
+      <Media
+        queries={{
+          sh: "(max-height: 565px)",
+        }}
+      >
+        {(matches) => (
+          <Fragment>
+            <PlantCard
+              outline={`${
+                selectedPlant?.name === name &&
+                "3px inset rgba(255, 129, 3, .8)"
+              }`}
+              onClick={() => {
+                !pcTurn &&
+                  !usedPlants.includes(plant) &&
+                  dispatch({ type: SELECT_PLANT, plant });
+              }}
+              opacity={usedPlants.includes(plant) && "0.6"}
+              mBottom={matches.sh && "8px"}
+            >
+              <PlantName fSize={matches.sh && "9px"}>{name}</PlantName>
+              <Picture
+                alt={name}
+                title={description}
+                src={image}
+                width={matches.sh && "38px"}
+                height={matches.sh && "38px"}
+              ></Picture>
+            </PlantCard>
+          </Fragment>
+        )}
+      </Media>
+    </>
   );
 };
 
 const PlantCard = styled.button({
-  marginBottom: "13px",
+  marginBottom: (props) => props.mBottom || "13px",
   padding: "2px",
   backgroundColor: "#d4a257",
   border: "none",
@@ -44,11 +65,11 @@ const PlantCard = styled.button({
 });
 const PlantName = styled.h6({
   margin: "0",
-  fontSize: "10px",
+  fontSize: (props) => props.fSize || "10px",
 });
 const Picture = styled.img({
-  width: "45px",
-  height: "45px",
+  width: (props) => props.width || "45px",
+  height: (props) => props.height || "45px",
   alt: (props) => props.alt,
   borderRadius: "5px",
 });
