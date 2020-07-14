@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, Fragment } from "react";
 import styled from "styled-components";
 import Hand from "./components/Hand";
 import Panel from "./components/Panel";
@@ -11,6 +11,7 @@ import Context, {
 } from "./context/HandsContext";
 import { getAnimalsInfo, terrains } from "./data/data.jsx";
 import { useParams } from "react-router-dom";
+import Media from "react-media";
 
 function App() {
   let { username } = useParams();
@@ -61,32 +62,60 @@ function App() {
   }, [pcTurn, triggerPcAttack]);
 
   return (
-    <Wrapper bgColor={terrain.color}>
-      <LeftPanel>
-        <Panel player={"PC"} plants={plants.pc} />
-        <Text color={terrain.color}>{terrain.type}</Text>
-        <Panel player={username} plants={plants.user} />
-      </LeftPanel>
-      <Board>
-        {userWins && (
-          <SimpleModal setShowModal={setUserWins} sign="win" width="60%" />
+    <>
+      <Media
+        queries={{
+          sm: "(max-width: 850px)",
+          med: "(max-width: 1150px)",
+        }}
+      >
+        {(matches) => (
+          <Fragment>
+            <Wrapper
+              bgColor={terrain.color}
+              minWidth={matches.sm ? "850px" : "1100px"}
+            >
+              <LeftPanel>
+                <Panel player={"PC"} plants={plants.pc} />
+                <Text color={terrain.color} marginTop={matches.sm && "35px"}>
+                  {terrain.type}
+                </Text>
+                <Panel player={username} plants={plants.user} />
+              </LeftPanel>
+              <Board>
+                {userWins && (
+                  <SimpleModal
+                    setShowModal={setUserWins}
+                    sign="win"
+                    width="60%"
+                  />
+                )}
+                {pcWins && (
+                  <SimpleModal
+                    setShowModal={setPcWins}
+                    sign="lose"
+                    width="60%"
+                  />
+                )}
+                <Hand arrayToRender={hands.pc} />
+                <Caster>
+                  <Text>{pcPlay}</Text>
+                </Caster>
+                <Hand arrayToRender={hands.user} />
+              </Board>
+            </Wrapper>
+          </Fragment>
         )}
-        {pcWins && (
-          <SimpleModal setShowModal={setPcWins} sign="lose" width="60%" />
-        )}
-        <Hand arrayToRender={hands.pc} />
-        <Caster>
-          <Text>{pcPlay}</Text>
-        </Caster>
-        <Hand arrayToRender={hands.user} />
-      </Board>
-    </Wrapper>
+      </Media>
+    </>
   );
 }
 const Wrapper = styled.div({
   display: "flex",
   flexStart: "left",
   backgroundColor: (props) => props.bgColor,
+  width: "100%",
+  minWidth: (props) => props.minWidth,
 });
 const LeftPanel = styled.div({
   display: "flex",
@@ -112,6 +141,7 @@ const Caster = styled.div({
 const Text = styled.h4({
   textAlign: "center",
   color: (props) => props.color,
+  marginTop: (props) => props.marginTop,
 });
 
 export default App;
