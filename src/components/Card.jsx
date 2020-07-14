@@ -1,7 +1,8 @@
-import React, { useContext } from "react";
+import React, { useContext, Fragment } from "react";
 import styled from "styled-components";
 import { utilitiesIcons } from "../data/data.jsx";
 import Context, { SELECT_CARD } from "../context/HandsContext";
+import Media from "react-media";
 
 const Card = ({
   attack,
@@ -18,76 +19,120 @@ const Card = ({
   const [state, dispatch] = useContext(Context);
 
   return (
-    <AnimalCard
-      onClick={() => {
-        !state.pcTurn && dispatch({ type: SELECT_CARD, species });
-      }}
-      opacity={`${life.current === "DEAD" && "0.5"}`}
-      outline={`${
-        state.attacker?.species === species && "7px inset rgba(255, 129, 3, .8)"
-      }`}
-    >
-      <CornerIcon leftDist="3px">{family}</CornerIcon>
-      <CornerIcon leftDist="185px">{!targeteable && "🚫"}</CornerIcon>
-      {bleeding && (
-        <CornerIcon leftDist="186px">
-          <Picture width="25" height="25" src={utilitiesIcons.blood} />
-        </CornerIcon>
-      )}
+    <>
+      <Media
+        queries={{
+          sm: "(max-width: 1150px)",
+        }}
+      >
+        {(matches) => (
+          <Fragment>
+            <AnimalCard
+              onClick={() => {
+                !state.pcTurn && dispatch({ type: SELECT_CARD, species });
+              }}
+              opacity={`${life.current === "DEAD" && "0.5"}`}
+              outline={`${
+                state.attacker?.species === species &&
+                "7px inset rgba(255, 129, 3, .8)"
+              }`}
+              padding={matches.sm && "9px"}
+            >
+              <CornerIcon fSize={matches.sm && "20px"} leftDist="3px">
+                {family}
+              </CornerIcon>
+              <CornerIcon
+                fSize={matches.sm && "20px"}
+                leftDist={matches.sm ? "147px" : "185px"}
+              >
+                {!targeteable && "🚫"}
+              </CornerIcon>
+              {bleeding && (
+                <CornerIcon
+                  fSize={matches.sm && "20px"}
+                  leftDist={matches.sm ? "147px" : "185px"}
+                >
+                  <Picture
+                    width={matches.sm ? "20" : "25"}
+                    height={matches.sm ? "20" : "25"}
+                    src={utilitiesIcons.blood}
+                  />
+                </CornerIcon>
+              )}
 
-      <Text fSize="20px">{species}</Text>
+              <Text fSize={matches.sm ? "15px" : "20px"}>{species}</Text>
 
-      <Picture width="170" height="120" src={image} />
+              <Picture
+                width={matches.sm ? "130" : "170"}
+                height={matches.sm ? "100" : "120"}
+                src={image}
+              />
 
-      <DescriptionDiv>
-        <FlexSection>
-          <Picture width="20" height="20" src={utilitiesIcons.fury} />
-          <Text
-            fSize="12px"
-            textDeco={`${paralyzed > 0 && "line-through 1px red"}`}
-          >
-            {skill.name}
-          </Text>
-        </FlexSection>
-        <Text
-          fSize="10px"
-          textDeco={`${paralyzed > 0 && "line-through 1px red"}`}
-        >
-          {skill.description}
-        </Text>
-      </DescriptionDiv>
+              <DescriptionDiv width={matches.sm && "145px"}>
+                <FlexSection>
+                  <Picture
+                    width={matches.sm ? "17" : "20"}
+                    height={matches.sm ? "17" : "20"}
+                    src={utilitiesIcons.fury}
+                  />
+                  <Text
+                    fSize={matches.sm ? "10px" : "12px"}
+                    textDeco={`${paralyzed > 0 && "line-through 1px red"}`}
+                  >
+                    {skill.name}
+                  </Text>
+                </FlexSection>
+                <Text
+                  fSize={matches.sm ? "9px" : "10px"}
+                  textDeco={`${paralyzed > 0 && "line-through 1px red"}`}
+                >
+                  {skill.description}
+                </Text>
+              </DescriptionDiv>
 
-      <FlexSection>
-        <Picture width="20" height="20" src={utilitiesIcons.attack} />
-        <Text
-          fSize="16px"
-          color={`${
-            attack.current > attack.initial
-              ? "green"
-              : attack.current < attack.initial && "red"
-          }`}
-        >
-          {attack.current}
-        </Text>
+              <FlexSection>
+                <Picture
+                  width={matches.sm ? "17" : "20"}
+                  height={matches.sm ? "17" : "20"}
+                  src={utilitiesIcons.attack}
+                />
+                <Text
+                  fSize={matches.sm ? "13px" : "16px"}
+                  color={`${
+                    attack.current > attack.initial
+                      ? "green"
+                      : attack.current < attack.initial && "red"
+                  }`}
+                >
+                  {attack.current}
+                </Text>
 
-        {poisoned.rounds === 0 ? (
-          <Text margin={"2px"}>🖤</Text>
-        ) : (
-          <Text margin={"2px"}>💚</Text>
+                {poisoned.rounds === 0 ? (
+                  <Text fSize={matches.sm && "13px"} margin={"2px"}>
+                    🖤
+                  </Text>
+                ) : (
+                  <Text fSize={matches.sm && "13px"} margin={"2px"}>
+                    💚
+                  </Text>
+                )}
+
+                <Text
+                  fSize={matches.sm ? "13px" : "16px"}
+                  color={`${
+                    life.current > life.initial
+                      ? "green"
+                      : life.current < life.initial && "red"
+                  }`}
+                >
+                  {life.current}
+                </Text>
+              </FlexSection>
+            </AnimalCard>
+          </Fragment>
         )}
-
-        <Text
-          fSize="16px"
-          color={`${
-            life.current > life.initial
-              ? "green"
-              : life.current < life.initial && "red"
-          }`}
-        >
-          {life.current}
-        </Text>
-      </FlexSection>
-    </AnimalCard>
+      </Media>
+    </>
   );
 };
 
@@ -100,7 +145,7 @@ const AnimalCard = styled.button({
   borderRadius: "5px",
   cursor: "pointer",
   position: "relative",
-  padding: "12px",
+  padding: (props) => props.padding || "12px",
   backgroundColor: "#d4a257",
   boxShadow: `inset 0px 0px 10px black`,
   outline: (props) => props.outline,
@@ -113,7 +158,7 @@ const AnimalCard = styled.button({
   },
 });
 const CornerIcon = styled.span({
-  fontSize: "25px",
+  fontSize: (props) => props.fSize || "25px",
   position: "absolute",
   top: "3px",
   left: (props) => props.leftDist,
@@ -137,7 +182,7 @@ const FlexSection = styled.div({
 });
 const DescriptionDiv = styled.div({
   marginTop: "4px",
-  width: "180px",
+  width: (props) => props.width || "180px",
   height: "60px",
   padding: "5px",
   display: "flex",
