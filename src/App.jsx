@@ -75,7 +75,9 @@ function App() {
           <SimpleModal setShowModal={setPcWins} sign="lose" width="60%" />
         )}
         <Hand arrayToRender={hands.pc} />
-        <Text>{pcPlay}</Text>
+        <Caster>
+          <Text>{pcPlay}</Text>
+        </Caster>
         <Hand arrayToRender={hands.user} />
       </Board>
     </Wrapper>
@@ -98,9 +100,14 @@ const Board = styled.div({
   padding: "0px 10px 0px 10px",
   flexDirection: "column",
   justifyContent: "space-between",
-  height: "100vh",
   width: "100%",
   position: "relative",
+});
+const Caster = styled.div({
+  height: "115px",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
 });
 const Text = styled.h4({
   textAlign: "center",
