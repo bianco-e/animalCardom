@@ -27,35 +27,30 @@ const Card = ({
         state.attacker?.species === species && "7px inset rgba(255, 129, 3, .8)"
       }`}
     >
-      <CornerIcon leftDist={"3px"}>{family}</CornerIcon>
-      <CornerIcon leftDist={"185px"}>{!targeteable && "🚫"}</CornerIcon>
+      <CornerIcon leftDist="3px">{family}</CornerIcon>
+      <CornerIcon leftDist="185px">{!targeteable && "🚫"}</CornerIcon>
       {bleeding && (
-        <CornerIcon leftDist={"186px"}>
-          <Picture width={"25"} height={"25"} src={utilitiesIcons.blood} />
+        <CornerIcon leftDist="186px">
+          <Picture width="25" height="25" src={utilitiesIcons.blood} />
         </CornerIcon>
       )}
 
-      <Text margin={"0"} px={"20"}>
-        {species}
-      </Text>
+      <Text fSize="20px">{species}</Text>
 
-      <Picture width={"170"} height={"120"} src={image} />
-
-      <FlexSection justify={"center"}>
-        <Picture width={"20"} height={"20"} src={utilitiesIcons.fury} />
-        <Text
-          margin={"0"}
-          px={"12"}
-          textDeco={`${paralyzed > 0 && "line-through 1px red"}`}
-        >
-          {skill.name}
-        </Text>
-      </FlexSection>
+      <Picture width="170" height="120" src={image} />
 
       <DescriptionDiv>
+        <FlexSection>
+          <Picture width="20" height="20" src={utilitiesIcons.fury} />
+          <Text
+            fSize="12px"
+            textDeco={`${paralyzed > 0 && "line-through 1px red"}`}
+          >
+            {skill.name}
+          </Text>
+        </FlexSection>
         <Text
-          margin={"0"}
-          px={"8"}
+          fSize="10px"
           textDeco={`${paralyzed > 0 && "line-through 1px red"}`}
         >
           {skill.description}
@@ -63,10 +58,9 @@ const Card = ({
       </DescriptionDiv>
 
       <FlexSection>
-        <Picture width={"20"} height={"20"} src={utilitiesIcons.attack} />
+        <Picture width="20" height="20" src={utilitiesIcons.attack} />
         <Text
-          margin={"0"}
-          px={"14"}
+          fSize="16px"
           color={`${
             attack.current > attack.initial
               ? "green"
@@ -77,18 +71,13 @@ const Card = ({
         </Text>
 
         {poisoned.rounds === 0 ? (
-          <Text margin={"2px"} px={"14"}>
-            🖤
-          </Text>
+          <Text margin={"2px"}>🖤</Text>
         ) : (
-          <Text margin={"2px"} px={"14"}>
-            💚
-          </Text>
+          <Text margin={"2px"}>💚</Text>
         )}
 
         <Text
-          margin={"0"}
-          px={"14"}
+          fSize="16px"
           color={`${
             life.current > life.initial
               ? "green"
@@ -136,21 +125,27 @@ const Picture = styled.img({
 });
 const Text = styled.h3({
   color: (props) => props.color,
-  fontSize: (props) => `${props.px}px`,
-  margin: (props) => props.margin,
+  fontSize: (props) => props.fSize || "14px",
+  margin: (props) => props.margin || "0",
   textAlign: "center",
   textDecoration: (props) => props.textDeco,
 });
 const FlexSection = styled.div({
   display: "flex",
   alignItems: "center",
-  justifyContent: (props) => props.justify,
+  justifyContent: "center",
 });
 const DescriptionDiv = styled.div({
+  marginTop: "4px",
   width: "180px",
+  height: "60px",
   padding: "5px",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "flex-start",
+  alignItems: "center",
   backgroundColor: "#b9935a",
-  boxShadow: "inset 0px 0px 5px white",
+  boxShadow: "inset 0px 0px 10px #e3cdac",
   borderRadius: "5px",
 });
 

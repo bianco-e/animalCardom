@@ -25,7 +25,7 @@ const Plant = ({ plant }) => {
 };
 
 const PlantCard = styled.button({
-  marginBottom: "8px",
+  marginBottom: "13px",
   padding: "2px",
   backgroundColor: "#d4a257",
   border: "none",

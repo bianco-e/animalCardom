@@ -104,7 +104,7 @@ const Board = styled.div({
   position: "relative",
 });
 const Caster = styled.div({
-  height: "115px",
+  height: "65px",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
