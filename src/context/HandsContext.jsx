@@ -31,8 +31,10 @@ const getRandomIdx = (arr) => {
 const getLiveCards = (arr) => {
   return arr.filter((card) => card.life.current !== "DEAD");
 };
-const sortHandByAttack = (hand) => {
-  return hand.sort((a, b) => a.attack.current < b.attack.current);
+const getHighestAttackCard = (hand) => {
+  return hand.reduce((acc, value) => {
+    return value.attack.current > acc.attack.current ? value : acc;
+  });
 };
 
 const attackAndApplySkill = (state, hand) => {
@@ -134,8 +136,8 @@ const computerPlay = (state) => {
   );
   return computerDamage({
     ...state,
-    attacker: sortHandByAttack(pcLiveCards)[0],
-    defender: sortHandByAttack(userLiveCards)[0],
+    attacker: getHighestAttackCard(pcLiveCards),
+    defender: getHighestAttackCard(userLiveCards),
   });
 };
 
