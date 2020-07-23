@@ -12,7 +12,7 @@ const Plant = ({ plant }) => {
       <Media
         queries={{
           sh: "(max-height: 490px)",
-          med: "(max-height: 565px)",
+          med: "(max-height: 570px)",
         }}
       >
         {(matches) => (
@@ -28,7 +28,7 @@ const Plant = ({ plant }) => {
                   dispatch({ type: SELECT_PLANT, plant });
               }}
               opacity={usedPlants.includes(plant) && "0.6"}
-              mBottom={matches.sh ? "5px" : matches.med && "8px"}
+              mBottom={matches.sh ? "5px" : matches.med && "10px"}
             >
               <PlantName fSize={matches.sh ? "8px" : matches.med && "9px"}>
                 {name}

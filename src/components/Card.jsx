@@ -76,6 +76,7 @@ const Card = ({
                 width={matches.sm ? "110" : matches.med ? "130" : "170"}
                 height={matches.sm ? "80" : matches.med ? "90" : "120"}
                 src={image}
+                shadow="0px 0px 9px black"
               />
 
               <DescriptionDiv
@@ -185,6 +186,7 @@ const Picture = styled.img({
   width: (props) => `${props.width}px`,
   height: (props) => `${props.height}px`,
   borderRadius: "120px",
+  boxShadow: (props) => props.shadow,
 });
 const Text = styled.h3({
   color: (props) => props.color,
