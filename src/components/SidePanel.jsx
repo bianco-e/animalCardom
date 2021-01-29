@@ -18,13 +18,10 @@ export default function SidePanel({ plants, terrain, username }) {
       <TerrainContainer
         bgImage={terrain.image}
         color={terrain.color}
-        onClick={() =>
-          console.log(
-            `Should open modal saying: Terrain buffs ${terrain.familyToBuff}`
-          )
-        }
+        title={`All animals belonging to ${terrain.familyToBuff} feel like home in ${terrain.type}. Their attack is increased by 1`}
       >
-        <span>{terrain.type}</span>
+        <h3>{terrain.type}</h3>
+        <span>{terrain.familyToBuff}</span>
       </TerrainContainer>
       <HalfPanel>
         <Text fSize="18px" fWeight="bold" padding="5px">
@@ -57,23 +54,20 @@ const HalfPanel = styled.div`
   height: 33%;
 `;
 const TerrainContainer = styled.div`
-  align-items: flex-start;
+  align-items: center;
   background: url(${({ bgImage }) => bgImage});
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
   box-shadow: inset 0 0 20px rgba(240, 240, 240, 0.9);
   color: ${({ color }) => color};
-  cursor: pointer;
+  cursor: help;
   display: flex;
   height: 33%;
-  justify-content: center;
-  text-align: center;
+  flex-direction: column;
+  justify-content: flex-start;
   > span {
-    border-radius: 999px;
-    font-size: 18px;
-    font-weight: bold;
-    padding: 5px 20px;
+    font-size: 30px;
   }
   @media (${LARGE_RESPONSIVE_BREAK}) {
     margin-top: 35px;

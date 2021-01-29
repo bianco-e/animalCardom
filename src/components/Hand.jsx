@@ -2,33 +2,51 @@ import React from "react";
 import styled from "styled-components";
 import Card from "./Card";
 
-const Hand = ({ arrayToRender, clicked, setClicked, setPcPlay }) => {
+export default function Hand({
+  arrayToRender,
+  clicked,
+  setClicked,
+  setPcPlay,
+}) {
   return (
     <CardsGroup>
       {arrayToRender.map((animal) => {
+        const {
+          attack,
+          bleeding,
+          family,
+          image,
+          life,
+          paralyzed,
+          poisoned,
+          skill,
+          species,
+          targeteable,
+          toDo,
+        } = animal;
         return (
           <Card
-            attack={animal.attack}
-            bleeding={animal.bleeding}
+            attack={attack}
+            bleeding={bleeding}
             clicked={clicked}
-            life={animal.life}
-            family={animal.family}
-            image={animal.image}
-            key={animal.species}
-            paralyzed={animal.paralyzed}
-            poisoned={animal.poisoned}
-            skillFn={animal.toDo}
+            family={family}
+            image={image}
+            key={species}
+            life={life}
+            paralyzed={paralyzed}
+            poisoned={poisoned}
             setClicked={setClicked}
-            skill={animal.skill}
-            species={animal.species}
             setPcPlay={setPcPlay}
-            targeteable={animal.targeteable}
+            skill={skill}
+            skillFn={toDo}
+            species={species}
+            targeteable={targeteable}
           />
         );
       })}
     </CardsGroup>
   );
-};
+}
 
 const CardsGroup = styled.div({
   display: "flex",
@@ -36,5 +54,3 @@ const CardsGroup = styled.div({
   justifyContent: "space-between",
   width: "100%",
 });
-
-export default Hand;
