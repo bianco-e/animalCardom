@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState, Fragment } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import Hand from "./components/Hand";
-import Panel from "./components/Panel";
 import SimpleModal from "./components/SimpleModal";
+import { LARGE_RESPONSIVE_BREAK } from "./lib/constants";
 import Context, {
   COMPUTER_PLAY,
   RESTART_GAME,
@@ -11,9 +11,9 @@ import Context, {
 } from "./context/HandsContext";
 import { getAnimalsInfo, terrains } from "./data/data.jsx";
 import { useParams } from "react-router-dom";
-import Media from "react-media";
+import SidePanel from "./components/SidePanel";
 
-function App() {
+export default function App() {
   let { username } = useParams();
   const [state, dispatch] = useContext(Context);
   const [terrain, setTerrain] = useState("");
@@ -62,86 +62,57 @@ function App() {
   }, [pcTurn, triggerPcAttack]);
 
   return (
-    <>
-      <Media
-        queries={{
-          sm: "(max-width: 850px)",
-          med: "(max-width: 1150px)",
-        }}
-      >
-        {(matches) => (
-          <Fragment>
-            <Wrapper
-              bgColor={terrain.color}
-              minWidth={matches.sm ? "850px" : "1100px"}
-            >
-              <LeftPanel>
-                <Panel player={"PC"} plants={plants.pc} />
-                <Text color={terrain.color} marginTop={matches.sm && "35px"}>
-                  {terrain.type}
-                </Text>
-                <Panel player={username} plants={plants.user} />
-              </LeftPanel>
-              <Board>
-                {userWins && (
-                  <SimpleModal
-                    setShowModal={setUserWins}
-                    sign="win"
-                    width="60%"
-                  />
-                )}
-                {pcWins && (
-                  <SimpleModal
-                    setShowModal={setPcWins}
-                    sign="lose"
-                    width="60%"
-                  />
-                )}
-                <Hand arrayToRender={hands.pc} />
-                <Caster>
-                  <Text>{pcPlay}</Text>
-                </Caster>
-                <Hand arrayToRender={hands.user} />
-              </Board>
-            </Wrapper>
-          </Fragment>
+    <Wrapper bgColor={terrain.color}>
+      <SidePanel plants={plants} terrain={terrain} username={username} />
+      <Board>
+        {userWins && (
+          <SimpleModal setShowModal={setUserWins} sign="win" width="60%" />
         )}
-      </Media>
-    </>
+        {pcWins && (
+          <SimpleModal setShowModal={setPcWins} sign="lose" width="60%" />
+        )}
+        <Hand arrayToRender={hands.pc} />
+        <Caster>
+          <Text>{pcPlay}</Text>
+        </Caster>
+        <Hand arrayToRender={hands.user} />
+      </Board>
+    </Wrapper>
   );
 }
-const Wrapper = styled.div({
-  display: "flex",
-  flexStart: "left",
-  backgroundColor: (props) => props.bgColor,
-  width: "100%",
-  minWidth: (props) => props.minWidth,
-});
-const LeftPanel = styled.div({
-  display: "flex",
-  flexDirection: "column",
-  backgroundColor: "#EEE8AA",
-  width: "90px",
-  border: "2px solid #CD853F",
-});
-const Board = styled.div({
-  display: "flex",
-  padding: "0px 10px 0px 10px",
-  flexDirection: "column",
-  justifyContent: "space-between",
-  width: "100%",
-  position: "relative",
-});
-const Caster = styled.div({
-  height: "65px",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-});
-const Text = styled.h4({
-  textAlign: "center",
-  color: (props) => props.color,
-  marginTop: (props) => props.marginTop,
-});
-
-export default App;
+const Wrapper = styled.div`
+  display: flex;
+  flex-start: left;
+  background-color: ${({ bgColor }) => bgColor};
+  height: 100vh;
+  min-width: 1100px;
+  width: 100%;
+  @media (${LARGE_RESPONSIVE_BREAK}) {
+    min-width: 850px;
+  }
+`;
+const Board = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0px 10px 0px 10px;
+  position: relative;
+  width: 100%;
+`;
+const Caster = styled.div`
+  align-items: center;
+  display: flex;
+  height: 65px;
+  justify-content: center;
+`;
+const Text = styled.h4`
+  align-items: center;
+  color: ${({ color }) => color};
+  display: flex;
+  height: 33%;
+  justify-content: center;
+  text-align: center;
+  @media (${LARGE_RESPONSIVE_BREAK}) {
+    margin-top: 35px;
+  }
+`;

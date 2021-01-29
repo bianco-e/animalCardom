@@ -8,12 +8,42 @@ export const utilitiesIcons = {
 };
 
 export const terrains = [
-  { type: "Sea", color: "#87CEEB", familyToBuff: "🦈" },
-  { type: "Swamp", color: "#228B22", familyToBuff: "🐸" },
-  { type: "Jungle", color: "#006400", familyToBuff: "🐺" },
-  { type: "Dessert", color: "#DEB887", familyToBuff: "🦂" },
-  { type: "Mountain", color: "#C0C0C0", familyToBuff: "🦅" },
-  { type: "Forest", color: "#2E8B57", familyToBuff: "🦎" },
+  {
+    type: "Sea",
+    color: "#87CEEB",
+    familyToBuff: "🦈",
+    image: "/images/terrains/sea.webp",
+  },
+  {
+    type: "Swamp",
+    color: "#228B22",
+    familyToBuff: "🐸",
+    image: "/images/terrains/swamp.jpeg",
+  },
+  {
+    type: "Jungle",
+    color: "#006400",
+    familyToBuff: "🐺",
+    image: "/images/terrains/jungle.jpeg",
+  },
+  {
+    type: "Desert",
+    color: "#DEB887",
+    familyToBuff: "🦂",
+    image: "/images/terrains/desert.jpeg",
+  },
+  {
+    type: "Mountain",
+    color: "#C0C0C0",
+    familyToBuff: "🦅",
+    image: "/images/terrains/mountain.webp",
+  },
+  {
+    type: "Forest",
+    color: "#2E8B57",
+    familyToBuff: "🦎",
+    image: "/images/terrains/forest.jpeg",
+  },
 ];
 
 class Plant {
@@ -29,37 +59,37 @@ const plants = [
   new Plant(
     "Ricinum",
     "Highly poisonous seeds: can poison any enemy making 1 damage per round, for 3 rounds",
-    "https://1.bp.blogspot.com/-zSHJ8wTmG14/WEMxdEhIDGI/AAAAAAAAQbU/EzJQttXOuU4_iyLzzel2fK-XiURsoJcVgCLcB/s1600/ricinus-minor.jpg",
+    "/images/plants/ricinum.jpeg",
     plantsFunctions.ricinumFn
   ),
   new Plant(
     "Aloe",
     "Very effective in treating wounds: can heal any ally restoring 2 life points",
-    "https://www.calloways.com/wp-content/uploads/G151-03.jpg",
+    "/images/plants/aloe.jpeg",
     plantsFunctions.aloeFn
   ),
   new Plant(
     "Peyote",
     "Its hallucinogen mescaline makes any enemy unable to use its skill for the next round",
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Peyote_Cactus.jpg/800px-Peyote_Cactus.jpg",
+    "/images/plants/peyote.webp",
     plantsFunctions.peyoteFn
   ),
   new Plant(
     "Jewelweed",
     "Its antidote properties can eliminate any poison effect in an ally",
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Potapsco_fg13.jpg/800px-Potapsco_fg13.jpg",
+    "/images/plants/jewelweed.webp",
     plantsFunctions.jewelweedFn
   ),
   new Plant(
     "Coffee",
     "Coffe bean given to an animal can immediately wake all its senses, making it free from any paralyzing effect",
-    "https://wikifaunia.com/wp-content/uploads/2015/08/cafe-300x225.jpg",
+    "/images/plants/coffee.jpeg",
     plantsFunctions.coffeeFn
   ),
   new Plant(
     "Withania",
     "Its fruit has been always used as a natural energizer which makes animals as strong as rock increasing its attack by 1",
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/WithaniaFruit.jpg/220px-WithaniaFruit.jpg",
+    "/images/plants/withania.webp",
     plantsFunctions.withaniaFn
   ),
 ];
