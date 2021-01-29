@@ -97,11 +97,11 @@ const animals = [
   new Animal(
     "🦎",
     "Crocodile",
-    "https://cdn.cienradios.com/wp-content/uploads/sites/3/2020/03/cocodrilo-1.jpg",
+    "/images/animals/adult-crocodile.webp",
     {
       name: "Nibble",
       description:
-        "Crocodile bites its enemy with its strong jaws, inflicting 2 extra damage.",
+        "Crocodile bites its enemy using its strong jaws which inflicts 2 extra damage.",
       toDo: skillsFunctions.crocodileFn,
     },
     { initial: 10, current: 10 },
@@ -112,7 +112,7 @@ const animals = [
   new Animal(
     "🦎",
     "Tortoise",
-    "https://img.culturacolectiva.com/cdn-cgi/image/f=auto,w=1600,q=80,fit=contain/content_image/2020/5/22/1590170907479-reaparece-tortuga-gigante-fernandina-en-peligro-de-extincion.001.jpeg",
+    "/images/animals/adult-tortoise.webp",
     {
       name: "Hibernate",
       description:
@@ -127,7 +127,7 @@ const animals = [
   new Animal(
     "🦎",
     "Snake",
-    "https://www.oronoticias.com.mx/wp-content/uploads/2019/07/serpiente.jpg",
+    "/images/animals/adult-snake.webp",
     {
       name: "Venom",
       description:
@@ -142,11 +142,11 @@ const animals = [
   new Animal(
     "🦎",
     "Komodo Dragon",
-    "https://t1.ev.ltmcdn.com/es/posts/1/3/6/por_que_el_dragon_de_komodo_esta_en_peligro_de_extincion_1631_600.jpg",
+    "/images/animals/adult-komodo-dragon.webp",
     {
       name: "Poisonous saliva",
       description:
-        "Komodo Dragon can bite inflicting 1 extra damage and poisoning it for 1 round.",
+        "Komodo Dragon can bite inflicting 1 extra damage and poisoning its enemy for 1 round.",
       toDo: skillsFunctions.komododragonFn,
     },
     { initial: 10, current: 10 },
@@ -157,7 +157,7 @@ const animals = [
   new Animal(
     "🦎",
     "Chameleon",
-    "https://cumbrepuebloscop20.org/wp-content/uploads/2018/09/CAMALE%C3%93N-sus-colores-var%C3%ADan-de-acuerdo-a-su-condici%C3%B3n-de-vida-1.jpg",
+    "/images/animals/adult-chameleon.webp",
     {
       name: "Mimicry",
       description:
@@ -173,7 +173,7 @@ const animals = [
   new Animal(
     "🐸",
     "Toad",
-    "https://cdn.colombia.com/sdi/2020/01/20/significado-sonar-con-sapos-803289.jpg",
+    "/images/animals/adult-toad.webp",
     {
       name: "Sticky tongue",
       description:
@@ -188,7 +188,7 @@ const animals = [
   new Animal(
     "🐸",
     "Salamander",
-    "https://dr282zn36sxxg.cloudfront.net/datastreams/f-d%3A557c2460eab996bf3a2f50da686efbccaa2fd2cff611a768b337e5ab%2BIMAGE_TINY%2BIMAGE_TINY.1",
+    "/images/animals/adult-salamander.webp",
     {
       name: "Tissue regeneration",
       description:
@@ -203,7 +203,7 @@ const animals = [
   new Animal(
     "🦈",
     "Shark",
-    "https://www.ngenespanol.com/wp-content/uploads/2018/08/%C2%BFPor-qu%C3%A9-disminuy%C3%B3-el-riesgo-de-ataques-de-tibur%C3%B3n.jpg",
+    "/images/animals/adult-shark.webp",
     {
       name: "Bloodseeker",
       description:
@@ -218,7 +218,7 @@ const animals = [
   new Animal(
     "🦈",
     "Stingray",
-    "https://e00-marca.uecdn.es/blogs/bajo-el-mar/imagenes_posts/2016/10/07/174515_570x347.jpg",
+    "/images/animals/adult-stingray.webp",
     {
       name: "Barbed sting",
       description:
@@ -233,7 +233,7 @@ const animals = [
   new Animal(
     "🦈",
     "Orc",
-    "https://assets.cdnelnuevodiario.com/cache/78/69/7869617d2d0031d4db5566c49229dbbc.jpg",
+    "/images/animals/adult-orc.webp",
     {
       name: "Waterjet",
       description:
@@ -248,7 +248,7 @@ const animals = [
   new Animal(
     "🦈",
     "Blowfish",
-    "https://www.aquariumcostadealmeria.com/wp-content/uploads/2019/02/shutterstock_127967549.gif",
+    "/images/animals/adult-blowfish.webp",
     {
       name: "Puff up",
       description:
@@ -263,7 +263,7 @@ const animals = [
   new Animal(
     "🦈",
     "Electric Eel",
-    "https://animalesexotico.org/wp-content/uploads/2019/11/Webp.net-resizeimage-2019-11-16T080704.632.jpg",
+    "/images/animals/adult-electric-eel.webp",
     {
       name: "Electric shock",
       description:
@@ -278,7 +278,7 @@ const animals = [
   new Animal(
     "🦅",
     "Eagle",
-    "https://laopinion.com/wp-content/uploads/sites/3/2019/06/andy_morffew_-_bald_eagle_32252960978.jpg?quality=80&strip=all&w=940",
+    "/images/animals/adult-eagle.webp",
     {
       name: "Free fall",
       description:
@@ -293,7 +293,7 @@ const animals = [
   new Animal(
     "🦅",
     "Vulture",
-    "https://static.malaga.es/malaga/subidas/imagenes/1/1/arc_260811_g.jpg",
+    "/images/animals/adult-vulture.webp",
     {
       name: "Carrion",
       description:
@@ -308,7 +308,7 @@ const animals = [
   new Animal(
     "🦅",
     "Cassowary",
-    "https://www.junglepark.es/wp-content/uploads/2017/05/casuarioblog2-1024x978.jpg",
+    "/images/animals/adult-cassowary.webp",
     {
       name: "Assault",
       description:
@@ -323,7 +323,7 @@ const animals = [
   new Animal(
     "🦅",
     "Parrot",
-    "https://avesexoticas.org/wp-content/uploads/2017/06/Chestnut-fronted_Macaw_Ara_severa_-Free_Flight_Aviary_-San_Diego-3000x1997.jpg",
+    "/images/animals/adult-parrot.webp",
     {
       name: "Echo",
       description:
@@ -338,7 +338,7 @@ const animals = [
   new Animal(
     "🦂",
     "Mosquito",
-    "https://imagenes.20minutos.es/files/image_990_v1/uploads/imagenes/2019/07/05/986865.jpg",
+    "/images/animals/adult-mosquito.webp",
     {
       name: "Life drain",
       description:
@@ -353,7 +353,7 @@ const animals = [
   new Animal(
     "🦂",
     "Scorpion",
-    "https://www.caracteristicas.co/wp-content/uploads/2018/12/escorpion-2-e1584472396622.jpg",
+    "/images/animals/adult-scorpion.webp",
     {
       name: "Revenge",
       description:
@@ -368,7 +368,7 @@ const animals = [
   new Animal(
     "🦂",
     "Bee",
-    "https://www.rankeamos.com/uploads/2019/4/abejaafricana_1554405087.jpg",
+    "/images/animals/adult-bee.webp",
     {
       name: "Life or Death",
       description:
@@ -383,7 +383,7 @@ const animals = [
   new Animal(
     "🦂",
     "Spider",
-    "https://cdnmundo1.img.sputniknews.com/img/109135/72/1091357298_0:290:1920:1328_1000x541_80_0_0_5b55f584c4a63ff0ffeff88b86420468.jpg",
+    "/images/animals/adult-spider.webp",
     {
       name: "Sticky wrapping",
       description:
@@ -398,7 +398,7 @@ const animals = [
   new Animal(
     "🐺",
     "Bear",
-    "https://www.vistazo.com/sites/default/files/styles/threshold-768/public/field/image/2020/05/22/oso-ataca-humano-rusia-vistazo.jpg?itok=__ohpoFM",
+    "/images/animals/adult-bear.webp",
     {
       name: "Sharp claws",
       description:
@@ -413,7 +413,7 @@ const animals = [
   new Animal(
     "🐺",
     "Lion",
-    "https://www.euroresidentes.com/suenos/img_suenos/leon-suenos-euroresidentes.jpg",
+    "/images/animals/adult-lion.webp",
     {
       name: "Roar",
       description:
@@ -428,7 +428,7 @@ const animals = [
   new Animal(
     "🐺",
     "Gorilla",
-    "https://img.vixdata.io/pd/jpg-large/es/sites/default/files/btg/gorila_cuerpo_entero.jpg",
+    "/images/animals/adult-gorilla.webp",
     {
       name: "Chest beating",
       description:
@@ -443,7 +443,7 @@ const animals = [
   new Animal(
     "🐺",
     "Cheetah",
-    "https://www.nationalgeographic.com.es/medio/2018/02/27/guepardo__1280x720.jpg",
+    "/images/animals/adult-cheetah.webp",
     {
       name: "Ambush",
       description:
@@ -459,7 +459,7 @@ const animals = [
   new Animal(
     "🐺",
     "Hyena",
-    "https://i.pinimg.com/originals/31/da/8f/31da8f9afc9d01f748fb5d417b3710d9.jpg",
+    "/images/animals/adult-hyena.webp",
     {
       name: "Bite the wound",
       description: "Hyena can bite an injuried enemy, making 2 extra damage.",
@@ -473,7 +473,7 @@ const animals = [
   new Animal(
     "🐺",
     "Elephant",
-    "https://static.nationalgeographic.es/files/styles/image_3200/public/2928.600x450.jpg?w=1900&h=1425",
+    "/images/animals/adult-elephant.webp",
     {
       name: "Stomp",
       description:
