@@ -39,13 +39,10 @@ const LeftPanel = styled.div`
   align-items: justify-between;
   background: rgba(240, 240, 240, 0.6);
   border-radius: 0 10px 10px 0;
-  box-shadow: 5px 0 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 35px 0 40px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   width: 110px;
-  @media (${LARGE_RESPONSIVE_BREAK}) {
-    width: 90px;
-  }
 `;
 const HalfPanel = styled.div`
   align-items: center;
@@ -68,8 +65,5 @@ const TerrainContainer = styled.div`
   justify-content: flex-start;
   > span {
     font-size: 30px;
-  }
-  @media (${LARGE_RESPONSIVE_BREAK}) {
-    margin-top: 35px;
   }
 `;

@@ -48,9 +48,10 @@ export default function Hand({
   );
 }
 
-const CardsGroup = styled.div({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  width: "100%",
-});
+const CardsGroup = styled.div`
+  align-items: center;
+  display: flex;
+  height: 37%;
+  justify-content: space-between;
+  width: 100%;
+`;

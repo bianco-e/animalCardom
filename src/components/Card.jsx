@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { utilitiesIcons } from "../data/data.jsx";
 import Context, { SELECT_CARD } from "../context/HandsContext";
 import {
+  LARGE_RESPONSIVE_BREAK,
   MEDIUM_RESPONSIVE_BREAK,
   SMALL_RESPONSIVE_BREAK,
 } from "../lib/constants";
@@ -31,7 +32,7 @@ export default function Card({
       }`}
     >
       <CornerIcon>{family}</CornerIcon>
-      {!targeteable && <CornerIcon className="animal-status">"🚫"</CornerIcon>}
+      {!targeteable && <CornerIcon className="animal-status">🚫</CornerIcon>}
       {bleeding && (
         <CornerIcon className="animal-status">
           <Image className="bleeding-drop" src={utilitiesIcons.blood} />
@@ -43,7 +44,7 @@ export default function Card({
       <Image className="animal-picture" src={image} />
 
       <DescriptionContainer>
-        <FlexSection>
+        <FlexSection mBottom="2px">
           <Image className="small-icon" src={utilitiesIcons.fury} />
           <Text
             className="skill"
@@ -108,11 +109,13 @@ const AnimalCard = styled.button`
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  height: 100%;
+  justify-content: space-around;
   opacity: ${({ opacity }) => opacity};
   outline: ${({ outline }) => outline};
   padding: 12px;
   position: relative;
+  width: 17%;
   &:hover {
     box-shadow: 4px 4px 4px #b9935a, inset 0px 0px 15px black;
   }
@@ -127,18 +130,13 @@ const AnimalCard = styled.button`
   }
 `;
 const CornerIcon = styled.span`
-  font-size: 25px;
-  left: 3px;
+  font-size: 30px;
+  left: 2%;
   position: absolute;
-  top: 3px;
+  top: 2%;
   &.animal-status {
-    left: 185px;
-    @media (${MEDIUM_RESPONSIVE_BREAK}) {
-      left: 147pxpx;
-    }
-    @media (${SMALL_RESPONSIVE_BREAK}) {
-      left: 118px;
-    }
+    left: auto;
+    right: 2%;
   }
   @media (${MEDIUM_RESPONSIVE_BREAK}) {
     font-size: 20px;
@@ -163,15 +161,10 @@ const Image = styled.img`
   &.animal-picture {
     border-radius: 120px;
     box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.6);
-    height: 120px;
-    width: 170px;
-    @media (${MEDIUM_RESPONSIVE_BREAK}) {
-      height: 90px;
-      width: 130px;
-    }
-    @media (${SMALL_RESPONSIVE_BREAK}) {
-      height: 80px;
-      width: 110px;
+    height: 45%;
+    width: 80%;
+    @media (${LARGE_RESPONSIVE_BREAK}) {
+      width: 85%;
     }
   }
   &.small-icon {
@@ -189,6 +182,7 @@ const Image = styled.img`
 `;
 const Text = styled.span`
   &.life-heart {
+    margin-left: 10px;
     @media (${MEDIUM_RESPONSIVE_BREAK}) {
       font-size: 13px;
     }
@@ -197,7 +191,8 @@ const Text = styled.span`
     }
   }
   &.stats {
-    font-size: 16px;
+    margin-left: 3px;
+    font-size: 20px;
     @media (${MEDIUM_RESPONSIVE_BREAK}) {
       font-size: 13px;
     }
@@ -206,16 +201,19 @@ const Text = styled.span`
     }
   }
   &.skill {
-    font-size: 11px;
-    @media (${MEDIUM_RESPONSIVE_BREAK}) {
+    font-size: 12px;
+    @media (${LARGE_RESPONSIVE_BREAK}) {
       font-size: 9px;
     }
-    @media (${SMALL_RESPONSIVE_BREAK}) {
+    @media (${MEDIUM_RESPONSIVE_BREAK}) {
       font-size: 8px;
+    }
+    @media (${SMALL_RESPONSIVE_BREAK}) {
+      font-size: 7px;
     }
   }
   &.animal-name {
-    font-size: 20px;
+    font-size: 22px;
     @media (${MEDIUM_RESPONSIVE_BREAK}) {
       font-size: 15px;
     }
@@ -234,6 +232,7 @@ const FlexSection = styled.div`
   align-items: center;
   display: flex;
   justify-content: center;
+  margin-bottom: ${({ mBottom }) => mBottom};
 `;
 const DescriptionContainer = styled.div`
   align-items: center;
@@ -242,15 +241,9 @@ const DescriptionContainer = styled.div`
   box-shadow: inset 0px 0px 10px #e3cdac;
   display: flex;
   flex-direction: column;
-  height: 60px;
+  height: 27%;
   justify-content: flex-start;
   margin-top: 4px;
   padding: 5px;
-  width: 180px;
-  @media (${MEDIUM_RESPONSIVE_BREAK}) {
-    width: 145px;
-  }
-  @media (${SMALL_RESPONSIVE_BREAK}) {
-    width: 115px;
-  }
+  width: 85%;
 `;

@@ -40,35 +40,21 @@ const PlantCard = styled.button`
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  margin-bottom: 13px;
+  height: 25%;
+  margin-bottom: 8%;
   opacity: ${({ opacity }) => opacity};
   outline: ${({ outline }) => outline};
   padding: 3px 3px 5px 3px;
   width: 70%;
   > img {
     border-radius: 5px;
-    height: 50px;
-    width: 50px;
+    height: 75%;
+    width: 85%;
   }
   &:hover {
     box-shadow: 4px 4px 4px #b9935a, inset 0px 0px 5px black;
   }
   &:active {
     box-shadow: inset 0px 0px 20px black;
-  }
-  ,
-  @media (${LARGE_RESPONSIVE_BREAK}) {
-    margin-bottom: 10px;
-    > img {
-      height: 38px;
-      width: 38px;
-    }
-  }
-  @media (${MEDIUM_RESPONSIVE_BREAK}) {
-    margin-bottom: 5px;
-    > img {
-      height: 30px;
-      width: 30px;
-    }
   }
 `;
