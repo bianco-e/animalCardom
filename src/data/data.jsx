@@ -1,16 +1,13 @@
-import attIcon from "../images/attackIcon.png";
-import furyIcon from "../images/furyIcon.png";
-import bloodIcon from "../images/bloodIcon.png";
 import plantsFunctions from "./plantsFunctions";
 import skillsFunctions from "./skillsFunctions";
 
-const utilitiesIcons = {
-  attack: attIcon,
-  fury: furyIcon,
-  blood: bloodIcon,
+export const utilitiesIcons = {
+  attack: "/images/icons/attack-icon.png",
+  fury: "/images/icons/fury-icon.png",
+  blood: "/images/icons/blood-icon.png",
 };
 
-const terrains = [
+export const terrains = [
   { type: "Sea", color: "#87CEEB", familyToBuff: "🦈" },
   { type: "Swamp", color: "#228B22", familyToBuff: "🐸" },
   { type: "Jungle", color: "#006400", familyToBuff: "🐺" },
@@ -498,7 +495,7 @@ const shuffleArr = (array) => {
   return array;
 };
 
-const getCards = () => {
+export const getCards = () => {
   var tenCards = shuffleArr(animals).slice(0, 10);
   return {
     pc: tenCards.slice(0, 5),
@@ -506,7 +503,7 @@ const getCards = () => {
   };
 };
 
-const getPlants = () => {
+export const getPlants = () => {
   var fourCards = shuffleArr(plants);
   return {
     pc: fourCards.slice(0, 3),
@@ -514,7 +511,7 @@ const getPlants = () => {
   };
 };
 
-const getAnimalsInfo = () => {
+export const getAnimalsInfo = () => {
   const getfamilyLength = (emoji) => {
     return animals.filter((animal) => animal.family === emoji).length;
   };
@@ -528,5 +525,3 @@ const getAnimalsInfo = () => {
     getfamilyLength("🐺") + " mammals"
   );
 };
-
-export { terrains, getPlants, utilitiesIcons, getCards, getAnimalsInfo };
