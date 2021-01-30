@@ -1,17 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import {
-  MEDIUM_RESPONSIVE_BREAK,
-  SMALL_RESPONSIVE_BREAK,
-} from "../lib/constants";
+import { SMALL_RESPONSIVE_BREAK } from "../lib/constants";
 import Card from "./Card";
 
-export default function Hand({
-  arrayToRender,
-  clicked,
-  setClicked,
-  setPcPlay,
-}) {
+export default function Hand({ arrayToRender, belongsToUser }) {
   return (
     <CardsGroup>
       {arrayToRender.map((animal) => {
@@ -31,16 +23,14 @@ export default function Hand({
         return (
           <Card
             attack={attack}
+            belongsToUser={belongsToUser}
             bleeding={bleeding}
-            clicked={clicked}
             family={family}
             image={image}
             key={species}
             life={life}
             paralyzed={paralyzed}
             poisoned={poisoned}
-            setClicked={setClicked}
-            setPcPlay={setPcPlay}
             skill={skill}
             skillFn={toDo}
             species={species}

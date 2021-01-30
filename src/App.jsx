@@ -77,7 +77,7 @@ export default function App() {
         )}
         <Hand arrayToRender={hands.pc} />
         <Text>{pcPlay}</Text>
-        <Hand arrayToRender={hands.user} />
+        <Hand arrayToRender={hands.user} belongsToUser />
       </Board>
     </Wrapper>
   );

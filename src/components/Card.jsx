@@ -10,6 +10,7 @@ import {
 
 export default function Card({
   attack,
+  belongsToUser,
   life,
   family,
   image,
@@ -30,6 +31,7 @@ export default function Card({
       outline={`${
         state.attacker?.species === species && "7px inset rgba(255, 129, 3, .8)"
       }`}
+      translate={belongsToUser ? "-10px" : "10px"}
     >
       <CornerIcon>{family}</CornerIcon>
       {!targeteable && <CornerIcon className="animal-status">🚫</CornerIcon>}
@@ -115,9 +117,11 @@ const AnimalCard = styled.button`
   outline: ${({ outline }) => outline};
   padding: 12px;
   position: relative;
+  transition: transform 0.1s ease;
   width: 17%;
   &:hover {
     box-shadow: 4px 4px 4px #b9935a, inset 0px 0px 15px black;
+    transform: ${({ translate }) => `translateY(${translate});`};
   }
   &:active {
     box-shadow: inset 0px 0px 40px black;
