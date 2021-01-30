@@ -44,6 +44,7 @@ const PlantCard = styled.button`
   outline: ${({ outline }) => outline};
   padding: 3px 3px 5px 3px;
   width: 70%;
+  transition: transform 0.1s ease;
   @media (${LARGE_RESPONSIVE_BREAK}) {
     max-width: 55px;
   }
@@ -69,6 +70,7 @@ const PlantCard = styled.button`
   }
   &:hover {
     box-shadow: 4px 4px 4px #b9935a, inset 0px 0px 5px black;
+    transform: scale(1.05);
   }
   &:active {
     box-shadow: inset 0px 0px 20px black;
