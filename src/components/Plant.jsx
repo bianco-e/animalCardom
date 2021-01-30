@@ -1,7 +1,10 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import Context, { SELECT_PLANT } from "../context/HandsContext";
-import { MEDIUM_RESPONSIVE_BREAK } from "../lib/constants";
+import {
+  LARGE_RESPONSIVE_BREAK,
+  MEDIUM_RESPONSIVE_BREAK,
+} from "../lib/constants";
 import { Text } from "./styled-components";
 
 export default function Plant({ plant }) {
@@ -37,19 +40,24 @@ const PlantCard = styled.button`
   flex-direction: column;
   height: 25%;
   margin-bottom: 8%;
-  min-height: 50px;
   opacity: ${({ opacity }) => opacity};
   outline: ${({ outline }) => outline};
   padding: 3px 3px 5px 3px;
   width: 70%;
+  @media (${LARGE_RESPONSIVE_BREAK}) {
+    max-width: 55px;
+  }
   > img {
     border-radius: 5px;
-    height: 75%;
+    height: 80%;
     width: 85%;
   }
   > span {
     font-size: 11px;
     font-weight: bold;
+    @media (${LARGE_RESPONSIVE_BREAK}) {
+      font-size: 10px;
+    }
     @media (${MEDIUM_RESPONSIVE_BREAK}) {
       font-size: 8px;
     }

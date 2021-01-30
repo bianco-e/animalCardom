@@ -127,6 +127,7 @@ const AnimalCard = styled.button`
     padding: 9px;
   }
   @media (${SMALL_RESPONSIVE_BREAK}) {
+    max-width: 125px;
     padding: 6px;
   }
 `;
@@ -215,6 +216,9 @@ const Text = styled.span`
   }
   &.animal-name {
     font-size: 22px;
+    @media (${LARGE_RESPONSIVE_BREAK}) {
+      font-size: 18px;
+    }
     @media (${MEDIUM_RESPONSIVE_BREAK}) {
       font-size: 15px;
     }

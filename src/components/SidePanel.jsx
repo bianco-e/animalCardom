@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Plant from "./Plant";
 import {
+  LARGE_RESPONSIVE_BREAK,
   MEDIUM_RESPONSIVE_BREAK,
   SMALL_RESPONSIVE_BREAK,
 } from "../lib/constants";
@@ -14,7 +15,7 @@ export default function SidePanel({ plants, terrain, username }) {
         <Text fSize="18px" fWeight="bold" padding="5px">
           PC
         </Text>
-        <PlayerName left="20%">PC</PlayerName>
+        <PlayerNameTab left="20%">PC</PlayerNameTab>
         {plants.pc.map((plant) => {
           return <Plant plant={plant}></Plant>;
         })}
@@ -29,7 +30,7 @@ export default function SidePanel({ plants, terrain, username }) {
         <Text fSize="18px" fWeight="bold" padding="5px">
           {username}
         </Text>
-        <PlayerName left="80%">{username}</PlayerName>
+        <PlayerNameTab left="80%">{username}</PlayerNameTab>
         {plants.user.map((plant) => {
           return <Plant plant={plant}></Plant>;
         })}
@@ -38,11 +39,11 @@ export default function SidePanel({ plants, terrain, username }) {
   );
 }
 
-const PlayerName = styled.div`
+const PlayerNameTab = styled.div`
   background: rgba(240, 240, 240, 0.6);
   box-shadow: 0 35px 40px rgba(0, 0, 0, 0.2);
   border-radius: 0 0 10px 10px;
-  bottom: -50px;
+  bottom: -49px;
   display: none;
   font-weight: bold;
   left: 50%;
@@ -86,6 +87,11 @@ const HalfPanel = styled.div`
   display: flex;
   flex-direction: column;
   height: 33%;
+  @media (${LARGE_RESPONSIVE_BREAK}) {
+    > span {
+      font-size: 13px;
+    }
+  }
   @media (${MEDIUM_RESPONSIVE_BREAK}) {
     flex-direction: row;
     justify-content: space-between;

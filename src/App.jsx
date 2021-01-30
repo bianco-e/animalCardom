@@ -68,7 +68,7 @@ export default function App() {
   return (
     <Wrapper bgColor={terrain.color}>
       <SidePanel plants={plants} terrain={terrain} username={username} />
-      <Board>
+      <Board bgColor={terrain.color}>
         {userWins && (
           <SimpleModal setShowModal={setUserWins} sign="win" width="60%" />
         )}
@@ -93,22 +93,25 @@ const Wrapper = styled.div`
   }
 `;
 const Board = styled.div`
+  background-color: ${({ bgColor }) => bgColor};
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 0px 10px;
   position: relative;
   width: 100%;
+  @media (${MEDIUM_RESPONSIVE_BREAK}) {
+    padding: 21px 0 0 0;
+  }
   @media (${SMALL_RESPONSIVE_BREAK}) {
     min-height: 285px;
-    padding: 22px 0 0 0;
   }
 `;
 const Text = styled.h4`
   align-items: center;
   color: ${({ color }) => color};
   display: flex;
-  height: 60px;
+  height: 45px;
   justify-content: center;
   margin: 0;
   text-align: center;
@@ -117,6 +120,5 @@ const Text = styled.h4`
   }
   @media (${SMALL_RESPONSIVE_BREAK}) {
     font-size: 12px;
-    height: 45px;
   }
 `;
