@@ -43,7 +43,7 @@ const PlayerNameTab = styled.div`
   background: rgba(240, 240, 240, 0.6);
   box-shadow: 0 35px 40px rgba(0, 0, 0, 0.2);
   border-radius: 0 0 10px 10px;
-  bottom: -49px;
+  bottom: -48px;
   display: none;
   font-weight: bold;
   left: 50%;
@@ -54,7 +54,7 @@ const PlayerNameTab = styled.div`
     display: flex;
   }
   @media (${SMALL_RESPONSIVE_BREAK}) {
-    bottom: -45px;
+    bottom: -42px;
     font-size: 14px;
   }
 `;

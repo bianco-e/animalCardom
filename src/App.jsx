@@ -85,7 +85,13 @@ export default function App() {
 const Wrapper = styled.div`
   display: flex;
   flex-start: left;
-  background-color: ${({ bgColor }) => bgColor};
+  background: repeating-linear-gradient(
+    -45deg,
+    ${({ bgColor }) => bgColor} 3px,
+    #444 25px,
+    #444 25px,
+    ${({ bgColor }) => bgColor} 12px
+  );
   height: 100vh;
   width: 100%;
   @media (${MEDIUM_RESPONSIVE_BREAK}) {
@@ -93,7 +99,13 @@ const Wrapper = styled.div`
   }
 `;
 const Board = styled.div`
-  background-color: ${({ bgColor }) => bgColor};
+  background: repeating-linear-gradient(
+    -45deg,
+    ${({ bgColor }) => bgColor} 3px,
+    #444 25px,
+    #444 25px,
+    ${({ bgColor }) => bgColor} 12px
+  );
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -109,12 +121,13 @@ const Board = styled.div`
 `;
 const Text = styled.h4`
   align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 5px;
   color: ${({ color }) => color};
   display: flex;
   height: 45px;
   justify-content: center;
   margin: 0;
-  text-align: center;
   @media (${MEDIUM_RESPONSIVE_BREAK}) {
     font-size: 14px;
   }
