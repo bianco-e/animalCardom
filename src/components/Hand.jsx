@@ -1,5 +1,9 @@
 import React from "react";
 import styled from "styled-components";
+import {
+  MEDIUM_RESPONSIVE_BREAK,
+  SMALL_RESPONSIVE_BREAK,
+} from "../lib/constants";
 import Card from "./Card";
 
 export default function Hand({
@@ -54,4 +58,7 @@ const CardsGroup = styled.div`
   height: 37%;
   justify-content: space-between;
   width: 100%;
+  @media (${SMALL_RESPONSIVE_BREAK}) {
+    height: 45%;
+  }
 `;

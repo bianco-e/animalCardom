@@ -44,7 +44,7 @@ export default function Card({
       <Image className="animal-picture" src={image} />
 
       <DescriptionContainer>
-        <FlexSection mBottom="2px">
+        <FlexSection mBottom="1px">
           <Image className="small-icon" src={utilitiesIcons.fury} />
           <Text
             className="skill"
@@ -123,6 +123,7 @@ const AnimalCard = styled.button`
     box-shadow: inset 0px 0px 40px black;
   }
   @media (${MEDIUM_RESPONSIVE_BREAK}) {
+    max-width: 170px;
     padding: 9px;
   }
   @media (${SMALL_RESPONSIVE_BREAK}) {
@@ -241,9 +242,10 @@ const DescriptionContainer = styled.div`
   box-shadow: inset 0px 0px 10px #e3cdac;
   display: flex;
   flex-direction: column;
-  height: 27%;
+  height: 28%;
   justify-content: flex-start;
   margin-top: 4px;
+  overflow: auto;
   padding: 5px;
   width: 85%;
 `;

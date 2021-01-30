@@ -1,10 +1,7 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import Context, { SELECT_PLANT } from "../context/HandsContext";
-import {
-  LARGE_RESPONSIVE_BREAK,
-  MEDIUM_RESPONSIVE_BREAK,
-} from "../lib/constants";
+import { MEDIUM_RESPONSIVE_BREAK } from "../lib/constants";
 import { Text } from "./styled-components";
 
 export default function Plant({ plant }) {
@@ -23,9 +20,7 @@ export default function Plant({ plant }) {
       }}
       opacity={usedPlants.includes(plant) && "0.6"}
     >
-      <Text fSize="11px" fWeight="bold">
-        {name}
-      </Text>
+      <span>{name}</span>
       <img alt={name} title={description} src={image} />
     </PlantCard>
   );
@@ -42,6 +37,7 @@ const PlantCard = styled.button`
   flex-direction: column;
   height: 25%;
   margin-bottom: 8%;
+  min-height: 50px;
   opacity: ${({ opacity }) => opacity};
   outline: ${({ outline }) => outline};
   padding: 3px 3px 5px 3px;
@@ -50,6 +46,18 @@ const PlantCard = styled.button`
     border-radius: 5px;
     height: 75%;
     width: 85%;
+  }
+  > span {
+    font-size: 11px;
+    font-weight: bold;
+    @media (${MEDIUM_RESPONSIVE_BREAK}) {
+      font-size: 8px;
+    }
+  }
+  @media (${MEDIUM_RESPONSIVE_BREAK}) {
+    height: 45px;
+    margin-bottom: 0;
+    width: 45px;
   }
   &:hover {
     box-shadow: 4px 4px 4px #b9935a, inset 0px 0px 5px black;

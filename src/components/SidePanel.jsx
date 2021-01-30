@@ -1,32 +1,35 @@
 import React from "react";
 import styled from "styled-components";
 import Plant from "./Plant";
-import { LARGE_RESPONSIVE_BREAK } from "../lib/constants";
+import {
+  MEDIUM_RESPONSIVE_BREAK,
+  SMALL_RESPONSIVE_BREAK,
+} from "../lib/constants";
 import { Text } from "./styled-components";
 
 export default function SidePanel({ plants, terrain, username }) {
   return (
-    <LeftPanel>
+    <LeftPanel bgImage={terrain.image}>
       <HalfPanel>
         <Text fSize="18px" fWeight="bold" padding="5px">
           PC
         </Text>
+        <PlayerName left="20%">PC</PlayerName>
         {plants.pc.map((plant) => {
           return <Plant plant={plant}></Plant>;
         })}
       </HalfPanel>
-      <TerrainContainer
-        bgImage={terrain.image}
+      <TerrainName
         color={terrain.color}
         title={`All animals belonging to ${terrain.familyToBuff} feel like home in ${terrain.type}. Their attack is increased by 1`}
       >
-        <h3>{terrain.type}</h3>
-        <span>{terrain.familyToBuff}</span>
-      </TerrainContainer>
+        {terrain.type}
+      </TerrainName>
       <HalfPanel>
         <Text fSize="18px" fWeight="bold" padding="5px">
           {username}
         </Text>
+        <PlayerName left="80%">{username}</PlayerName>
         {plants.user.map((plant) => {
           return <Plant plant={plant}></Plant>;
         })}
@@ -35,35 +38,82 @@ export default function SidePanel({ plants, terrain, username }) {
   );
 }
 
-const LeftPanel = styled.div`
-  align-items: justify-between;
+const PlayerName = styled.div`
   background: rgba(240, 240, 240, 0.6);
+  box-shadow: 0 35px 40px rgba(0, 0, 0, 0.2);
+  border-radius: 0 0 10px 10px;
+  bottom: -50px;
+  display: none;
+  font-weight: bold;
+  left: 50%;
+  padding: 1px 12px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  @media (${MEDIUM_RESPONSIVE_BREAK}) {
+    display: flex;
+  }
+  @media (${SMALL_RESPONSIVE_BREAK}) {
+    bottom: -45px;
+    font-size: 14px;
+  }
+`;
+const LeftPanel = styled.div`
+  background: url(${({ bgImage }) => bgImage});
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   border-radius: 0 10px 10px 0;
   box-shadow: 35px 0 40px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   width: 110px;
+  @media (${MEDIUM_RESPONSIVE_BREAK}) {
+    align-items: center;
+    background: url(${({ bgImage }) => bgImage});
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 35px 40px rgba(0, 0, 0, 0.2);
+    flex-direction: row;
+    height: 50px;
+    justify-content: space-around;
+    width: 100%;
+  }
 `;
 const HalfPanel = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
   height: 33%;
+  @media (${MEDIUM_RESPONSIVE_BREAK}) {
+    flex-direction: row;
+    justify-content: space-between;
+    position: relative;
+    width: 30%;
+    z-index: 2;
+    > span {
+      display: none;
+    }
+  }
+  @media (${SMALL_RESPONSIVE_BREAK}) {
+    width: 40%;
+  }
 `;
-const TerrainContainer = styled.div`
+const TerrainName = styled.h3`
   align-items: center;
-  background: url(${({ bgImage }) => bgImage});
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  box-shadow: inset 0 0 20px rgba(240, 240, 240, 0.9);
   color: ${({ color }) => color};
   cursor: help;
   display: flex;
   height: 33%;
-  flex-direction: column;
-  justify-content: flex-start;
-  > span {
-    font-size: 30px;
+  justify-content: center;
+  text-shadow: rgba(10, 10, 10, 0.6) 0px 1px 5px;
+  @media (${MEDIUM_RESPONSIVE_BREAK}) {
+    width: 90px;
+    min-height: auto;
+    height: 100%;
+  }
+  @media (${SMALL_RESPONSIVE_BREAK}) {
+    font-size: 14px;
   }
 `;
