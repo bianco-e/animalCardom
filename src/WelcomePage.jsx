@@ -91,7 +91,7 @@ const Input = styled.input`
   border: 2px solid #b9935a;
   border-radius: 5px;
   box-shadow: inset 0px 0px 3px black;
-  padding: 3px;
+  padding: 6px 10px;
   text-align: center;
   &:focus {
     background-color: #d4a257;
@@ -106,5 +106,5 @@ const Button = styled.button`
   color: black;
   cursor: pointer;
   font-size: (props) => props.fontSize;
-  padding: 4px;
+  padding: 6px 10px;
 `;

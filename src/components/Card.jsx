@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import { utilitiesIcons } from "../data/data.jsx";
 import Context, { SELECT_CARD } from "../context/HandsContext";
 import {
@@ -7,6 +7,14 @@ import {
   MEDIUM_RESPONSIVE_BREAK,
   SMALL_RESPONSIVE_BREAK,
 } from "../lib/constants";
+import { generateAnimationString } from "../lib/utils.js";
+
+const cardSelection = keyframes`
+  ${generateAnimationString(5)}
+`;
+const animation = css`
+  ${cardSelection} 1.5s linear infinite;
+`;
 
 export default function Card({
   attack,
@@ -22,15 +30,15 @@ export default function Card({
   bleeding,
 }) {
   const [state, dispatch] = useContext(Context);
+  const isCardSelected = state.attacker?.species === species;
   return (
     <AnimalCard
+      animation={isCardSelected && animation}
+      isCardSelected={isCardSelected}
       onClick={() => {
         !state.pcTurn && dispatch({ type: SELECT_CARD, species });
       }}
       opacity={`${life.current === "DEAD" && "0.5"}`}
-      outline={`${
-        state.attacker?.species === species && "7px inset rgba(255, 129, 3, .8)"
-      }`}
       translate={belongsToUser ? "-10px" : "10px"}
     >
       <CornerIcon>{family}</CornerIcon>
@@ -104,6 +112,7 @@ export default function Card({
 
 const AnimalCard = styled.button`
   align-items: center;
+  animation: ${({ animation }) => animation};
   background: #d4a257;
   border: 2px solid #b9935a;
   box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.6);
@@ -114,11 +123,15 @@ const AnimalCard = styled.button`
   height: 100%;
   justify-content: space-around;
   opacity: ${({ opacity }) => opacity};
-  outline: ${({ outline }) => outline};
   padding: 12px;
   position: relative;
   transition: transform 0.1s ease;
   width: 17%;
+  ${({ isCardSelected }) =>
+    isCardSelected &&
+    `
+    outline: 7px inset rgba(255, 129, 3, .8);
+  `}
   &:hover {
     box-shadow: 4px 4px 4px #b9935a, inset 0px 0px 15px black;
     transform: ${({ translate }) => `translateY(${translate});`};
