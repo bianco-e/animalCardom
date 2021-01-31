@@ -5,7 +5,6 @@ import {
   LARGE_RESPONSIVE_BREAK,
   MEDIUM_RESPONSIVE_BREAK,
 } from "../lib/constants";
-import { Text } from "./styled-components";
 
 export default function Plant({ plant }) {
   const [state, dispatch] = useContext(Context);

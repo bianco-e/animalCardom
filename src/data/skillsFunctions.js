@@ -206,10 +206,10 @@ const eagleFn = (state, hand) => {
   const { hands, defender, attacker } = state;
   const damage = 2;
   if (attacker.family !== "🦂") {
-    var newHand = makeExtraDamage(hands[hand], defender, damage);
+    const newHand = makeExtraDamage(hands[hand], defender, damage);
     return setHandInState(state, hand, newHand);
   } else {
-    var newHand = killInstantly(hands[hand], defender);
+    const newHand = killInstantly(hands[hand], defender);
     return setHandInState(state, hand, newHand);
   }
 };

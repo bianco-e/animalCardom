@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Hand from "./components/Hand";
 import SimpleModal from "./components/SimpleModal";
 import {
-  LARGE_RESPONSIVE_BREAK,
   MEDIUM_RESPONSIVE_BREAK,
   SMALL_RESPONSIVE_BREAK,
 } from "./lib/constants";
@@ -40,7 +39,7 @@ export default function App() {
   useEffect(() => {
     getAnimalsInfo();
     setTerrain(getTerrain());
-  }, []);
+  }, []); //eslint-disable-line
 
   useEffect(() => {
     if (getLiveCards(hands.pc).length === 0) {
@@ -51,7 +50,7 @@ export default function App() {
       setPcWins(true);
       dispatch({ type: RESTART_GAME });
     }
-  }, [hands.pc, hands.user]);
+  }, [hands.pc, hands.user]); //eslint-disable-line
 
   useEffect(() => {
     if (pcTurn) {
@@ -63,7 +62,7 @@ export default function App() {
         dispatch({ type: COMPUTER_THINK });
       }
     }
-  }, [pcTurn, triggerPcAttack]);
+  }, [pcTurn, triggerPcAttack]); //eslint-disable-line
 
   return (
     <Wrapper bgColor={terrain.color}>
