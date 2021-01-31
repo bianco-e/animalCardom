@@ -120,13 +120,14 @@ const Board = styled.div`
 `;
 const Text = styled.h4`
   align-items: center;
-  background: rgba(255, 255, 255, 0.05);
   border-radius: 5px;
   color: ${({ color }) => color};
   display: flex;
+  font-sie: 16px;
   height: 45px;
   justify-content: center;
   margin: 0;
+  text-shadow: rgba(255, 255, 255, 0.6) 0px 1px 5px;
   @media (${MEDIUM_RESPONSIVE_BREAK}) {
     font-size: 14px;
   }

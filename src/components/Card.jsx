@@ -127,15 +127,17 @@ const AnimalCard = styled.button`
   position: relative;
   transition: transform 0.1s ease;
   width: 17%;
-  ${({ isCardSelected }) =>
-    isCardSelected &&
-    `
+  ${({ isCardSelected, translate }) =>
+    isCardSelected
+      ? `
     outline: 7px inset rgba(255, 129, 3, .8);
+  `
+      : `
+    &:hover {
+      box-shadow: 4px 4px 4px #b9935a, inset 0px 0px 15px black;
+      transform: translateY(${translate});
+    }
   `}
-  &:hover {
-    box-shadow: 4px 4px 4px #b9935a, inset 0px 0px 15px black;
-    transform: ${({ translate }) => `translateY(${translate});`};
-  }
   &:active {
     box-shadow: inset 0px 0px 40px black;
   }

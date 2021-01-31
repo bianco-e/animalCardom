@@ -176,6 +176,11 @@ const selectCard = (state, species) => {
         ...state,
         attacker: undefined,
       };
+    } else if (userLiveCards.includes(animal)) {
+      return {
+        ...state,
+        attacker: animal,
+      };
     } else return state;
   } else if (userLiveCards.includes(animal)) {
     return {
