@@ -64,7 +64,7 @@ const LeftPanel = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   border-radius: 0 10px 10px 0;
-  box-shadow: 35px 0 40px rgba(0, 0, 0, 0.2);
+  box-shadow: 35px 0 40px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
   width: 110px;

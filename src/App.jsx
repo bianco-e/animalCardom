@@ -65,9 +65,9 @@ export default function App() {
   }, [pcTurn, triggerPcAttack]); //eslint-disable-line
 
   return (
-    <Wrapper bgColor={terrain.color}>
+    <Wrapper bgImg={terrain.image}>
       <SidePanel plants={plants} terrain={terrain} username={username} />
-      <Board bgColor={terrain.color}>
+      <Board>
         {userWins && (
           <SimpleModal setShowModal={setUserWins} sign="win" width="60%" />
         )}
@@ -82,15 +82,11 @@ export default function App() {
   );
 }
 const Wrapper = styled.div`
+  background: url(${({ bgImg }) => bgImg});
+  background-repeat: no-repeat;
+  background-size: cover;
   display: flex;
   flex-start: left;
-  background: repeating-linear-gradient(
-    -45deg,
-    ${({ bgColor }) => bgColor} 3px,
-    #444 25px,
-    #444 25px,
-    ${({ bgColor }) => bgColor} 12px
-  );
   height: 100vh;
   width: 100%;
   @media (${MEDIUM_RESPONSIVE_BREAK}) {
@@ -98,13 +94,6 @@ const Wrapper = styled.div`
   }
 `;
 const Board = styled.div`
-  background: repeating-linear-gradient(
-    -45deg,
-    ${({ bgColor }) => bgColor} 3px,
-    #444 25px,
-    #444 25px,
-    ${({ bgColor }) => bgColor} 12px
-  );
   display: flex;
   flex-direction: column;
   justify-content: space-between;
