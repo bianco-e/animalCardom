@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import styled, { css, keyframes } from "styled-components";
 import { utilitiesIcons } from "../data/data.jsx";
 import Context, { SELECT_CARD } from "../context/HandsContext";
@@ -12,9 +12,24 @@ import { generateAnimationString } from "../lib/utils.js";
 const cardSelection = keyframes`
   ${generateAnimationString(5)}
 `;
-const animation = css`
+const cardAttack = keyframes`
+  20%, 90% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+  }
+`;
+const selectAnimation = css`
   ${cardSelection} 1.5s linear infinite;
 `;
+const attackAnimation = css`
+  ${cardAttack} 0.25s linear;
+`;
+const attackAudio = new Audio("/audio/claw-sound-effect.mp3");
 
 export default function Card({
   attack,
@@ -31,16 +46,26 @@ export default function Card({
 }) {
   const [state, dispatch] = useContext(Context);
   const isCardSelected = state.attacker?.species === species;
+  const isCardUnderAttack = state.underAttack === species;
+  useEffect(() => {
+    isCardUnderAttack && attackAudio.play();
+  }, [isCardUnderAttack]);
   return (
     <AnimalCard
-      animation={isCardSelected && animation}
+      animation={isCardSelected && selectAnimation}
       isCardSelected={isCardSelected}
+      isParalyzed={paralyzed > 0}
       onClick={() => {
         !state.pcTurn && dispatch({ type: SELECT_CARD, species });
       }}
       opacity={`${life.current === "DEAD" && "0.5"}`}
       translate={belongsToUser ? "-10px" : "10px"}
     >
+      <Injury animation={isCardUnderAttack && attackAnimation}>
+        <img className="small-wound" src="/images/svg/blood-splatter.svg" />
+        <img className="big-wound" src="/images/svg/blood-splatter.svg" />
+        <img className="small-wound" src="/images/svg/blood-splatter.svg" />
+      </Injury>
       <CornerIcon>{family}</CornerIcon>
       {!targeteable && <CornerIcon className="animal-status">🚫</CornerIcon>}
       {bleeding && (
@@ -110,6 +135,29 @@ export default function Card({
   );
 }
 
+const Injury = styled.div`
+  animation: ${({ animation }) => animation};
+  display: flex;
+  justify-content: flex-start;
+  position: absolute;
+  left: 50%;
+  opacity: 0;
+  top: 6%;
+  transform: translateX(-50%);
+  transition: all 0.4s ease;
+  -webkit-transform: translateX(-50%);
+  > img {
+    &.big-wound {
+      transform: rotate(60deg);
+      width: 59%;
+    }
+    &.small-wound {
+      transform: rotate(240deg);
+      width: 27%;
+    }
+  }
+`;
+
 const AnimalCard = styled.button`
   align-items: center;
   animation: ${({ animation }) => animation};
@@ -127,6 +175,11 @@ const AnimalCard = styled.button`
   position: relative;
   transition: transform 0.1s ease;
   width: 17%;
+  ${({ isParalyzed }) =>
+    isParalyzed &&
+    `
+    filter: blur(0.4px);
+  `}
   ${({ isCardSelected, translate }) =>
     isCardSelected
       ? `

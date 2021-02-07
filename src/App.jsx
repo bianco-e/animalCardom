@@ -57,7 +57,7 @@ export default function App() {
       if (triggerPcAttack) {
         setTimeout(() => {
           dispatch({ type: COMPUTER_PLAY });
-        }, 1300);
+        }, 1800);
       } else {
         dispatch({ type: COMPUTER_THINK });
       }

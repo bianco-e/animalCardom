@@ -17,6 +17,7 @@ const newGame = () => {
     usedPlants: [],
     attacker: undefined,
     defender: undefined,
+    underAttack: undefined,
     pcTurn: false,
     triggerPcAttack: false,
     pcPlay: "",
@@ -42,6 +43,7 @@ const attackAndApplySkill = (state, hand) => {
   const statsDiff = defender.life.current - attacker.attack.current;
   const newState = {
     ...state,
+    underAttack: defender.species,
     hands: {
       ...hands,
       [hand]: restRoundAndBleedingDmg(
