@@ -62,9 +62,21 @@ export default function Card({
       translate={belongsToUser ? "-10px" : "10px"}
     >
       <Injury animation={isCardUnderAttack && attackAnimation}>
-        <img className="small-wound" src="/images/svg/blood-splatter.svg" />
-        <img className="big-wound" src="/images/svg/blood-splatter.svg" />
-        <img className="small-wound" src="/images/svg/blood-splatter.svg" />
+        <img
+          alt="wound"
+          className="small-wound"
+          src="/images/svg/blood-splatter.svg"
+        />
+        <img
+          alt="wound"
+          className="big-wound"
+          src="/images/svg/blood-splatter.svg"
+        />
+        <img
+          alt="wound"
+          className="small-wound"
+          src="/images/svg/blood-splatter.svg"
+        />
       </Injury>
       <CornerIcon>{family}</CornerIcon>
       {!targeteable && <CornerIcon className="animal-status">🚫</CornerIcon>}
