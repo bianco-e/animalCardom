@@ -40,9 +40,7 @@ export default function SimpleModal({ setShowModal, sign, width }) {
       top={(sign === "win" || sign === "lose") && "35%"}
       left={(sign === "win" || sign === "lose") && "18%"}
     >
-      <Text fFamily="Fondamento, cursive" weight="bold">
-        {modalsText[sign].title}
-      </Text>
+      <Text weight="bold">{modalsText[sign].title}</Text>
       {modalsText[sign].paragraphs.map((p) => (
         <Text>{p}</Text>
       ))}

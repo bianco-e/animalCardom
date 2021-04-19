@@ -70,7 +70,6 @@ const Wrapper = styled.div`
   justify-content: center;
 `;
 const Text = styled.h4`
-  font-family: ${({ isTitle }) => isTitle && "Fondamento; cursive;"}
   font-size: 30px;
   margin-bottom: 30px;
   text-align: center;
