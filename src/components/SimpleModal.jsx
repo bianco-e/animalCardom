@@ -75,8 +75,8 @@ const Wrapper = styled.div`
   z-index: 2;
 `;
 const Text = styled.p`
-  font-family: ${({ fFamily }) => fFamily};
   font-size: 16px;
+  font-weight: ${({ weight }) => weight};
   text-align: center;
 `;
 const Button = styled.button`
