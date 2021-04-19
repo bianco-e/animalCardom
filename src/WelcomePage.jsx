@@ -7,8 +7,7 @@ import { SMALL_RESPONSIVE_BREAK } from "./lib/constants";
 export default function WelcomePage() {
   const history = useHistory();
   const [inputValue, setInputValue] = useState("");
-  const [rules, setRules] = useState(false);
-  const [mobile, setMobile] = useState(false);
+  const [modalSign, setModalSign] = useState("");
 
   const isMobile = () => {
     if (
@@ -16,7 +15,7 @@ export default function WelcomePage() {
         navigator.userAgent
       )
     ) {
-      setMobile(true);
+      setModalSign("device");
     }
   };
 
@@ -24,14 +23,18 @@ export default function WelcomePage() {
     isMobile();
   }, []);
 
+  const goToPlay = () => {
+    if (inputValue !== "") {
+      history.push(`/play/${inputValue}`);
+      setInputValue("");
+    } else {
+      setModalSign("nameError");
+    }
+  };
+
   const onKeyDownFn = (e) => {
     if (e.key === "Enter") {
-      if (inputValue !== "") {
-        history.push(`/play/${inputValue}`);
-        setInputValue("");
-      } else {
-        history.push(`/play/GUEST`);
-      }
+      goToPlay();
     }
   };
 
@@ -39,12 +42,11 @@ export default function WelcomePage() {
     <BrowserRouter>
       <Wrapper>
         <Text isTitle={true}>Welcome to Animal Cardom!</Text>
-        {mobile && (
-          <SimpleModal setShowModal={setMobile} sign="device" width="60%" />
+        <img src="/images/animal-cardom-logo.png" />
+        {modalSign && (
+          <SimpleModal setShowModal={setModalSign} sign={modalSign} />
         )}
-        <Button onClick={() => setRules(true)}>How to play</Button>
-        {rules && <SimpleModal setShowModal={setRules} sign="rules" />}
-        <WelcomeDiv>
+        <Container>
           <Input
             type="text"
             placeholder="Enter your name"
@@ -54,7 +56,12 @@ export default function WelcomePage() {
             }
             onKeyDown={onKeyDownFn}
           />
-        </WelcomeDiv>
+          <Button fWeight="bold" onClick={goToPlay}>
+            Play!
+          </Button>
+          <Button onClick={() => setModalSign("rules")}>Rules</Button>
+          <Button onClick={() => setModalSign("terrains")}>See Terrains</Button>
+        </Container>
       </Wrapper>
     </BrowserRouter>
   );
@@ -67,34 +74,44 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
-  justify-content: center;
+  justify-content: space-around;
 `;
 const Text = styled.h4`
   font-size: 30px;
-  margin-bottom: 30px;
   text-align: center;
+  padding-top: 40px;
   @media (${SMALL_RESPONSIVE_BREAK}) {
     font-size: 24px;
   }
 `;
-const WelcomeDiv = styled.div`
+const Container = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
+  height: 50vh;
   justify-content: space-around;
   margin: auto;
-  width: 30%;
+  width: 40%;
+  @media (${SMALL_RESPONSIVE_BREAK}) {
+    width: 85%;
+  }
 `;
 const Input = styled.input`
-  background-color: #b9935a;
+  background: #d4a257;
   border: 2px solid #b9935a;
   border-radius: 5px;
   box-shadow: inset 0px 0px 3px black;
+  font-size: 20px;
+  height: 30px;
+  margin-bottom: 40px;
   padding: 6px 10px;
   text-align: center;
+  width: 96%;
   &:focus {
-    background-color: #d4a257;
-    border: 2px solid #b9935a;
+    background: #b9935a;
+  }
+  &::placeholder {
+    color: #000;
   }
 `;
 const Button = styled.button`
@@ -104,6 +121,9 @@ const Button = styled.button`
   box-shadow: inset 0px 0px 3px black;
   color: black;
   cursor: pointer;
-  font-size: (props) => props.fontSize;
+  height: 60px;
+  font-size: 20px;
+  font-weight: ${({ fWeight }) => fWeight};
   padding: 6px 10px;
+  width: 100%;
 `;

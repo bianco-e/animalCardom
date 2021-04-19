@@ -3,14 +3,31 @@ import styled from "styled-components";
 import { SMALL_RESPONSIVE_BREAK } from "../lib/constants";
 
 const modalsText = {
+  nameError: {
+    title: "Nameless people are not allowed in Animal Cardom!",
+    paragraphs: ["Please enter a name and try to play again"],
+  },
   rules: {
-    className: "rules-container",
+    className: "responsive-container",
     title: "Animal Cardom rules",
     paragraphs: [
       "You have five different animals cards, and three different plants to apply on them if wanted. A terrain will be randomly set at the very start.",
       "Each card has an ability, an attack and life points, and also belongs to a family which can give you benefits or not depending on the terrain or other cards' abilities.",
       "The objective is to kill all opponent's cards.",
       "Have fun!",
+    ],
+  },
+  terrains: {
+    className: "responsive-container",
+    title: "Available terrains",
+    paragraphs: [
+      "There are 6 different terrains. One is randomly set when game begins and benefits a family increasing the attack by 1",
+      "- Sea buffs 🦈 family",
+      "- Swamp buffs 🐸 family",
+      "- Jungle buffs 🐺 family",
+      "- Desert buffs 🦂 family",
+      "- Mountain buffs 🦅 family",
+      "- Forest buffs 🦎 family",
     ],
   },
   win: {
@@ -25,6 +42,7 @@ const modalsText = {
     ],
   },
   device: {
+    className: "responsive-container",
     title: "Mobile device detected",
     paragraphs: [
       "You could be using Animal Cardom from a mobile device. In that case, we recommend to rotate the screen for a better experience",
@@ -44,21 +62,15 @@ export default function SimpleModal({ setShowModal, sign, width }) {
       {modalsText[sign].paragraphs.map((p) => (
         <Text>{p}</Text>
       ))}
-      <Button
-        onClick={() => {
-          setShowModal(false);
-        }}
-      >
-        Close
-      </Button>
+      <Button onClick={() => setShowModal("")}>Close</Button>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
-  &.rules-container {
+  &.responsive-container {
     @media (${SMALL_RESPONSIVE_BREAK}) {
-      width: 70%;
+      width: 80%;
     }
   }
   background: #d4a257;
