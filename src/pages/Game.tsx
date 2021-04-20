@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import Hand from "../components/Hand";
-import SimpleModal from "../components/SimpleModal";
+import CustomModal from "../components/CustomModal";
 import {
   MEDIUM_RESPONSIVE_BREAK,
   SMALL_RESPONSIVE_BREAK,
@@ -75,10 +75,10 @@ export default function App() {
       <SidePanel plants={plants} terrain={terrain!} />
       <Board>
         {modalSign && (
-          <SimpleModal setShowModal={setModalSign} sign={modalSign} />
+          <CustomModal setShowModal={setModalSign} sign={modalSign} />
         )}
         {modalSign && (
-          <SimpleModal setShowModal={setModalSign} sign={modalSign} />
+          <CustomModal setShowModal={setModalSign} sign={modalSign} />
         )}
         <Hand hand={hands.pc} belongsToUser={false} />
         <Text>{pcPlay}</Text>

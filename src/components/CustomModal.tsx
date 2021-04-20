@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import styled from "styled-components";
 import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
 
@@ -50,8 +51,6 @@ const modalTexts: ModalTexts = {
   win: {
     title: "You win!",
     paragraphs: ["Good game!", "Your animals defeated PC, nature always win!"],
-    left: "18%",
-    top: "35%",
   },
   lose: {
     title: "Computer wins",
@@ -59,8 +58,6 @@ const modalTexts: ModalTexts = {
       "Nice try!",
       "PC defeated you this time, but nature always takes revenge!",
     ],
-    left: "18%",
-    top: "35%",
   },
   device: {
     className: "responsive-container",
@@ -76,30 +73,41 @@ interface IProps {
   sign: keyof typeof modalTexts;
 }
 
+const modalRoot = document.getElementById("modal-root");
+
 export default function SimpleModal({ setShowModal, sign }: IProps) {
   return (
-    <Wrapper
-      className={modalTexts[sign]?.className}
-      top={modalTexts[sign]?.top}
-      left={modalTexts[sign]?.left}
-    >
-      <Text weight="bold">{modalTexts[sign].title}</Text>
-      {modalTexts[sign].paragraphs.map((p) => (
-        <Text>{p}</Text>
-      ))}
-      <Button onClick={() => setShowModal("")}>Close</Button>
-    </Wrapper>
+    modalRoot &&
+    ReactDOM.createPortal(
+      <Wrapper className={modalTexts[sign]?.className}>
+        <Content>
+          <Text weight="bold">{modalTexts[sign].title}</Text>
+          {modalTexts[sign].paragraphs.map((p) => (
+            <Text>{p}</Text>
+          ))}
+          <Button onClick={() => setShowModal("")}>Close</Button>
+        </Content>
+      </Wrapper>,
+      modalRoot
+    )
   );
 }
 
-interface WrapperProps {
-  left?: string;
-  top?: string;
-}
 interface TextProps {
   weight?: string;
 }
 const Wrapper = styled.div`
+  background: rgba(50, 50, 50, 0.7);
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+`;
+const Content = styled.div`
   &.responsive-container {
     @media (${SMALL_RESPONSIVE_BREAK}) {
       width: 80%;
@@ -111,10 +119,7 @@ const Wrapper = styled.div`
   box-shadow: inset 0px 0px 10px black;
   display: flex;
   flex-direction: column;
-  left: ${(p: WrapperProps) => p.left};
   padding: 0 1.3em 0 1.3em;
-  position: absolute;
-  top: ${(p: WrapperProps) => p.top};
   z-index: 2;
 `;
 const Text = styled.p`

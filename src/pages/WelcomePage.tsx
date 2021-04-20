@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import SimpleModal from "../components/SimpleModal";
+import SimpleModal from "../components/CustomModal";
 import NavBar from "../components/NavBar";
 import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
 import UserContext, { IUserContext } from "../context/UserContext";
@@ -62,7 +62,7 @@ export default function WelcomePage() {
           onKeyDown={onKeyDownFn}
         />
         <Button fWeight="bold" onClick={goToPlay}>
-          Campaign
+          {inputValue ? "Play as guest" : "Campaign"}
         </Button>
         <Button disabled fWeight="bold" onClick={() => {}}>
           <ComingSoon>Coming soon!</ComingSoon>
