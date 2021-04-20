@@ -1,13 +1,15 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
-import Context, { SELECT_PLANT } from "../context/HandsContext";
+import HandsContext from "../context/HandsContext";
+import { SELECT_PLANT } from "../context/HandsContext/types";
+import { IPlant } from "../interfaces";
 import {
   LARGE_RESPONSIVE_BREAK,
   MEDIUM_RESPONSIVE_BREAK,
 } from "../utils/constants";
 
-export default function Plant({ plant }) {
-  const [state, dispatch] = useContext(Context);
+export default function Plant({ plant }: { plant: IPlant }) {
+  const [state, dispatch] = useContext(HandsContext);
   const { selectedPlant, pcTurn, usedPlants } = state;
   const { name, description, image } = plant;
   return (
@@ -28,6 +30,11 @@ export default function Plant({ plant }) {
   );
 }
 
+interface PlantCardProps {
+  opacity?: string;
+  outline?: string;
+}
+
 const PlantCard = styled.button`
   align-items: center;
   background-color: #d4a257;
@@ -39,8 +46,8 @@ const PlantCard = styled.button`
   flex-direction: column;
   height: 25%;
   margin-bottom: 8%;
-  opacity: ${({ opacity }) => opacity};
-  outline: ${({ outline }) => outline};
+  opacity: ${(p: PlantCardProps) => p.opacity};
+  outline: ${(p: PlantCardProps) => p.outline};
   padding: 3px 3px 5px 3px;
   width: 70%;
   transition: transform 0.1s ease;

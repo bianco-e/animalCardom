@@ -1,12 +1,18 @@
 import React from "react";
 import styled from "styled-components";
+import { IAnimal } from "../interfaces";
 import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
 import Card from "./Card";
 
-export default function Hand({ arrayToRender, belongsToUser }) {
+interface IProps {
+  hand: IAnimal[];
+  belongsToUser: boolean;
+}
+
+export default function Hand({ hand, belongsToUser }: IProps) {
   return (
     <CardsGroup>
-      {arrayToRender.map((animal) => {
+      {hand.map((animal) => {
         const {
           attack,
           bleeding,
@@ -18,7 +24,6 @@ export default function Hand({ arrayToRender, belongsToUser }) {
           skill,
           species,
           targeteable,
-          toDo,
         } = animal;
         return (
           <Card
@@ -32,7 +37,6 @@ export default function Hand({ arrayToRender, belongsToUser }) {
             paralyzed={paralyzed}
             poisoned={poisoned}
             skill={skill}
-            skillFn={toDo}
             species={species}
             targeteable={targeteable}
           />

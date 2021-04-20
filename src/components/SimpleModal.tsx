@@ -2,7 +2,24 @@ import React from "react";
 import styled from "styled-components";
 import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
 
-const modalsText = {
+interface ModalTexts {
+  nameError: Sign;
+  rules: Sign;
+  terrains: Sign;
+  win: Sign;
+  lose: Sign;
+  device: Sign;
+}
+
+interface Sign {
+  className?: string;
+  title: string;
+  paragraphs: string[];
+  top?: string;
+  left?: string;
+}
+
+const modalTexts: ModalTexts = {
   nameError: {
     title: "Nameless people are not allowed in Animal Cardom!",
     paragraphs: ["Please enter a name and try to play again"],
@@ -33,6 +50,8 @@ const modalsText = {
   win: {
     title: "You win!",
     paragraphs: ["Good game!", "Your animals defeated PC, nature always win!"],
+    left: "18%",
+    top: "35%",
   },
   lose: {
     title: "Computer wins",
@@ -40,6 +59,8 @@ const modalsText = {
       "Nice try!",
       "PC defeated you this time, but nature always takes revenge!",
     ],
+    left: "18%",
+    top: "35%",
   },
   device: {
     className: "responsive-container",
@@ -50,16 +71,20 @@ const modalsText = {
   },
 };
 
-export default function SimpleModal({ setShowModal, sign, width }) {
+interface IProps {
+  setShowModal: (val: string) => void;
+  sign: keyof typeof modalTexts;
+}
+
+export default function SimpleModal({ setShowModal, sign }: IProps) {
   return (
     <Wrapper
-      className={modalsText[sign].className && modalsText[sign].className}
-      width={width}
-      top={(sign === "win" || sign === "lose") && "35%"}
-      left={(sign === "win" || sign === "lose") && "18%"}
+      className={modalTexts[sign]?.className}
+      top={modalTexts[sign]?.top}
+      left={modalTexts[sign]?.left}
     >
-      <Text weight="bold">{modalsText[sign].title}</Text>
-      {modalsText[sign].paragraphs.map((p) => (
+      <Text weight="bold">{modalTexts[sign].title}</Text>
+      {modalTexts[sign].paragraphs.map((p) => (
         <Text>{p}</Text>
       ))}
       <Button onClick={() => setShowModal("")}>Close</Button>
@@ -67,6 +92,13 @@ export default function SimpleModal({ setShowModal, sign, width }) {
   );
 }
 
+interface WrapperProps {
+  left?: string;
+  top?: string;
+}
+interface TextProps {
+  weight?: string;
+}
 const Wrapper = styled.div`
   &.responsive-container {
     @media (${SMALL_RESPONSIVE_BREAK}) {
@@ -79,16 +111,15 @@ const Wrapper = styled.div`
   box-shadow: inset 0px 0px 10px black;
   display: flex;
   flex-direction: column;
-  left: ${({ left }) => left};
+  left: ${(p: WrapperProps) => p.left};
   padding: 0 1.3em 0 1.3em;
   position: absolute;
-  top: ${({ top }) => top};
-  width: ${({ width }) => width || "25%"};
+  top: ${(p: WrapperProps) => p.top};
   z-index: 2;
 `;
 const Text = styled.p`
   font-size: 16px;
-  font-weight: ${({ weight }) => weight};
+  font-weight: ${(p: TextProps) => p.weight};
   text-align: center;
 `;
 const Button = styled.button`

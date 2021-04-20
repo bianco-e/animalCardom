@@ -1,13 +1,15 @@
 import React, { useContext, useEffect } from "react";
 import styled, { css, keyframes } from "styled-components";
-import { utilitiesIcons } from "../data/data.jsx";
-import Context, { SELECT_CARD } from "../context/HandsContext";
+import { utilitiesIcons } from "../data/data";
+import HandsContext from "../context/HandsContext";
+import { SELECT_CARD } from "../context/HandsContext/types";
 import {
   LARGE_RESPONSIVE_BREAK,
   MEDIUM_RESPONSIVE_BREAK,
   SMALL_RESPONSIVE_BREAK,
 } from "../utils/constants";
 import { generateAnimationString } from "../utils";
+import { Poisoned, Skill, Stat } from "../interfaces";
 
 const cardSelection = keyframes`
   ${generateAnimationString(5)}
@@ -31,6 +33,20 @@ const attackAnimation = css`
 `;
 const attackAudio = new Audio("/audio/claw-sound-effect.mp3");
 
+interface IProps {
+  attack: Stat<number>;
+  belongsToUser?: boolean;
+  life: Stat<number | string>;
+  family: string;
+  image: string;
+  skill: Skill;
+  species: string;
+  poisoned: Poisoned;
+  paralyzed: number;
+  targeteable: boolean;
+  bleeding: boolean;
+}
+
 export default function Card({
   attack,
   belongsToUser,
@@ -43,8 +59,8 @@ export default function Card({
   paralyzed,
   targeteable,
   bleeding,
-}) {
-  const [state, dispatch] = useContext(Context);
+}: IProps) {
+  const [state, dispatch] = useContext(HandsContext);
   const isCardSelected = state.attacker?.species === species;
   const isCardUnderAttack = state.underAttack === species;
   useEffect(() => {
@@ -59,7 +75,7 @@ export default function Card({
         !state.pcTurn && dispatch({ type: SELECT_CARD, species });
       }}
       opacity={`${life.current === "DEAD" && "0.5"}`}
-      translate={belongsToUser ? "-10px" : "10px"}
+      transform={belongsToUser ? "translateY(-10px)" : "translateY(10px)"}
     >
       <Injury animation={isCardUnderAttack && attackAnimation}>
         <img
@@ -147,8 +163,27 @@ export default function Card({
   );
 }
 
+interface InjuryProps {
+  animation?: any;
+}
+interface AnimalCardProps {
+  animation?: any;
+  isCardSelected: boolean;
+  isParalyzed: boolean;
+  opacity: string;
+  transform?: string;
+}
+interface TextProps {
+  color?: string;
+  fWeight?: string;
+  margin?: string;
+  textDeco?: string;
+}
+interface FlexSectionProps {
+  mBottom?: string;
+}
 const Injury = styled.div`
-  animation: ${({ animation }) => animation};
+  animation: ${(p: InjuryProps) => p.animation};
   display: flex;
   justify-content: flex-start;
   position: absolute;
@@ -169,10 +204,9 @@ const Injury = styled.div`
     }
   }
 `;
-
 const AnimalCard = styled.button`
   align-items: center;
-  animation: ${({ animation }) => animation};
+  animation: ${(p: AnimalCardProps) => p.animation};
   background: #d4a257;
   border: 2px solid #b9935a;
   box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.6);
@@ -182,25 +216,25 @@ const AnimalCard = styled.button`
   flex-direction: column;
   height: 100%;
   justify-content: space-around;
-  opacity: ${({ opacity }) => opacity};
+  opacity: ${(p: AnimalCardProps) => p.opacity};
   padding: 12px;
   position: relative;
   transition: transform 0.1s ease;
   width: 17%;
-  ${({ isParalyzed }) =>
-    isParalyzed &&
+  ${(p: AnimalCardProps) =>
+    p.isParalyzed &&
     `
     filter: blur(0.4px);
   `}
-  ${({ isCardSelected, translate }) =>
-    isCardSelected
+  ${(p: AnimalCardProps) =>
+    p.isCardSelected
       ? `
     outline: 7px inset rgba(255, 129, 3, .8);
   `
       : `
     &:hover {
       box-shadow: 4px 4px 4px #b9935a, inset 0px 0px 15px black;
-      transform: translateY(${translate});
+      transform: ${p.transform};
     }
   `}
   &:active {
@@ -310,18 +344,18 @@ const Text = styled.span`
       font-size: 13px;
     }
   }
-  color: ${({ color }) => color};
+  color: ${(p: TextProps) => p.color};
   font-size: 14px;
-  font-weight: ${({ fWeight = "bold" }) => fWeight};
-  margin: ${({ margin }) => margin};
+  font-weight: ${(p: TextProps) => p.fWeight || "bold"};
+  margin: ${(p: TextProps) => p.margin};
   text-align: center;
-  text-decoration: ${({ textDeco }) => textDeco};
+  text-decoration: ${(p: TextProps) => p.textDeco};
 `;
 const FlexSection = styled.div`
   align-items: center;
   display: flex;
   justify-content: center;
-  margin-bottom: ${({ mBottom }) => mBottom};
+  margin-bottom: ${(p: FlexSectionProps) => p.mBottom};
 `;
 const DescriptionContainer = styled.div`
   align-items: center;

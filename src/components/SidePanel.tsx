@@ -1,21 +1,30 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import Plant from "./Plant";
+import UserContext from "../context/UserContext";
 import {
   LARGE_RESPONSIVE_BREAK,
   MEDIUM_RESPONSIVE_BREAK,
   SMALL_RESPONSIVE_BREAK,
 } from "../utils/constants";
 import { Text } from "./styled-components";
+import { IPlants, ITerrain } from "../interfaces/index";
 
-export default function SidePanel({ plants, terrain, username }) {
+interface IProps {
+  plants: IPlants;
+  terrain: ITerrain;
+}
+
+export default function SidePanel({ plants, terrain }: IProps) {
+  const [state, dispatch] = useContext(UserContext);
+  const username = localStorage.getItem("username");
   return (
     <LeftPanel bgImage={terrain.image}>
       <HalfPanel>
         <Text fSize="18px" fWeight="bold" padding="5px">
           PC
         </Text>
-        <PlayerNameTab left="20%">PC</PlayerNameTab>
+        <PlayerNameTab>PC</PlayerNameTab>
         {plants.pc.map((plant) => {
           return <Plant plant={plant}></Plant>;
         })}
@@ -30,7 +39,7 @@ export default function SidePanel({ plants, terrain, username }) {
         <Text fSize="18px" fWeight="bold" padding="5px">
           {username}
         </Text>
-        <PlayerNameTab left="80%">{username}</PlayerNameTab>
+        <PlayerNameTab>{username}</PlayerNameTab>
         {plants.user.map((plant) => {
           return <Plant plant={plant}></Plant>;
         })}
@@ -39,6 +48,9 @@ export default function SidePanel({ plants, terrain, username }) {
   );
 }
 
+interface LeftPanelProps {
+  bgImage?: string;
+}
 const PlayerNameTab = styled.div`
   background: rgba(240, 240, 240, 0.6);
   box-shadow: 0 35px 40px rgba(0, 0, 0, 0.2);
@@ -59,7 +71,7 @@ const PlayerNameTab = styled.div`
   }
 `;
 const LeftPanel = styled.div`
-  background: url(${({ bgImage }) => bgImage});
+  background: url(${(p: LeftPanelProps) => p.bgImage});
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;

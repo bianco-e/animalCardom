@@ -1,62 +1,96 @@
 import React, { useReducer } from "react";
-import { getCards, getPlants } from "../data/data.jsx";
-export const SELECT_CARD = "SELECT_CARD";
-export const COMPUTER_PLAY = "COMPUTER_PLAY";
-export const RESTART_GAME = "RESTART_GAME";
-export const COMPUTER_THINK = "COMPUTER_THINK";
-export const SET_TERRAIN = "SET_TERRAIN";
-export const SELECT_PLANT = "SELECT_PLANT";
+import { getCards, getPlants } from "../../data/data";
+import { IAnimal, IHands, IPlant } from "../../interfaces";
+import {
+  COMPUTER_PLAY,
+  COMPUTER_THINK,
+  RESTART_GAME,
+  SELECT_CARD,
+  SELECT_PLANT,
+  SET_TERRAIN,
+} from "./types";
+export interface IHandsAction {
+  familyToBuff: string;
+  species: string;
+  plant: IPlant;
+  type: string;
+}
+export type IHandsContext = (IHandsState | any)[];
+export interface IHandsState {
+  hands: IHands;
+  plants: { pc: IPlant[]; user: IPlant[] };
+  animalToTreat?: IAnimal;
+  selectedPlant?: IPlant;
+  usedPlants: IPlant[];
+  attacker?: IAnimal;
+  defender?: IAnimal;
+  underAttack?: string;
+  pcTurn: boolean;
+  triggerPcAttack: boolean;
+  pcPlay: string;
+}
 
-const Context = React.createContext({});
-
-const newGame = () => {
-  return {
-    hands: getCards(),
-    plants: getPlants(),
-    selectedPlant: undefined,
-    usedPlants: [],
-    attacker: undefined,
-    defender: undefined,
-    underAttack: undefined,
-    pcTurn: false,
-    triggerPcAttack: false,
-    pcPlay: "",
-  };
-};
+const newGame = (): IHandsState => ({
+  hands: getCards(),
+  plants: getPlants(),
+  animalToTreat: undefined,
+  selectedPlant: undefined,
+  usedPlants: [],
+  attacker: undefined,
+  defender: undefined,
+  underAttack: undefined,
+  pcTurn: false,
+  triggerPcAttack: false,
+  pcPlay: "",
+});
 
 const initialState = newGame();
 
-const getRandomIdx = (arr) => {
+const Context = React.createContext<IHandsContext>([initialState]);
+
+const getRandomIdx = (arr: any[]) => {
   return arr[Math.floor(Math.random() * arr.length)];
 };
-const getLiveCards = (arr) => {
+const getLiveCards = (arr: IAnimal[]) => {
   return arr.filter((card) => card.life.current !== "DEAD");
 };
-const getHighestAttackCard = (hand) => {
+const getHighestAttackCard = (hand: IAnimal[]) => {
   return hand.reduce((acc, value) => {
     return value.attack.current > acc.attack.current ? value : acc;
   });
 };
 
-const attackAndApplySkill = (state, hand) => {
+const attackAndApplySkill = (state: IHandsState, hand: "pc" | "user") => {
   const { defender, attacker, hands } = state;
-  const statsDiff = defender.life.current - attacker.attack.current;
-  const newState = {
-    ...state,
-    underAttack: defender.species,
-    hands: {
-      ...hands,
-      [hand]: restRoundAndBleedingDmg(
-        applyPoisonDamage(applyAttackDamage(hands[hand], statsDiff, defender))
-      ),
-    },
-  };
-  return attacker.paralyzed > 0
-    ? newState
-    : attacker.skill.toDo(newState, hand);
+  if (
+    defender &&
+    attacker &&
+    hands &&
+    typeof defender.life.current === "number"
+  ) {
+    const statsDiff = defender.life.current - attacker.attack.current;
+    const newState = {
+      ...state,
+      underAttack: defender.species,
+      hands: {
+        ...hands,
+        [hand]: restRoundAndBleedingDmg(
+          applyPoisonDamage(applyAttackDamage(hands[hand], statsDiff, defender))
+        ),
+      },
+    };
+    return attacker.paralyzed > 0
+      ? newState
+      : attacker.skill.toDo(newState, hand);
+  }
 };
 
-const applyPlantToCard = (plant, card, state, hand) => {
+const applyPlantToCard = (
+  plant: IPlant,
+  card: IAnimal,
+  state: IHandsState,
+  hand: "pc" | "user"
+) => {
   const plantMessage =
     hand === "user" ? ` and used ${plant.name} on ${card.species}` : "";
   if (card.targeteable) {
@@ -72,20 +106,22 @@ const applyPlantToCard = (plant, card, state, hand) => {
   } else return state;
 };
 
-const checkWhatPlantToUse = (state) => {
+const checkWhatPlantToUse = (state: IHandsState) => {
   const { plants, usedPlants, hands } = state;
   const pcLiveCards = getLiveCards(hands.pc);
   const userLiveCards = getLiveCards(hands.user);
 
   const damagedCard = pcLiveCards.find(
-    (card) => card.life.current <= card.life.initial - 2
+    (card: IAnimal) => card.life.current <= card.life.initial - 2
   );
-  const poisonedCard = pcLiveCards.find((card) => card.poisoned.rounds > 0);
-  const paralyzedCard = pcLiveCards.find((card) => card.paralyzed > 0);
+  const poisonedCard = pcLiveCards.find(
+    (card: IAnimal) => card.poisoned.rounds > 0
+  );
+  const paralyzedCard = pcLiveCards.find((card: IAnimal) => card.paralyzed > 0);
 
-  const findAPlant = (plantName) => {
+  const findAPlant = (plantName: string) => {
     return plants.pc.find(
-      (plant) => plant.name === plantName && !usedPlants.includes(plant)
+      (plant: IPlant) => plant.name === plantName && !usedPlants.includes(plant)
     );
   };
   const aloePlant = findAPlant("Aloe");
@@ -113,9 +149,9 @@ const checkWhatPlantToUse = (state) => {
   } else return state;
 };
 
-const computerDamage = (state) => {
+const computerDamage = (state: IHandsState) => {
   const { defender, attacker, pcTurn, hands } = state;
-  const pcAnswer = `${attacker.species} attacked ${defender.species}`;
+  const pcAnswer = `${attacker!.species} attacked ${defender!.species}`;
   const newState = attackAndApplySkill(state, "user");
 
   if (getLiveCards(hands.user).length > 0) {
@@ -130,11 +166,11 @@ const computerDamage = (state) => {
   } else return state;
 };
 
-const computerPlay = (state) => {
+const computerPlay = (state: IHandsState) => {
   const { hands } = state;
   const pcLiveCards = getLiveCards(hands.pc);
   const userLiveCards = getLiveCards(hands.user).filter(
-    (card) => card.targeteable
+    (card: IAnimal) => card.targeteable
   );
   return computerDamage({
     ...state,
@@ -143,7 +179,7 @@ const computerPlay = (state) => {
   });
 };
 
-const damageEnemy = (state) => {
+const damageEnemy = (state: IHandsState) => {
   const newState = attackAndApplySkill(state, "pc");
   return getLiveCards(newState.hands.pc).length === 0
     ? {
@@ -159,7 +195,7 @@ const damageEnemy = (state) => {
       };
 };
 
-const selectCard = (state, species) => {
+const selectCard = (state: IHandsState, species: string) => {
   const { hands, attacker, selectedPlant } = state;
   const pcLiveCards = getLiveCards(hands.pc);
   const userLiveCards = getLiveCards(hands.user);
@@ -168,23 +204,23 @@ const selectCard = (state, species) => {
     .find((card) => card.species === species);
 
   if (selectedPlant && !attacker) {
-    return applyPlantToCard(selectedPlant, animal, state, "pc");
+    return applyPlantToCard(selectedPlant, animal!, state, "pc");
   }
   if (attacker) {
-    if (pcLiveCards.includes(animal) && animal.targeteable) {
+    if (pcLiveCards.includes(animal!) && animal!.targeteable) {
       return damageEnemy({ ...state, defender: animal });
-    } else if (attacker.species === animal.species) {
+    } else if (attacker.species === animal!.species) {
       return {
         ...state,
         attacker: undefined,
       };
-    } else if (userLiveCards.includes(animal)) {
+    } else if (userLiveCards.includes(animal!)) {
       return {
         ...state,
         attacker: animal,
       };
     } else return state;
-  } else if (userLiveCards.includes(animal)) {
+  } else if (userLiveCards.includes(animal!)) {
     return {
       ...state,
       attacker: animal,
@@ -192,7 +228,7 @@ const selectCard = (state, species) => {
   } else return state;
 };
 
-const selectPlant = (state, plant) => {
+const selectPlant = (state: IHandsState, plant: IPlant) => {
   const { plants, selectedPlant, attacker } = state;
   if (selectedPlant && selectedPlant.name === plant.name) {
     return {
@@ -207,7 +243,7 @@ const selectPlant = (state, plant) => {
   } else return state;
 };
 
-const restRoundAndBleedingDmg = (arr) => {
+const restRoundAndBleedingDmg = (arr: IAnimal[]) => {
   const restParalyzedRound = arr.map((card) => {
     if (card.paralyzed > 0) {
       return {
@@ -228,7 +264,7 @@ const restRoundAndBleedingDmg = (arr) => {
     } else return card;
   });
   return restPoisonedRound.map((card) => {
-    if (card.bleeding && card.life.current !== "DEAD") {
+    if (card.bleeding && typeof card.life.current === "number") {
       return {
         ...card,
         life: {
@@ -240,7 +276,11 @@ const restRoundAndBleedingDmg = (arr) => {
   });
 };
 
-const applyAttackDamage = (arr, statsDiff, defender) => {
+const applyAttackDamage = (
+  arr: IAnimal[],
+  statsDiff: number,
+  defender: IAnimal
+) => {
   return arr.map((card) => {
     if (card.species === defender.species) {
       return {
@@ -256,9 +296,9 @@ const applyAttackDamage = (arr, statsDiff, defender) => {
   });
 };
 
-const applyPoisonDamage = (arr) => {
+const applyPoisonDamage = (arr: IAnimal[]) => {
   return arr.map((card) => {
-    if (card.poisoned.rounds > 0 && card.life.current !== "DEAD") {
+    if (card.poisoned.rounds > 0 && typeof card.life.current === "number") {
       return {
         ...card,
         life: {
@@ -273,8 +313,8 @@ const applyPoisonDamage = (arr) => {
   });
 };
 
-const setTerrain = (state, familyToBuff) => {
-  const buffCards = (arr) => {
+const setTerrain = (state: IHandsState, familyToBuff: string) => {
+  const buffCards = (arr: IAnimal[]) => {
     return arr.map((card) => {
       if (card.family === familyToBuff) {
         return {
@@ -293,7 +333,7 @@ const setTerrain = (state, familyToBuff) => {
   };
 };
 
-const reducer = (state, action) => {
+const reducer = (state: IHandsState, action: IHandsAction) => {
   switch (action.type) {
     case SET_TERRAIN:
       return setTerrain(state, action.familyToBuff);
@@ -316,7 +356,11 @@ const reducer = (state, action) => {
   }
 };
 
-export const HandsContext = ({ children }) => {
+export interface IProvider {
+  children: JSX.Element;
+}
+
+export const HandsContext = ({ children }: IProvider) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   return (

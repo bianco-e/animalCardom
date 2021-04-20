@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter, useHistory } from "react-router-dom";
+import React, { useContext, useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import SimpleModal from "./components/SimpleModal";
-import { SMALL_RESPONSIVE_BREAK } from "./utils/constants";
+import SimpleModal from "../components/SimpleModal";
+import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
+import UserContext, { IUserContext } from "../context/UserContext";
+import { SET_USERNAME } from "../context/UserContext/types";
 
 export default function WelcomePage() {
   const history = useHistory();
-  const [inputValue, setInputValue] = useState("");
-  const [modalSign, setModalSign] = useState("");
+  const [state, dispatch] = useContext<IUserContext>(UserContext);
+  const [inputValue, setInputValue] = useState<string>("");
+  const [modalSign, setModalSign] = useState<any>("");
 
   const isMobile = () => {
     if (
@@ -25,48 +28,51 @@ export default function WelcomePage() {
 
   const goToPlay = () => {
     if (inputValue !== "") {
-      history.push(`/play/${inputValue}`);
+      dispatch({ type: SET_USERNAME, payload: inputValue });
+      localStorage.setItem("username", inputValue);
+      history.push(`/play`);
       setInputValue("");
     } else {
       setModalSign("nameError");
     }
   };
 
-  const onKeyDownFn = (e) => {
+  const onKeyDownFn = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       goToPlay();
     }
   };
 
   return (
-    <BrowserRouter>
-      <Wrapper>
-        <Text isTitle={true}>Welcome to Animal Cardom!</Text>
-        <img src="/images/animal-cardom-logo.png" />
-        {modalSign && (
-          <SimpleModal setShowModal={setModalSign} sign={modalSign} />
-        )}
-        <Container>
-          <Input
-            type="text"
-            placeholder="Enter your name"
-            value={inputValue}
-            onChange={(e) =>
-              e.target.value.length < 8 && setInputValue(e.target.value)
-            }
-            onKeyDown={onKeyDownFn}
-          />
-          <Button fWeight="bold" onClick={goToPlay}>
-            Play!
-          </Button>
-          <Button onClick={() => setModalSign("rules")}>Rules</Button>
-          <Button onClick={() => setModalSign("terrains")}>See Terrains</Button>
-        </Container>
-      </Wrapper>
-    </BrowserRouter>
+    <Wrapper>
+      <Title>Welcome to Animal Cardom!</Title>
+      <img src="/images/animal-cardom-logo.png" />
+      {modalSign && (
+        <SimpleModal setShowModal={setModalSign} sign={modalSign} />
+      )}
+      <Container>
+        <Input
+          type="text"
+          placeholder="Enter your name"
+          value={inputValue}
+          onChange={(e) =>
+            e.target.value.length < 8 && setInputValue(e.target.value)
+          }
+          onKeyDown={onKeyDownFn}
+        />
+        <Button fWeight="bold" onClick={goToPlay}>
+          Play!
+        </Button>
+        <Button onClick={() => setModalSign("rules")}>Rules</Button>
+        <Button onClick={() => setModalSign("terrains")}>See Terrains</Button>
+      </Container>
+    </Wrapper>
   );
 }
 
+interface ButtonProps {
+  fWeight?: string;
+}
 const Wrapper = styled.div`
   align-items: center;
   background-image: url(/images/welcome-cardom.png);
@@ -76,7 +82,7 @@ const Wrapper = styled.div`
   height: 100vh;
   justify-content: space-around;
 `;
-const Text = styled.h4`
+const Title = styled.h4`
   font-size: 30px;
   text-align: center;
   padding-top: 40px;
@@ -123,7 +129,7 @@ const Button = styled.button`
   cursor: pointer;
   height: 60px;
   font-size: 20px;
-  font-weight: ${({ fWeight }) => fWeight};
+  font-weight: ${(p: ButtonProps) => p.fWeight};
   padding: 6px 10px;
   width: 100%;
 `;

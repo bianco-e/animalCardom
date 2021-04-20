@@ -1,30 +1,36 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import Hand from "./components/Hand";
-import SimpleModal from "./components/SimpleModal";
+import Hand from "../components/Hand";
+import SimpleModal from "../components/SimpleModal";
 import {
   MEDIUM_RESPONSIVE_BREAK,
   SMALL_RESPONSIVE_BREAK,
-} from "./utils/constants";
-import Context, {
+} from "../utils/constants";
+import HandsContext, { IHandsContext } from "../context/HandsContext";
+import {
   COMPUTER_PLAY,
   RESTART_GAME,
   COMPUTER_THINK,
   SET_TERRAIN,
-} from "./context/HandsContext";
-import { getAnimalsInfo, terrains } from "./data/data.jsx";
-import { useParams } from "react-router-dom";
-import SidePanel from "./components/SidePanel";
+} from "../context/HandsContext/types";
+import { getAnimalsInfo, terrains } from "../data/data";
+import SidePanel from "../components/SidePanel";
+import { IAnimal, ITerrain } from "../interfaces";
+
+const emptyTerrain = {
+  type: "",
+  color: "#fff",
+  familyToBuff: "",
+  image: "",
+};
 
 export default function App() {
-  let { username } = useParams();
-  const [state, dispatch] = useContext(Context);
-  const [terrain, setTerrain] = useState("");
-  const [userWins, setUserWins] = useState(false);
-  const [pcWins, setPcWins] = useState(false);
+  const [state, dispatch] = useContext<IHandsContext>(HandsContext);
+  const [terrain, setTerrain] = useState<ITerrain>(emptyTerrain);
+  const [modalSign, setModalSign] = useState<any>("");
   const { hands, plants, pcTurn, pcPlay, triggerPcAttack } = state;
 
-  const getLiveCards = (hand) => {
+  const getLiveCards = (hand: IAnimal[]) => {
     return hand.filter((card) => card.life.current !== "DEAD");
   };
   const getTerrain = () => {
@@ -43,11 +49,11 @@ export default function App() {
 
   useEffect(() => {
     if (getLiveCards(hands.pc).length === 0) {
-      setUserWins(true);
+      setModalSign("win");
       dispatch({ type: RESTART_GAME });
     }
     if (getLiveCards(hands.user).length === 0) {
-      setPcWins(true);
+      setModalSign("lose");
       dispatch({ type: RESTART_GAME });
     }
   }, [hands.pc, hands.user]); //eslint-disable-line
@@ -65,24 +71,28 @@ export default function App() {
   }, [pcTurn, triggerPcAttack]); //eslint-disable-line
 
   return (
-    <Wrapper bgImg={terrain.image}>
-      <SidePanel plants={plants} terrain={terrain} username={username} />
+    <Wrapper bgImg={terrain!.image}>
+      <SidePanel plants={plants} terrain={terrain!} />
       <Board>
-        {userWins && (
-          <SimpleModal setShowModal={setUserWins} sign="win" width="60%" />
+        {modalSign && (
+          <SimpleModal setShowModal={setModalSign} sign={modalSign} />
         )}
-        {pcWins && (
-          <SimpleModal setShowModal={setPcWins} sign="lose" width="60%" />
+        {modalSign && (
+          <SimpleModal setShowModal={setModalSign} sign={modalSign} />
         )}
-        <Hand arrayToRender={hands.pc} />
+        <Hand hand={hands.pc} belongsToUser={false} />
         <Text>{pcPlay}</Text>
-        <Hand arrayToRender={hands.user} belongsToUser />
+        <Hand hand={hands.user} belongsToUser={true} />
       </Board>
     </Wrapper>
   );
 }
+
+interface WrapperProps {
+  bgImg?: string;
+}
 const Wrapper = styled.div`
-  background: url(${({ bgImg }) => bgImg});
+  background: url(${(p: WrapperProps) => p.bgImg});
   background-repeat: no-repeat;
   background-size: cover;
   display: flex;
