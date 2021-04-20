@@ -39,12 +39,12 @@ const modalTexts: ModalTexts = {
     title: "Available terrains",
     paragraphs: [
       "There are 6 different terrains. One is randomly set when game begins and benefits a family increasing the attack by 1",
-      "- Sea buffs 🦈 family",
-      "- Swamp buffs 🐸 family",
-      "- Jungle buffs 🐺 family",
-      "- Desert buffs 🦂 family",
-      "- Mountain buffs 🦅 family",
-      "- Forest buffs 🦎 family",
+      "- Sea buffs 🦈 animals",
+      "- Swamp buffs 🐸 animals",
+      "- Jungle buffs 🐺 animals",
+      "- Desert buffs 🦂 animals",
+      "- Mountain buffs 🦅 animals",
+      "- Forest buffs 🦎 animals",
     ],
   },
   win: {

@@ -63,9 +63,10 @@ export default function Card({
   const [state, dispatch] = useContext(HandsContext);
   const isCardSelected = state.attacker?.species === species;
   const isCardUnderAttack = state.underAttack === species;
+  const soundState = localStorage.getItem("sound");
   useEffect(() => {
-    isCardUnderAttack && attackAudio.play();
-  }, [isCardUnderAttack]);
+    isCardUnderAttack && soundState === "on" && attackAudio.play();
+  }, [isCardUnderAttack, soundState]);
   return (
     <AnimalCard
       animation={isCardSelected && selectAnimation}

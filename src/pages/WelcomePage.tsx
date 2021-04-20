@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import SimpleModal from "../components/SimpleModal";
+import NavBar from "../components/NavBar";
 import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
 import UserContext, { IUserContext } from "../context/UserContext";
 import { SET_USERNAME } from "../context/UserContext/types";
@@ -45,15 +46,15 @@ export default function WelcomePage() {
 
   return (
     <Wrapper>
+      <NavBar />
       <Title>Welcome to Animal Cardom!</Title>
-      <img src="/images/animal-cardom-logo.png" />
       {modalSign && (
         <SimpleModal setShowModal={setModalSign} sign={modalSign} />
       )}
       <Container>
         <Input
           type="text"
-          placeholder="Enter your name"
+          placeholder="Enter your name to play as guest"
           value={inputValue}
           onChange={(e) =>
             e.target.value.length < 8 && setInputValue(e.target.value)
@@ -61,7 +62,10 @@ export default function WelcomePage() {
           onKeyDown={onKeyDownFn}
         />
         <Button fWeight="bold" onClick={goToPlay}>
-          Play!
+          Campaign
+        </Button>
+        <Button disabled fWeight="bold" onClick={() => {}}>
+          PvP
         </Button>
         <Button onClick={() => setModalSign("rules")}>Rules</Button>
         <Button onClick={() => setModalSign("terrains")}>See Terrains</Button>
@@ -85,9 +89,10 @@ const Wrapper = styled.div`
 const Title = styled.h4`
   font-size: 30px;
   text-align: center;
-  padding-top: 40px;
+  padding-top: 60px;
   @media (${SMALL_RESPONSIVE_BREAK}) {
     font-size: 24px;
+    padding-top: 30px;
   }
 `;
 const Container = styled.div`
@@ -107,7 +112,7 @@ const Input = styled.input`
   border: 2px solid #b9935a;
   border-radius: 5px;
   box-shadow: inset 0px 0px 3px black;
-  font-size: 20px;
+  font-size: 18px;
   height: 30px;
   margin-bottom: 40px;
   padding: 6px 10px;
@@ -132,4 +137,8 @@ const Button = styled.button`
   font-weight: ${(p: ButtonProps) => p.fWeight};
   padding: 6px 10px;
   width: 100%;
+  &:disabled {
+    background: rgba(185, 147, 90, 0.3);
+    cursor: not-allowed;
+  }
 `;
