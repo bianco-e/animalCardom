@@ -94,7 +94,7 @@ const checkWhatPlantToUse = (state) => {
   const withaniaPlant = findAPlant("Withania");
   const peyotePlant = findAPlant("Peyote");
   const ricinumPlant = findAPlant("Ricinum");
-  const randomNum = Math.floor(Math.random() * 10);
+  const randomBoolean = Math.floor(Math.random() * 10) > 3;
   const randomAlly = getRandomIdx(pcLiveCards);
   const randomEnemy = getRandomIdx(userLiveCards);
 
@@ -104,11 +104,11 @@ const checkWhatPlantToUse = (state) => {
     return applyPlantToCard(jewelweedPlant, poisonedCard, state, "user");
   } else if (paralyzedCard && coffeePlant) {
     return applyPlantToCard(coffeePlant, paralyzedCard, state, "user");
-  } else if (randomNum > 3 && withaniaPlant) {
+  } else if (randomBoolean && withaniaPlant && randomAlly) {
     return applyPlantToCard(withaniaPlant, randomAlly, state, "user");
-  } else if (randomNum > 3 && peyotePlant) {
+  } else if (randomBoolean && peyotePlant && randomEnemy) {
     return applyPlantToCard(peyotePlant, randomEnemy, state, "user");
-  } else if (randomNum > 3 && ricinumPlant) {
+  } else if (randomBoolean && ricinumPlant && randomEnemy) {
     return applyPlantToCard(ricinumPlant, randomEnemy, state, "user");
   } else return state;
 };

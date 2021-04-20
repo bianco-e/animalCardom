@@ -5,7 +5,7 @@ import SimpleModal from "./components/SimpleModal";
 import {
   MEDIUM_RESPONSIVE_BREAK,
   SMALL_RESPONSIVE_BREAK,
-} from "./lib/constants";
+} from "./utils/constants";
 import Context, {
   COMPUTER_PLAY,
   RESTART_GAME,

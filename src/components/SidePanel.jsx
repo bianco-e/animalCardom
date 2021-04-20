@@ -5,7 +5,7 @@ import {
   LARGE_RESPONSIVE_BREAK,
   MEDIUM_RESPONSIVE_BREAK,
   SMALL_RESPONSIVE_BREAK,
-} from "../lib/constants";
+} from "../utils/constants";
 import { Text } from "./styled-components";
 
 export default function SidePanel({ plants, terrain, username }) {

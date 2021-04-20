@@ -6,8 +6,8 @@ import {
   LARGE_RESPONSIVE_BREAK,
   MEDIUM_RESPONSIVE_BREAK,
   SMALL_RESPONSIVE_BREAK,
-} from "../lib/constants";
-import { generateAnimationString } from "../lib/utils.js";
+} from "../utils/constants";
+import { generateAnimationString } from "../utils";
 
 const cardSelection = keyframes`
   ${generateAnimationString(5)}

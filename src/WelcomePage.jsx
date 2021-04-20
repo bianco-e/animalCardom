@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import SimpleModal from "./components/SimpleModal";
-import { SMALL_RESPONSIVE_BREAK } from "./lib/constants";
+import { SMALL_RESPONSIVE_BREAK } from "./utils/constants";
 
 export default function WelcomePage() {
   const history = useHistory();

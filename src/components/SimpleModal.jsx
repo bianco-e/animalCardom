@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { SMALL_RESPONSIVE_BREAK } from "../lib/constants";
+import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
 
 const modalsText = {
   nameError: {

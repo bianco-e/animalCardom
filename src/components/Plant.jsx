@@ -4,7 +4,7 @@ import Context, { SELECT_PLANT } from "../context/HandsContext";
 import {
   LARGE_RESPONSIVE_BREAK,
   MEDIUM_RESPONSIVE_BREAK,
-} from "../lib/constants";
+} from "../utils/constants";
 
 export default function Plant({ plant }) {
   const [state, dispatch] = useContext(Context);
