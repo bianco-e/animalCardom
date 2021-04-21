@@ -1,15 +1,15 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import SimpleModal from "../components/CustomModal";
 import NavBar from "../components/NavBar";
 import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
-import UserContext, { IUserContext } from "../context/UserContext";
-import { SET_USERNAME } from "../context/UserContext/types";
+import { ACButton, ComingSoon } from "../components/styled-components";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function WelcomePage() {
+  const { user, isAuthenticated } = useAuth0();
   const history = useHistory();
-  const [state, dispatch] = useContext<IUserContext>(UserContext);
   const [inputValue, setInputValue] = useState<string>("");
   const [modalSign, setModalSign] = useState<any>("");
 
@@ -29,8 +29,7 @@ export default function WelcomePage() {
 
   const goToPlay = () => {
     if (inputValue !== "") {
-      dispatch({ type: SET_USERNAME, payload: inputValue });
-      localStorage.setItem("username", inputValue);
+      localStorage.setItem("guest", inputValue);
       history.push(`/play`);
       setInputValue("");
     } else {
@@ -46,7 +45,10 @@ export default function WelcomePage() {
 
   return (
     <Wrapper>
-      <NavBar />
+      <NavBar
+        isAuthenticated={isAuthenticated}
+        username={user && user.given_name && user.given_name}
+      />
       <Title>Welcome to Animal Cardom!</Title>
       {modalSign && (
         <SimpleModal setShowModal={setModalSign} sign={modalSign} />
@@ -61,23 +63,22 @@ export default function WelcomePage() {
           }
           onKeyDown={onKeyDownFn}
         />
-        <Button fWeight="bold" onClick={goToPlay}>
+        <ACButton fWeight="bold" onClick={goToPlay}>
           Play as guest
-        </Button>
-        <Button disabled fWeight="bold" onClick={() => {}}>
+        </ACButton>
+        <ACButton disabled fWeight="bold" onClick={() => {}}>
           <ComingSoon>Coming soon!</ComingSoon>
           PvP
-        </Button>
-        <Button onClick={() => setModalSign("rules")}>Rules</Button>
-        <Button onClick={() => setModalSign("terrains")}>See Terrains</Button>
+        </ACButton>
+        <ACButton onClick={() => setModalSign("rules")}>Rules</ACButton>
+        <ACButton onClick={() => setModalSign("terrains")}>
+          See Terrains
+        </ACButton>
       </Container>
     </Wrapper>
   );
 }
 
-interface ButtonProps {
-  fWeight?: string;
-}
 const Wrapper = styled.div`
   align-items: center;
   background-image: url(/images/welcome-cardom.png);
@@ -124,34 +125,5 @@ const Input = styled.input`
   }
   &::placeholder {
     color: #000;
-  }
-`;
-const ComingSoon = styled.span`
-  background: #000;
-  border-radius: 5px;
-  color: #fff;
-  font-size: 11px;
-  padding: 3px 10px;
-  position: absolute;
-  right: -10px;
-  top: 10px;
-  transform: rotate(20deg);
-`;
-const Button = styled.button`
-  background-color: #b9935a;
-  border: 2px solid #b9935a;
-  border-radius: 5px;
-  box-shadow: inset 0px 0px 3px black;
-  color: black;
-  cursor: pointer;
-  height: 60px;
-  font-size: 20px;
-  font-weight: ${(p: ButtonProps) => p.fWeight};
-  padding: 6px 10px;
-  position: relative;
-  width: 100%;
-  &:disabled {
-    background: rgba(185, 147, 90, 0.3);
-    cursor: not-allowed;
   }
 `;

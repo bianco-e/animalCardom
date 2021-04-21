@@ -1,5 +1,8 @@
 import styled from "styled-components";
 
+interface ButtonProps {
+  fWeight?: string;
+}
 interface TextProps {
   color?: string;
   fSize?: string;
@@ -25,4 +28,45 @@ export const Text = styled.span`
 export const Image = styled.img`
   height: ${(p: ImageProps) => p.height};
   width: ${(p: ImageProps) => p.width};
+`;
+
+export const ACButton = styled.button`
+  background-color: #b9935a;
+  border: 2px solid #b9935a;
+  border-radius: 5px;
+  box-shadow: inset 0px 0px 3px black;
+  color: black;
+  cursor: pointer;
+  height: 60px;
+  font-size: 20px;
+  font-weight: ${(p: ButtonProps) => p.fWeight};
+  padding: 6px 10px;
+  position: relative;
+  width: 100%;
+  &:disabled {
+    background: rgba(185, 147, 90, 0.3);
+    cursor: not-allowed;
+  }
+`;
+
+export const LogButton = styled.button`
+  border: 2px solid #b9935a;
+  border-radius: 5px;
+  box-shadow: inset 0px 0px 3px black;
+  cursor: pointer;
+  font-size: 18px;
+  margin-right: 20px;
+  padding: 6px 15px;
+`;
+
+export const ComingSoon = styled.span`
+  background: #000;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 11px;
+  padding: 3px 10px;
+  position: absolute;
+  right: -10px;
+  top: 10px;
+  transform: rotate(20deg);
 `;

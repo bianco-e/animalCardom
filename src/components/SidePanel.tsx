@@ -1,7 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
 import Plant from "./Plant";
-import UserContext from "../context/UserContext";
 import {
   LARGE_RESPONSIVE_BREAK,
   MEDIUM_RESPONSIVE_BREAK,
@@ -16,8 +15,7 @@ interface IProps {
 }
 
 export default function SidePanel({ plants, terrain }: IProps) {
-  const [state, dispatch] = useContext(UserContext);
-  const username = localStorage.getItem("username");
+  const guestName = localStorage.getItem("guest");
   return (
     <LeftPanel bgImage={terrain.image}>
       <HalfPanel>
@@ -37,9 +35,9 @@ export default function SidePanel({ plants, terrain }: IProps) {
       </TerrainName>
       <HalfPanel>
         <Text fSize="18px" fWeight="bold" padding="5px">
-          {username}
+          {guestName}
         </Text>
-        <PlayerNameTab>{username}</PlayerNameTab>
+        <PlayerNameTab>{guestName}</PlayerNameTab>
         {plants.user.map((plant) => {
           return <Plant plant={plant}></Plant>;
         })}

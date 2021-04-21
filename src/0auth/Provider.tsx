@@ -10,6 +10,8 @@ export default function AuthProvider({ children }: { children: JSX.Element }) {
       domain={REACT_APP_0AUTH_DOMAIN!}
       clientId={REACT_APP_0AUTH_CLIENT_ID!}
       redirectUri={REACT_APP_REDIRECT_URI!}
+      useRefreshTokens={true}
+      cacheLocation="localstorage"
     >
       {children}
     </Auth0Provider>

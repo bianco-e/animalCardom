@@ -2,10 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import MenuLayout from "../components/MenuLayout";
 
-export default function Menu() {
+export default function Collection() {
   return (
     <MenuLayout>
-      <h2>Menu</h2>
+      <h2>Collection</h2>
     </MenuLayout>
   );
 }

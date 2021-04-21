@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import { LogButton } from "../components/styled-components";
 
-export default function NavBar() {
+interface IProps {
+  isAuthenticated: boolean;
+  username?: string;
+}
+
+export default function NavBar({ isAuthenticated, username }: IProps) {
   const { loginWithRedirect } = useAuth0();
+  const history = useHistory();
   const [soundState, setSoundState] = useState<"off" | "on">("on");
   useEffect(() => {
     localStorage.setItem("sound", soundState);
@@ -12,6 +20,12 @@ export default function NavBar() {
   const handleSoundButton = () => {
     const soundToSet = soundState === "off" ? "on" : "off";
     setSoundState(soundToSet);
+  };
+
+  const handleLogin = () => {
+    if (isAuthenticated && username) {
+      history.push("/menu");
+    } else loginWithRedirect();
   };
 
   return (
@@ -25,9 +39,17 @@ export default function NavBar() {
           />
         </OptionButton>
         <img alt="ac-logo" src="/images/animal-cardom-logo.png" width={60} />
-        <LoginButton onClick={loginWithRedirect}>
-          Sign in with <b>Google</b>
-        </LoginButton>
+        <LogButton onClick={handleLogin}>
+          {isAuthenticated && username ? (
+            <span>
+              You are allowed, <b>{username}!</b>
+            </span>
+          ) : (
+            <span>
+              Sign in with <b>Google</b>
+            </span>
+          )}
+        </LogButton>
       </Container>
     </Wrapper>
   );
@@ -66,13 +88,4 @@ const Wrapper = styled.div`
   position: fixed;
   top: 0;
   width: 100%;
-`;
-const LoginButton = styled.button`
-  border: 2px solid #b9935a;
-  border-radius: 5px;
-  box-shadow: inset 0px 0px 3px black;
-  cursor: pointer;
-  font-size: 18px;
-  margin-right: 20px;
-  padding: 6px 10px;
 `;

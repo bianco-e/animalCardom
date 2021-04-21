@@ -1,4 +1,4 @@
-export const generateAnimationString = (percent) =>
+export const generateAnimationString = (percent: number) =>
   new Array(Math.floor(100 / percent))
     .fill("")
     .map((i, idx) => {
