@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
 import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
@@ -19,6 +19,8 @@ interface Sign {
   top?: string;
   left?: string;
 }
+
+const modalRoot = document.getElementById("modal-root");
 
 const modalTexts: ModalTexts = {
   nameError: {
@@ -73,14 +75,45 @@ interface IProps {
   sign: keyof typeof modalTexts;
 }
 
-const modalRoot = document.getElementById("modal-root");
-
 export default function SimpleModal({ setShowModal, sign }: IProps) {
+  const contentRef = useRef<HTMLDivElement>(null);
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      setShowModal("");
+    }
+  };
+
+  const handleClickOutside = (e: MouseEvent) => {
+    const { clientX, clientY } = e;
+    if (contentRef.current) {
+      const isClickingOut =
+        clientX >
+          contentRef.current.offsetLeft + contentRef.current.offsetWidth ||
+        clientX < contentRef.current.offsetLeft ||
+        clientY >
+          contentRef.current.offsetTop + contentRef.current.offsetHeight ||
+        clientY < contentRef.current.offsetTop;
+      if (isClickingOut) {
+        setShowModal("");
+      }
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+
   return (
     modalRoot &&
     ReactDOM.createPortal(
       <Wrapper className={modalTexts[sign]?.className}>
-        <Content>
+        <Content ref={contentRef}>
           <Text weight="bold">{modalTexts[sign].title}</Text>
           {modalTexts[sign].paragraphs.map((p) => (
             <Text>{p}</Text>
