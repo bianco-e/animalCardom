@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function NavBar() {
+  const { loginWithRedirect } = useAuth0();
   const [soundState, setSoundState] = useState<"off" | "on">("on");
   useEffect(() => {
     localStorage.setItem("sound", soundState);
@@ -23,8 +25,8 @@ export default function NavBar() {
           />
         </OptionButton>
         <img alt="ac-logo" src="/images/animal-cardom-logo.png" width={60} />
-        <LoginButton>
-          Login with <b>Google</b>
+        <LoginButton onClick={loginWithRedirect}>
+          Sign in with <b>Google</b>
         </LoginButton>
       </Container>
     </Wrapper>

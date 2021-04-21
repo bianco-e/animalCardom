@@ -62,7 +62,7 @@ export default function WelcomePage() {
           onKeyDown={onKeyDownFn}
         />
         <Button fWeight="bold" onClick={goToPlay}>
-          {inputValue ? "Play as guest" : "Campaign"}
+          Play as guest
         </Button>
         <Button disabled fWeight="bold" onClick={() => {}}>
           <ComingSoon>Coming soon!</ComingSoon>
