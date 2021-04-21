@@ -2,6 +2,7 @@ import React from "react";
 import { MenuTitle } from "../components/styled-components";
 import MenuLayout from "../components/MenuLayout";
 import AvatarWithXpBar from "../components/AvatarWithXpBar";
+import History from "../components/History";
 
 export default function Profile() {
   return (
@@ -9,6 +10,7 @@ export default function Profile() {
       <>
         <AvatarWithXpBar />
         <MenuTitle>History</MenuTitle>
+        <History />
       </>
     </MenuLayout>
   );

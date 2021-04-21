@@ -205,7 +205,7 @@ const Injury = styled.div`
     }
   }
 `;
-const AnimalCard = styled.button`
+export const AnimalCard = styled.button`
   align-items: center;
   animation: ${(p: AnimalCardProps) => p.animation};
   background: #d4a257;

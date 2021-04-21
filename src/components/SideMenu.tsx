@@ -31,6 +31,8 @@ export default function SideMenu({ username = "Animals master" }: IProps) {
       <Title>
         Hi, <b>{username}</b>
       </Title>
+      <ACButton onClick={handleProfile}>Profile</ACButton>
+      <ACButton onClick={handleCollection}>Collection</ACButton>
       <ACButton fWeight="bold" onClick={handleCampaign}>
         Campaign
       </ACButton>
@@ -38,8 +40,6 @@ export default function SideMenu({ username = "Animals master" }: IProps) {
         <ComingSoon>Coming soon!</ComingSoon>
         PvP
       </ACButton>
-      <ACButton onClick={handleProfile}>Profile</ACButton>
-      <ACButton onClick={handleCollection}>Collection</ACButton>
       <LogButton onClick={handleLogout}>Log out</LogButton>
     </Wrapper>
   );

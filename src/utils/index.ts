@@ -7,3 +7,11 @@ export const generateAnimationString = (percent: number) =>
       })}`;
     })
     .join(" ");
+
+export const cardSpeciesToLowerCase = (species: string): string => {
+  const splittedSpecies = species.split(" ");
+  if (splittedSpecies.length > 1) {
+    return splittedSpecies.join("-").toLowerCase();
+  }
+  return species.toLowerCase();
+};

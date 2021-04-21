@@ -35,7 +35,7 @@ interface PlantCardProps {
   outline?: string;
 }
 
-const PlantCard = styled.button`
+export const PlantCard = styled.button`
   align-items: center;
   background-color: #d4a257;
   border: none;

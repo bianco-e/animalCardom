@@ -41,7 +41,7 @@ export default function AvatarWithXpBar() {
       </svg>
       <img src="/images/welcome-background.png" height={135} width={135} />
       <span>
-        Level <b>{level}</b>
+        Lv. <b>{level}</b>
       </span>
       <span>
         <b>{currentLvlXp}</b>/<span>{MAX_XP}</span>
