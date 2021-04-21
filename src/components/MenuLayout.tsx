@@ -17,14 +17,22 @@ export default function MenuLayout({ children }: { children: JSX.Element }) {
   ) : (
     <Wrapper>
       <SideMenu username={user.given_name} />
-      {children}
+      <ChildrenContainer>{children}</ChildrenContainer>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
-  margin-left: 310px;
-  padding-top: 80px;
+  margin-left: 290px;
+`;
+const ChildrenContainer = styled.div`
+  align-items: center;
+  background: rgba(95, 57, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-top: 60px;
+  width: 100%;
 `;
 const SpinnerWrapper = styled.div`
   align-items: center;

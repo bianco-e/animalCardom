@@ -81,7 +81,7 @@ export default function WelcomePage() {
 
 const Wrapper = styled.div`
   align-items: center;
-  background-image: url(/images/welcome-cardom.png);
+  background-image: url(/images/welcome-background.png);
   background-repeat: round;
   display: flex;
   flex-direction: column;
