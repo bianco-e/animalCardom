@@ -70,3 +70,21 @@ export const ComingSoon = styled.span`
   top: 10px;
   transform: rotate(20deg);
 `;
+
+export const MenuTitle = styled.span`
+  align-self: flex-start;
+  font-weight: bold;
+  font-size: 20px;
+  margin: 60px 0 0 60px;
+  position: relative;
+  &::before {
+    background: rgba(95, 57, 0, 0.6);
+    border-radius: 120px;
+    content: "";
+    height: 3px;
+    width: 35px;
+    position: absolute;
+    top: 48%;
+    left: -45px;
+  }
+`;
