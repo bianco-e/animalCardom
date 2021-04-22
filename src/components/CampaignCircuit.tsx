@@ -1,9 +1,9 @@
 import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
 import { terrains } from "../data/data";
+import { ITerrain } from "../interfaces";
 
-const ANGLE = 360 - 76.5;
-const DANGLE = 360 / terrains.length;
+const ANGLE = 360 / (terrains.length - 1);
 interface IProps {
   userCampaignLevel: number;
 }
@@ -16,6 +16,10 @@ export default function ({ userCampaignLevel }: IProps) {
       setContainerWidth(containerRef.current.offsetWidth);
     }
   }, [containerRef.current]);
+
+  const handleTerrainSelection = (terrain: ITerrain) => {
+    console.log(`${terrain.type} selected`);
+  };
   return (
     <Wrapper ref={containerRef}>
       {terrains.map((terrain, idx) => {
@@ -23,13 +27,14 @@ export default function ({ userCampaignLevel }: IProps) {
         const isDisabled = idx > userCampaignLevel;
         return (
           <TerrainContainer
-            angle={`${(ANGLE + DANGLE) * idx - 1}`}
+            angle={`${ANGLE * idx - 40}`}
             bgImage={image}
-            disabled={isDisabled}
             containerWidth={containerWidth}
-            level={idx + 1}
-            title={isDisabled ? "Locked" : type}
+            disabled={isDisabled}
             key={type}
+            level={idx + 1}
+            onClick={() => !isDisabled && handleTerrainSelection(terrain)}
+            title={isDisabled ? "Locked" : type}
           ></TerrainContainer>
         );
       })}
@@ -46,18 +51,9 @@ interface TerrainContainerProps {
 }
 const Wrapper = styled.div`
   position: relative;
-  width: 900px;
-  height: 900px;
-  margin: calc(220px / 2 + 0px);
-  &:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: calc(100% - 2px * 2);
-    height: calc(100% - 2px * 2);
-    border-radius: 50%;
-  }
+  width: 450px;
+  height: 450px;
+  margin: 120px 0 0 0;
 `;
 const TerrainContainer = styled.div`
   background-image: ${(p: TerrainContainerProps) => `url('${p.bgImage}')`};
@@ -69,7 +65,7 @@ const TerrainContainer = styled.div`
     0 0 40px 10px rgba(0, 0, 0, 0.5);
   cursor: pointer;
   display: flex;
-  height: 120px;
+  height: 140px;
   left: 50%;
   justify-content: center;
   margin: calc(-100px / 2);
@@ -79,7 +75,7 @@ const TerrainContainer = styled.div`
     `rotate(${p.angle}deg) translate(${p.containerWidth / 2}px) rotate(-${
       p.angle
     }deg)`};
-  width: 120px;
+  width: 140px;
   &:before {
     align-items: center;
     background: #d4a257;
