@@ -56,6 +56,7 @@ export default function Card({
   image,
   skill,
   species,
+  opacityForPreview,
   poisoned,
   paralyzed,
   targeteable,
@@ -76,7 +77,11 @@ export default function Card({
       onClick={() => {
         !state.pcTurn && dispatch({ type: SELECT_CARD, species });
       }}
-      opacity={`${life.current === "DEAD" && "0.5"}`}
+      opacity={
+        opacityForPreview
+          ? opacityForPreview
+          : `${life.current === "DEAD" && "0.5"}`
+      }
       transform={belongsToUser ? "translateY(-10px)" : "translateY(10px)"}
     >
       <Injury animation={isCardUnderAttack && attackAnimation}>
