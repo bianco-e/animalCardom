@@ -52,14 +52,14 @@ const plants: IPlant[] = [
     name: "Ricinum",
     description:
       "Highly poisonous seeds: can poison any enemy making 1 damage per round, for 3 rounds",
-    image: "/images/plants/ricinum.jpeg",
+    image: "/images/plants/ricinum.webp",
     toDo: plantsFunctions.ricinumFn,
   },
   {
     name: "Aloe",
     description:
       "Very effective in treating wounds: can heal any ally restoring 2 life points",
-    image: "/images/plants/aloe.jpeg",
+    image: "/images/plants/aloe.webp",
     toDo: plantsFunctions.aloeFn,
   },
   {
@@ -80,7 +80,7 @@ const plants: IPlant[] = [
     name: "Coffee",
     description:
       "Coffe bean given to an animal can immediately wake all its senses, making it free from any paralyzing effect",
-    image: "/images/plants/coffee.jpeg",
+    image: "/images/plants/coffee.webp",
     toDo: plantsFunctions.coffeeFn,
   },
   {

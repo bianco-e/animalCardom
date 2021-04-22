@@ -1,11 +1,16 @@
 import React from "react";
 import styled from "styled-components";
+import { MenuTitle } from "../components/styled-components";
 import MenuLayout from "../components/MenuLayout";
+import CollectionFilter from "../components/CollectionFilter";
 
 export default function Collection() {
   return (
     <MenuLayout>
-      <h2>Collection</h2>
+      <>
+        <CollectionFilter />
+        <MenuTitle>Collection</MenuTitle>
+      </>
     </MenuLayout>
   );
 }

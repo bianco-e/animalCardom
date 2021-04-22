@@ -27,7 +27,7 @@ const Plant = styled(PlantCard)`
   }
   > img {
     height: 32px;
-    width: 32px;
+    width: 35px;
   }
   &:hover {
     box-shadow: inset 0px 0px 2px black;
