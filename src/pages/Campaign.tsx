@@ -1,11 +1,17 @@
 import React from "react";
 import styled from "styled-components";
+import CampaignCircuit from "../components/CampaignCircuit";
+import CampaignProgress from "../components/CampaignProgress";
 import MenuLayout from "../components/MenuLayout";
 
 export default function Campaign() {
+  const userCampaignLevel = 2;
   return (
     <MenuLayout>
-      <h2>Campaign</h2>
+      <>
+        <CampaignProgress userCampaignLevel={userCampaignLevel} />
+        <CampaignCircuit userCampaignLevel={userCampaignLevel} />
+      </>
     </MenuLayout>
   );
 }

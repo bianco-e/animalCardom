@@ -10,6 +10,18 @@ export const utilitiesIcons = {
 
 export const terrains: ITerrain[] = [
   {
+    type: "Neutral",
+    color: "#000",
+    familyToBuff: "",
+    image: "/images/terrains/neutral.jpg",
+  },
+  {
+    type: "Jungle",
+    color: "#006400",
+    familyToBuff: "🐺",
+    image: "/images/terrains/jungle.jpeg",
+  },
+  {
     type: "Sea",
     color: "#87CEEB",
     familyToBuff: "🦈",
@@ -20,12 +32,6 @@ export const terrains: ITerrain[] = [
     color: "#228B22",
     familyToBuff: "🐸",
     image: "/images/terrains/swamp.jpeg",
-  },
-  {
-    type: "Jungle",
-    color: "#006400",
-    familyToBuff: "🐺",
-    image: "/images/terrains/jungle.jpeg",
   },
   {
     type: "Desert",
