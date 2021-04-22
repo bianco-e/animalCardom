@@ -483,7 +483,7 @@ const Wrapper = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
-  margin: 30px 0 0 60px;
+  margin-top: 60px;
   width: 100%;
   overflow-y: auto;
 `;

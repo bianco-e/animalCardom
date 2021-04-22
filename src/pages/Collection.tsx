@@ -75,12 +75,12 @@ const CardsContainer = styled.div`
   margin-top: 60px;
   min-height: 100px;
   padding: 15px 60px;
-  width: 95%;
+  width: 83%;
   > button {
     cursor: default;
     height: 270px;
-    margin-bottom: 20px;
-    width: 200px;
+    margin-bottom: 16px;
+    width: 19%;
     > .animal-name {
       font-size: 18px;
     }

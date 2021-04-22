@@ -7,12 +7,13 @@ import {
   LogButton,
 } from "../components/styled-components";
 import { useAuth0 } from "@auth0/auth0-react";
+import AnimatedPlaceholder from "./AnimatedPlaceholder";
 
 interface IProps {
   username: string;
 }
 
-export default function SideMenu({ username = "Animals master" }: IProps) {
+export default function SideMenu({ username }: IProps) {
   const { logout } = useAuth0();
   const history = useHistory();
   const handleCampaign = () => history.push("/campaign");
@@ -28,9 +29,13 @@ export default function SideMenu({ username = "Animals master" }: IProps) {
         width={60}
         onClick={() => history.push("/menu")}
       />
-      <Title>
-        Hi, <b>{username}</b>
-      </Title>
+      {username ? (
+        <Title>
+          Hi, <b>{username}</b>
+        </Title>
+      ) : (
+        <AnimatedPlaceholder />
+      )}
       <ACButton fWeight="bold" onClick={handleProfile}>
         Profile
       </ACButton>
