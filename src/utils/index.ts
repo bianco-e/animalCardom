@@ -1,3 +1,5 @@
+import { IAnimal } from "../interfaces";
+
 export const generateAnimationString = (percent: number) =>
   new Array(Math.floor(100 / percent))
     .fill("")
@@ -14,4 +16,16 @@ export const cardSpeciesToLowerCase = (species: string): string => {
     return splittedSpecies.join("-").toLowerCase();
   }
   return species.toLowerCase();
+};
+
+export const sortCardsAlphabetically = (cards: IAnimal[]): IAnimal[] => {
+  return cards.sort(function (a, b) {
+    if (a.species < b.species) {
+      return -1;
+    }
+    if (a.species > b.species) {
+      return 1;
+    }
+    return 0;
+  });
 };

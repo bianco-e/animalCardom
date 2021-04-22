@@ -92,7 +92,7 @@ const plants: IPlant[] = [
   },
 ];
 
-const animals: IAnimal[] = [
+export const animals: IAnimal[] = [
   {
     family: "🦎",
     species: "Crocodile",

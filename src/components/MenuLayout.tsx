@@ -9,9 +9,7 @@ export default function MenuLayout({ children }: { children: JSX.Element }) {
   const { user, isAuthenticated, isLoading } = useAuth0();
 
   return isLoading ? (
-    <SpinnerWrapper>
-      <Spinner />
-    </SpinnerWrapper>
+    <Spinner />
   ) : !isAuthenticated ? (
     <Redirect to="/" />
   ) : (
@@ -32,12 +30,5 @@ const ChildrenContainer = styled.div`
   flex-direction: column;
   min-height: 100vh;
   padding-top: 60px;
-  width: 100%;
-`;
-const SpinnerWrapper = styled.div`
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  margin-top: 60px;
   width: 100%;
 `;

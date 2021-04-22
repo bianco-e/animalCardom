@@ -115,6 +115,7 @@ const OptionsContainer = styled.div`
   position: absolute;
   top: 105%;
   width: 100%;
+  z-index: 10;
 `;
 const Option = styled.span`
   align-items: center;

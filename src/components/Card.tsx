@@ -36,15 +36,16 @@ const attackAudio = new Audio("/audio/claw-sound-effect.mp3");
 interface IProps {
   attack: Stat<number>;
   belongsToUser?: boolean;
-  life: Stat<number | string>;
+  bleeding: boolean;
   family: string;
   image: string;
+  life: Stat<number | string>;
+  opacityForPreview?: string;
+  paralyzed: number;
+  poisoned: Poisoned;
   skill: Skill;
   species: string;
-  poisoned: Poisoned;
-  paralyzed: number;
   targeteable: boolean;
-  bleeding: boolean;
 }
 
 export default function Card({
