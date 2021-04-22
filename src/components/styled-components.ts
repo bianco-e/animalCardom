@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 interface ButtonProps {
   fWeight?: string;
+  selected?: boolean;
 }
 interface TextProps {
   color?: string;
@@ -31,7 +32,7 @@ export const Image = styled.img`
 `;
 
 export const ACButton = styled.button`
-  background-color: #b9935a;
+  background-color: ${(p: ButtonProps) => (p.selected ? "#d4a257" : "#b9935a")};
   border: 2px solid #b9935a;
   border-radius: 5px;
   box-shadow: inset 0px 0px 3px black;

@@ -29,3 +29,11 @@ export const sortCardsAlphabetically = (cards: IAnimal[]): IAnimal[] => {
     return 0;
   });
 };
+
+export const capitalize = (string: string): string =>
+  `${string[0].toUpperCase()}${string.substring(1).toLowerCase()}`;
+
+export const getCurrentSection = (path: string): string =>
+  ["/profile", "/campaign", "/collection"].includes(path)
+    ? capitalize(path.substring(1))
+    : "";

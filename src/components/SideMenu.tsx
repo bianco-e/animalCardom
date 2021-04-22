@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useHistory } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import {
   ACButton,
   ComingSoon,
@@ -8,17 +8,34 @@ import {
 } from "../components/styled-components";
 import { useAuth0 } from "@auth0/auth0-react";
 import AnimatedPlaceholder from "./AnimatedPlaceholder";
+import { getCurrentSection } from "../utils";
 
 interface IProps {
   username: string;
 }
 
 export default function SideMenu({ username }: IProps) {
+  const [currentSection, setCurrentSection] = useState<string>();
   const { logout } = useAuth0();
   const history = useHistory();
-  const handleCampaign = () => history.push("/campaign");
-  const handleProfile = () => history.push("/profile");
-  const handleCollection = () => history.push("/collection");
+  const location = useLocation();
+  useEffect(() => {
+    setCurrentSection(getCurrentSection(location.pathname));
+  }, [location.pathname]);
+  const buttonsData = [
+    {
+      title: "Profile",
+      fn: () => history.push("/profile"),
+    },
+    {
+      title: "Collection",
+      fn: () => history.push("/collection"),
+    },
+    {
+      title: "Campaign",
+      fn: () => history.push("/campaign"),
+    },
+  ];
   const handleLogout = () => logout({ returnTo: window.location.origin });
 
   return (
@@ -36,15 +53,19 @@ export default function SideMenu({ username }: IProps) {
       ) : (
         <AnimatedPlaceholder />
       )}
-      <ACButton fWeight="bold" onClick={handleProfile}>
-        Profile
-      </ACButton>
-      <ACButton fWeight="bold" onClick={handleCollection}>
-        Collection
-      </ACButton>
-      <ACButton fWeight="bold" onClick={handleCampaign}>
-        Campaign
-      </ACButton>
+      {buttonsData.map(({ title, fn }) => {
+        const isSelected = currentSection === title;
+        return (
+          <ACButton
+            key={title}
+            fWeight="bold"
+            onClick={fn}
+            selected={isSelected}
+          >
+            {title}
+          </ACButton>
+        );
+      })}
       <ACButton disabled fWeight="bold">
         <ComingSoon>Coming soon!</ComingSoon>
         PvP
