@@ -69,7 +69,7 @@ const lastTenGames = [
       ],
       pc: [
         {
-          name: "Jewellweed",
+          name: "Jewelweed",
           applied: true,
         },
         {
@@ -148,7 +148,7 @@ const lastTenGames = [
       ],
       pc: [
         {
-          name: "Jewellweed",
+          name: "Jewelweed",
           applied: true,
         },
         {
@@ -227,7 +227,7 @@ const lastTenGames = [
       ],
       pc: [
         {
-          name: "Jewellweed",
+          name: "Jewelweed",
           applied: true,
         },
         {
@@ -306,7 +306,7 @@ const lastTenGames = [
       ],
       pc: [
         {
-          name: "Jewellweed",
+          name: "Jewelweed",
           applied: true,
         },
         {
@@ -385,7 +385,7 @@ const lastTenGames = [
       ],
       pc: [
         {
-          name: "Jewellweed",
+          name: "Jewelweed",
           applied: true,
         },
         {

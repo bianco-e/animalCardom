@@ -19,14 +19,15 @@ export default function PlantThumbnail({ disabled, image, name }: IProps) {
 
 const Plant = styled(PlantCard)`
   cursor: default;
-  height: 60px;
-  width: 70px;
+  height: 55px;
+  width: 60px;
   > span {
+    font-size: 10px;
     margin-bottom: 2px;
   }
   > img {
-    height: 35px;
-    width: 35px;
+    height: 32px;
+    width: 32px;
   }
   &:hover {
     box-shadow: inset 0px 0px 2px black;

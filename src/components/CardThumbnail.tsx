@@ -23,6 +23,8 @@ export default function CardThumbnail({ image, disabled, species }: IProps) {
 
 const Card = styled(AnimalCard)`
   cursor: default;
+  height: 80px;
+  width: 18%;
   > .animal-name {
     font-size: 9px;
     font-weight: bold;
@@ -31,7 +33,7 @@ const Card = styled(AnimalCard)`
   > .animal-picture {
     border-radius: 120px;
     height: 30px;
-    width: 80%;
+    width: 90%;
   }
   &:hover {
     box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.6);

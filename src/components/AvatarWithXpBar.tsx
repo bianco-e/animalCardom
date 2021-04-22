@@ -67,6 +67,7 @@ const Wrapper = styled.div`
       stroke: url(#gradient);
       stroke-dasharray: ${(p: WrapperProps) => p.dasharray};
       stroke-dashoffset: ${(p: WrapperProps) => p.dashoffset};
+      stroke-linecap: round;
       transform: rotate(-90deg);
       transform-origin: 50% 50%;
       transition: stroke-dashoffset 0.5s;
@@ -80,7 +81,7 @@ const Wrapper = styled.div`
     border-radius: 50%;
   }
   > span {
-    font-size: 10px;
+    font-size: 11px;
     margin-top: 10px;
   }
 `;
