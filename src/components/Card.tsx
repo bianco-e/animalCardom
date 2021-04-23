@@ -37,14 +37,14 @@ interface IProps {
   attack: Stat<number>;
   belongsToUser?: boolean;
   bleeding: boolean;
-  family: string;
+  species: string;
   image: string;
   life: Stat<number | string>;
   opacityForPreview?: string;
   paralyzed: number;
   poisoned: Poisoned;
   skill: Skill;
-  species: string;
+  name: string;
   targeteable: boolean;
 }
 
@@ -52,10 +52,10 @@ export default function Card({
   attack,
   belongsToUser,
   life,
-  family,
+  species,
   image,
   skill,
-  species,
+  name,
   opacityForPreview,
   poisoned,
   paralyzed,
@@ -63,8 +63,8 @@ export default function Card({
   bleeding,
 }: IProps) {
   const [state, dispatch] = useContext(HandsContext);
-  const isCardSelected = state.attacker?.species === species;
-  const isCardUnderAttack = state.underAttack === species;
+  const isCardSelected = state.attacker?.name === name;
+  const isCardUnderAttack = state.underAttack === name;
   const soundState = localStorage.getItem("sound");
   useEffect(() => {
     isCardUnderAttack && soundState === "on" && attackAudio.play();
@@ -75,7 +75,7 @@ export default function Card({
       isCardSelected={isCardSelected}
       isParalyzed={paralyzed > 0}
       onClick={() => {
-        !state.pcTurn && dispatch({ type: SELECT_CARD, species });
+        !state.pcTurn && dispatch({ type: SELECT_CARD, name });
       }}
       opacity={
         opacityForPreview
@@ -101,7 +101,7 @@ export default function Card({
           src="/images/svg/blood-splatter.svg"
         />
       </Injury>
-      <CornerIcon>{family}</CornerIcon>
+      <CornerIcon>{species}</CornerIcon>
       {!targeteable && <CornerIcon className="animal-status">🚫</CornerIcon>}
       {bleeding && (
         <CornerIcon className="animal-status">
@@ -109,7 +109,7 @@ export default function Card({
         </CornerIcon>
       )}
 
-      <Text className="animal-name">{species}</Text>
+      <Text className="animal-name">{name}</Text>
 
       <Image className="animal-picture" src={image} />
 

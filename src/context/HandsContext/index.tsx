@@ -10,8 +10,8 @@ import {
   SET_TERRAIN,
 } from "./types";
 export interface IHandsAction {
-  familyToBuff: string;
-  species: string;
+  speciesToBuff: string;
+  name: string;
   plant: IPlant;
   type: string;
 }
@@ -71,7 +71,7 @@ const attackAndApplySkill = (state: IHandsState, hand: "pc" | "user") => {
     const statsDiff = defender.life.current - attacker.attack.current;
     const newState = {
       ...state,
-      underAttack: defender.species,
+      underAttack: defender.name,
       hands: {
         ...hands,
         [hand]: restRoundAndBleedingDmg(
@@ -92,7 +92,7 @@ const applyPlantToCard = (
   hand: "pc" | "user"
 ) => {
   const plantMessage =
-    hand === "user" ? ` and used ${plant.name} on ${card.species}` : "";
+    hand === "user" ? ` and used ${plant.name} on ${card.name}` : "";
   if (card.targeteable) {
     return plant.toDo(
       {
@@ -151,7 +151,7 @@ const checkWhatPlantToUse = (state: IHandsState) => {
 
 const computerDamage = (state: IHandsState) => {
   const { defender, attacker, pcTurn, hands } = state;
-  const pcAnswer = `${attacker!.species} attacked ${defender!.species}`;
+  const pcAnswer = `${attacker!.name} attacked ${defender!.name}`;
   const newState = attackAndApplySkill(state, "user");
 
   if (getLiveCards(hands.user).length > 0) {
@@ -195,13 +195,11 @@ const damageEnemy = (state: IHandsState) => {
       };
 };
 
-const selectCard = (state: IHandsState, species: string) => {
+const selectCard = (state: IHandsState, name: string) => {
   const { hands, attacker, selectedPlant } = state;
   const pcLiveCards = getLiveCards(hands.pc);
   const userLiveCards = getLiveCards(hands.user);
-  const animal = hands.pc
-    .concat(hands.user)
-    .find((card) => card.species === species);
+  const animal = hands.pc.concat(hands.user).find((card) => card.name === name);
 
   if (selectedPlant && !attacker) {
     return applyPlantToCard(selectedPlant, animal!, state, "pc");
@@ -209,7 +207,7 @@ const selectCard = (state: IHandsState, species: string) => {
   if (attacker) {
     if (pcLiveCards.includes(animal!) && animal!.targeteable) {
       return damageEnemy({ ...state, defender: animal });
-    } else if (attacker.species === animal!.species) {
+    } else if (attacker.name === animal!.name) {
       return {
         ...state,
         attacker: undefined,
@@ -282,7 +280,7 @@ const applyAttackDamage = (
   defender: IAnimal
 ) => {
   return arr.map((card) => {
-    if (card.species === defender.species) {
+    if (card.name === defender.name) {
       return {
         ...card,
         life: {
@@ -313,10 +311,10 @@ const applyPoisonDamage = (arr: IAnimal[]) => {
   });
 };
 
-const setTerrain = (state: IHandsState, familyToBuff: string) => {
+const setTerrain = (state: IHandsState, speciesToBuff: string) => {
   const buffCards = (arr: IAnimal[]) => {
     return arr.map((card) => {
-      if (card.family === familyToBuff) {
+      if (card.species === speciesToBuff) {
         return {
           ...card,
           attack: { ...card.attack, current: card.attack.current + 1 },
@@ -336,9 +334,9 @@ const setTerrain = (state: IHandsState, familyToBuff: string) => {
 const reducer = (state: IHandsState, action: IHandsAction) => {
   switch (action.type) {
     case SET_TERRAIN:
-      return setTerrain(state, action.familyToBuff);
+      return setTerrain(state, action.speciesToBuff);
     case SELECT_CARD:
-      return selectCard(state, action.species);
+      return selectCard(state, action.name);
     case SELECT_PLANT:
       return selectPlant(state, action.plant);
     case COMPUTER_PLAY:

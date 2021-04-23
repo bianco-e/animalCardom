@@ -5,14 +5,18 @@ import MenuLayout from "../components/MenuLayout";
 import CollectionFilter from "../components/CollectionFilter";
 import Spinner from "../components/Spinner";
 import { IAnimal } from "../interfaces";
-import { animals } from "../data/data";
 import { sortCardsAlphabetically } from "../utils";
 import Card from "../components/Card";
+import { getAllAnimalsCards } from "../queries/animalsCards";
 
 export default function Collection() {
   const [cardsToShow, setCardsToShow] = useState<IAnimal[]>([]);
   useEffect(() => {
-    setCardsToShow(sortCardsAlphabetically(animals));
+    getAllAnimalsCards().then((res) => {
+      if (res && res.animals) {
+        setCardsToShow(sortCardsAlphabetically(res.animals));
+      }
+    });
   }, []);
 
   const opacityForPreview = "1";
@@ -29,7 +33,7 @@ export default function Collection() {
                 const {
                   attack,
                   bleeding,
-                  family,
+                  name,
                   image,
                   life,
                   paralyzed,
@@ -43,15 +47,15 @@ export default function Collection() {
                     attack={attack}
                     belongsToUser={false}
                     bleeding={bleeding}
-                    family={family}
+                    species={species}
                     image={image}
-                    key={species}
+                    key={name}
                     life={life}
                     opacityForPreview={opacityForPreview}
                     paralyzed={paralyzed}
                     poisoned={poisoned}
                     skill={skill}
-                    species={species}
+                    name={name}
                     targeteable={targeteable}
                   ></Card>
                 );

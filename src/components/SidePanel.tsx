@@ -29,7 +29,7 @@ export default function SidePanel({ plants, terrain }: IProps) {
       </HalfPanel>
       <TerrainName
         color={terrain.color}
-        title={`All animals belonging to ${terrain.familyToBuff} feel like home in ${terrain.type}. Their attack is increased by 1`}
+        title={`All animals belonging to ${terrain.speciesToBuff} feel like home in ${terrain.type}. Their attack is increased by 1`}
       >
         {terrain.type}
       </TerrainName>

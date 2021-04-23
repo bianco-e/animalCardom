@@ -20,7 +20,7 @@ import { IAnimal, ITerrain } from "../interfaces";
 const emptyTerrain = {
   type: "",
   color: "#fff",
-  familyToBuff: "",
+  speciesToBuff: "",
   image: "",
 };
 
@@ -37,7 +37,7 @@ export default function App() {
     const randomNum = Math.floor(Math.random() * terrains.length);
     dispatch({
       type: SET_TERRAIN,
-      familyToBuff: terrains[randomNum].familyToBuff,
+      speciesToBuff: terrains[randomNum].speciesToBuff,
     });
     return terrains[randomNum];
   };

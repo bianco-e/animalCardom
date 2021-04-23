@@ -1,6 +1,6 @@
 # Animal Cardom
 
-Animal Cardom is a card game where you get 5 different animals cards, and the objective is to kill all opponent's cards. Each card has an ability, an attack, a life, and also belongs to a family. Have fun!
+Animal Cardom is a card game where you get 5 different animals cards, and the objective is to kill all opponent's cards. Each card has an ability, an attack, a life, and also belongs to a species. Have fun!
 
 ![Gameplay demo](./public/images/gameplay-demo.png)
 
@@ -13,5 +13,5 @@ Animal Cardom is a card game where you get 5 different animals cards, and the ob
 _Node version: v12.13.0_
 
 - Download the repo and stand in its folder
-- run npm install
-- run npm start
+- yarn install
+- yarn start

@@ -32,7 +32,7 @@ const modalTexts: ModalTexts = {
     title: "Animal Cardom rules",
     paragraphs: [
       "You have five different animals cards, and three different plants to apply on them if wanted. A terrain will be randomly set at the very start.",
-      "Each card has an ability, an attack and life points, and also belongs to a family which can give you benefits or not depending on the terrain or other cards' abilities.",
+      "Each card has an ability, an attack and life points, and also belongs to a species which can give you benefits or not depending on the terrain or other cards' abilities.",
       "The objective is to kill all opponent's cards.",
       "Have fun!",
     ],
@@ -41,7 +41,7 @@ const modalTexts: ModalTexts = {
     className: "responsive-container",
     title: "Available terrains",
     paragraphs: [
-      "There are 6 different terrains. One is randomly set when game begins and benefits a family increasing the attack by 1",
+      "There are 6 different terrains. One is randomly set when game begins and benefits a species increasing attack by 1",
       "- Sea buffs 🦈 animals",
       "- Swamp buffs 🐸 animals",
       "- Jungle buffs 🐺 animals",

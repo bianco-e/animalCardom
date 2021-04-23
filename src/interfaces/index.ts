@@ -13,6 +13,7 @@ export interface Poisoned {
 export interface Skill {
   name: string;
   description: string;
+  type: string[];
   toDo: (state: any, hand: HandKey) => any;
 }
 
@@ -34,7 +35,7 @@ export interface IPlant {
 }
 
 export interface IAnimal {
-  family: string;
+  name: string;
   species: string;
   image: string;
   attack: Stat<number>;
@@ -47,7 +48,7 @@ export interface IAnimal {
 }
 
 export interface ITerrain {
-  familyToBuff: string;
+  speciesToBuff: string;
   image: string;
   type: string;
   color: string;

@@ -20,10 +20,10 @@ export const cardSpeciesToLowerCase = (species: string): string => {
 
 export const sortCardsAlphabetically = (cards: IAnimal[]): IAnimal[] => {
   return cards.sort(function (a, b) {
-    if (a.species < b.species) {
+    if (a.name < b.name) {
       return -1;
     }
-    if (a.species > b.species) {
+    if (a.name > b.name) {
       return 1;
     }
     return 0;

@@ -3,7 +3,7 @@ import { HandKey, IAnimal, Poisoned } from "../interfaces";
 
 const poisonEnemy = (arr: IAnimal[], defender: IAnimal, poisoned: Poisoned) => {
   return arr.map((card) => {
-    if (card.species === defender.species && card.life.current !== "DEAD") {
+    if (card.name === defender.name && card.life.current !== "DEAD") {
       return {
         ...card,
         poisoned,
@@ -14,7 +14,7 @@ const poisonEnemy = (arr: IAnimal[], defender: IAnimal, poisoned: Poisoned) => {
 
 const makeEnemyBleed = (arr: IAnimal[], defender: IAnimal) => {
   return arr.map((card) => {
-    if (card.species === defender.species && card.life.current !== "DEAD") {
+    if (card.name === defender.name && card.life.current !== "DEAD") {
       return {
         ...card,
         bleeding: true,
@@ -25,10 +25,7 @@ const makeEnemyBleed = (arr: IAnimal[], defender: IAnimal) => {
 
 const makeExtraDamage = (arr: IAnimal[], defender: IAnimal, damage: number) => {
   return arr.map((card) => {
-    if (
-      card.species === defender.species &&
-      typeof card.life.current === "number"
-    ) {
+    if (card.name === defender.name && typeof card.life.current === "number") {
       return {
         ...card,
         life: {
@@ -49,7 +46,7 @@ const paralyzeEnemy = (
   roundsNumber: number
 ) => {
   return arr.map((card) => {
-    if (card.species === defender.species && card.life.current !== "DEAD") {
+    if (card.name === defender.name && card.life.current !== "DEAD") {
       return {
         ...card,
         paralyzed: roundsNumber,
@@ -64,10 +61,7 @@ const healItself = (
   healthAmount: number
 ) => {
   return arr.map((card) => {
-    if (
-      card.species === attacker.species &&
-      typeof card.life.current === "number"
-    ) {
+    if (card.name === attacker.name && typeof card.life.current === "number") {
       return {
         ...card,
         life: {
@@ -81,7 +75,7 @@ const healItself = (
 
 const killInstantly = (arr: IAnimal[], animal: IAnimal) => {
   return arr.map((card) => {
-    if (card.species === animal.species) {
+    if (card.name === animal.name) {
       return {
         ...card,
         life: {
@@ -100,7 +94,7 @@ const modifyAnimalAttack = (
   operator: string
 ) => {
   return arr.map((card) => {
-    if (card.species === animal.species) {
+    if (card.name === animal.name) {
       return {
         ...card,
         attack: {
@@ -135,7 +129,7 @@ const copyDefenderSkill = (
   attacker: IAnimal
 ) => {
   return arr.map((card) => {
-    if (card.species === attacker.species) {
+    if (card.name === attacker.name) {
       return {
         ...card,
         skill: defender.skill,
@@ -146,7 +140,7 @@ const copyDefenderSkill = (
 
 const setTargeteableAsTrue = (arr: IAnimal[], animal: IAnimal) => {
   return arr.map((card) => {
-    if (card.species === animal.species) {
+    if (card.name === animal.name) {
       return {
         ...card,
         targeteable: true,
@@ -232,7 +226,7 @@ const crocodileFn = (state: IHandsState, hand: HandKey) => {
 const eagleFn = (state: IHandsState, hand: HandKey) => {
   const { hands, defender, attacker } = state;
   const damage = 2;
-  if (attacker!.family !== "🦂") {
+  if (attacker!.species !== "🦂") {
     const newHand = makeExtraDamage(hands[hand], defender!, damage);
     return setHandInState(state, hand, newHand);
   } else {
@@ -315,7 +309,7 @@ const parrotFn = (state: IHandsState, hand: HandKey) => {
   const { hands, defender, attacker } = state;
   const otherHand = hand === "pc" ? "user" : "pc";
   const updatedDefender = hands[hand].find(
-    (card) => card.species === defender!.species
+    (card) => card.name === defender!.name
   );
   if (updatedDefender!.life.current === "DEAD") {
     const newHand = copyDefenderSkill(hands[otherHand], defender!, attacker!);
@@ -378,7 +372,7 @@ const stingrayFn = (state: IHandsState, hand: HandKey) => {
 
 const toadFn = (state: IHandsState, hand: HandKey) => {
   const { hands, defender } = state;
-  if (defender!.family === "🦂") {
+  if (defender!.species === "🦂") {
     const newHand = killInstantly(hands[hand], defender!);
     return setHandInState(state, hand, newHand);
   } else return state;
