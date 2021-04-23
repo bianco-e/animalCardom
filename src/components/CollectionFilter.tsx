@@ -2,84 +2,106 @@ import React from "react";
 import styled from "styled-components";
 import Dropdown from "./Dropdown";
 
-const speciesDropdownOptions = [
-  {
-    text: "🦈",
-    fn: () => {},
-  },
-  {
-    text: "🐸",
-    fn: () => {},
-  },
-  {
-    text: "🐺",
-    fn: () => {},
-  },
-  {
-    text: "🦂",
-    fn: () => {},
-  },
-  {
-    text: "🦅",
-    fn: () => {},
-  },
-  {
-    text: "🦎",
-    fn: () => {},
-  },
-];
+interface IProps {
+  setSpeciesFilter: (cards: string) => void;
+  setSkillTypeFilter: (cards: string) => void;
+  setOwningFilter: (cards: boolean) => void;
+}
 
-const ownedDropdownOptions = [
-  {
-    text: "Owned",
-    fn: () => {},
-  },
-  {
-    text: "Not owned",
-    fn: () => {},
-  },
-];
+export default function ({
+  setSpeciesFilter,
+  setSkillTypeFilter,
+  setOwningFilter,
+}: IProps) {
+  const speciesDropdownOptions = [
+    {
+      text: "Species",
+      fn: () => setSpeciesFilter(""),
+    },
+    {
+      text: "🦈",
+      fn: () => setSpeciesFilter("🦈"),
+    },
+    {
+      text: "🐸",
+      fn: () => setSpeciesFilter("🐸"),
+    },
+    {
+      text: "🐺",
+      fn: () => setSpeciesFilter("🐺"),
+    },
+    {
+      text: "🦂",
+      fn: () => setSpeciesFilter("🦂"),
+    },
+    {
+      text: "🦅",
+      fn: () => setSpeciesFilter("🦅"),
+    },
+    {
+      text: "🦎",
+      fn: () => setSpeciesFilter("🦎"),
+    },
+  ];
 
-const skillDropdownOptions = [
-  {
-    text: "Bleed",
-    fn: () => {},
-  },
-  {
-    text: "Buff",
-    fn: () => {},
-  },
-  {
-    text: "Extra damage",
-    fn: () => {},
-  },
-  {
-    text: "Healing",
-    fn: () => {},
-  },
-  {
-    text: "Instant kill",
-    fn: () => {},
-  },
-  {
-    text: "Paralyze",
-    fn: () => {},
-  },
-  {
-    text: "Poison",
-    fn: () => {},
-  },
-  {
-    text: "Untargeteable",
-    fn: () => {},
-  },
-  {
-    text: "Other",
-    fn: () => {},
-  },
-];
+  const ownedDropdownOptions = [
+    {
+      text: "Owning",
+      fn: () => setOwningFilter(false),
+    },
+    {
+      text: "Owned",
+      fn: () => setOwningFilter(true),
+    },
+    {
+      text: "Not owned",
+      fn: () => setOwningFilter(false),
+    },
+  ];
 
-export default function () {
+  const skillDropdownOptions = [
+    {
+      text: "Skill",
+      fn: () => setSkillTypeFilter(""),
+    },
+    {
+      text: "Bleed",
+      fn: () => setSkillTypeFilter("bleed"),
+    },
+    {
+      text: "Buff",
+      fn: () => setSkillTypeFilter("buff"),
+    },
+    {
+      text: "Extra damage",
+      fn: () => setSkillTypeFilter("extra_damage"),
+    },
+    {
+      text: "Healing",
+      fn: () => setSkillTypeFilter("healing"),
+    },
+    {
+      text: "Instant kill",
+      fn: () => setSkillTypeFilter("instant_kill"),
+    },
+    {
+      text: "Paralyze",
+      fn: () => setSkillTypeFilter("paralyze"),
+    },
+    {
+      text: "Poison",
+      fn: () => setSkillTypeFilter("poison"),
+    },
+    {
+      text: "Untargeteable",
+      fn: () => setSkillTypeFilter("untargeteable"),
+    },
+    {
+      text: "Other",
+      fn: () => setSkillTypeFilter("other"),
+    },
+  ];
+
   return (
     <Wrapper>
       <Text>Filter cards by</Text>
@@ -87,17 +109,17 @@ export default function () {
         <Dropdown
           closedText="Species"
           options={speciesDropdownOptions}
-          width="180px"
+          width="200px"
         />
         <Dropdown
           closedText="Owning"
           options={ownedDropdownOptions}
-          width="180px"
+          width="200px"
         />
         <Dropdown
           closedText="Skill"
           options={skillDropdownOptions}
-          width="180px"
+          width="200px"
         />
       </DropdownsContainer>
     </Wrapper>

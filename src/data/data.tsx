@@ -10,43 +10,43 @@ export const utilitiesIcons = {
 
 export const terrains: ITerrain[] = [
   {
-    type: "Neutral",
+    name: "Neutral",
     color: "#000",
     speciesToBuff: "",
     image: "/images/terrains/neutral.jpg",
   },
   {
-    type: "Jungle",
+    name: "Jungle",
     color: "#006400",
     speciesToBuff: "🐺",
     image: "/images/terrains/jungle.jpeg",
   },
   {
-    type: "Sea",
+    name: "Sea",
     color: "#87CEEB",
     speciesToBuff: "🦈",
     image: "/images/terrains/sea.webp",
   },
   {
-    type: "Swamp",
+    name: "Swamp",
     color: "#228B22",
     speciesToBuff: "🐸",
     image: "/images/terrains/swamp.jpeg",
   },
   {
-    type: "Desert",
+    name: "Desert",
     color: "#DEB887",
     speciesToBuff: "🦂",
     image: "/images/terrains/desert.jpeg",
   },
   {
-    type: "Mountain",
+    name: "Mountain",
     color: "#C0C0C0",
     speciesToBuff: "🦅",
     image: "/images/terrains/mountain.webp",
   },
   {
-    type: "Forest",
+    name: "Forest",
     color: "#2E8B57",
     speciesToBuff: "🦎",
     image: "/images/terrains/forest.jpeg",
@@ -108,7 +108,7 @@ export const animals: IAnimal[] = [
       description:
         "Crocodile bites its enemy using its strong jaws which inflicts 2 extra damage.",
       toDo: skillsFunctions.crocodileFn,
-      type: [""],
+      types: [""],
     },
     attack: { initial: 10, current: 10 },
     life: { initial: 10, current: 10 },
@@ -126,7 +126,7 @@ export const animals: IAnimal[] = [
       description:
         "After Tortoise attacks, it can get inside its shell increasing its total life by 2.",
       toDo: skillsFunctions.tortoiseFn,
-      type: [""],
+      types: [""],
     },
     attack: { initial: 2, current: 2 },
     life: { initial: 9, current: 9 },
@@ -144,7 +144,7 @@ export const animals: IAnimal[] = [
       description:
         "Snake can poison its enemy for the next 3 rounds, inflicting 1 damage per round.",
       toDo: skillsFunctions.snakeFn,
-      type: [""],
+      types: [""],
     },
     attack: { initial: 8, current: 8 },
     life: { initial: 7, current: 7 },
@@ -162,7 +162,7 @@ export const animals: IAnimal[] = [
       description:
         "Komodo Dragon can bite inflicting 1 extra damage and poisoning its enemy for 1 round.",
       toDo: skillsFunctions.komododragonFn,
-      type: [""],
+      types: [""],
     },
     attack: { initial: 10, current: 10 },
     life: { initial: 10, current: 10 },
@@ -180,7 +180,7 @@ export const animals: IAnimal[] = [
       description:
         "Chameleon is untargeteable. Can't be seen until it attacks.",
       toDo: skillsFunctions.chameleonFn,
-      type: [""],
+      types: [""],
     },
     attack: { initial: 3, current: 3 },
     life: { initial: 4, current: 4 },
@@ -198,7 +198,7 @@ export const animals: IAnimal[] = [
       description:
         "Toad can use its large tongue to devorate any insect immediatly.",
       toDo: skillsFunctions.toadFn,
-      type: [""],
+      types: [""],
     },
     attack: { initial: 3, current: 3 },
     life: { initial: 3, current: 3 },
@@ -216,7 +216,7 @@ export const animals: IAnimal[] = [
       description:
         "Salamander can regenerate its own body after attacking, healing 1 life point if damaged.",
       toDo: skillsFunctions.salamanderFn,
-      type: [""],
+      types: [""],
     },
     attack: { initial: 2, current: 2 },
     life: { initial: 4, current: 4 },
@@ -234,7 +234,7 @@ export const animals: IAnimal[] = [
       description:
         "If there's any animal bleeding, Shark's attack will increase by 2 after attacking.",
       toDo: skillsFunctions.sharkFn,
-      type: [""],
+      types: [""],
     },
     attack: { initial: 9, current: 9 },
     life: { initial: 11, current: 11 },
@@ -252,7 +252,7 @@ export const animals: IAnimal[] = [
       description:
         "Stingray's venom glands poison enemy, inflicting 1 damage on next round'.",
       toDo: skillsFunctions.stingrayFn,
-      type: [""],
+      types: [""],
     },
     attack: { initial: 8, current: 8 },
     life: { initial: 6, current: 6 },
@@ -270,7 +270,7 @@ export const animals: IAnimal[] = [
       description:
         "Orc's waterjet makes enemy unable to see paralyzing it for one round",
       toDo: skillsFunctions.orcFn,
-      type: [""],
+      types: [""],
     },
     attack: { initial: 7, current: 7 },
     life: { initial: 13, current: 13 },
@@ -288,7 +288,7 @@ export const animals: IAnimal[] = [
       description:
         "Blowfish can puff up, increasing its attack by 2 after attacking.",
       toDo: skillsFunctions.blowfishFn,
-      type: [""],
+      types: [""],
     },
     attack: { initial: 2, current: 2 },
     life: { initial: 5, current: 5 },
@@ -306,7 +306,7 @@ export const animals: IAnimal[] = [
       description:
         "Electric Eel can shock an enemy paralyzing it for 2 rounds.",
       toDo: skillsFunctions.electriceelFn,
-      type: [""],
+      types: [""],
     },
     attack: { initial: 3, current: 3 },
     life: { initial: 5, current: 5 },
@@ -324,7 +324,7 @@ export const animals: IAnimal[] = [
       description:
         "Eagle falls from the sky and pecks its enemy making 2 damage, or killing it if it's an insect.",
       toDo: skillsFunctions.eagleFn,
-      type: [""],
+      types: [""],
     },
     attack: { initial: 6, current: 6 },
     life: { initial: 7, current: 7 },
@@ -342,7 +342,7 @@ export const animals: IAnimal[] = [
       description:
         "After attacking Vulture's attack will be increased by 4 if there's any dead animal.",
       toDo: skillsFunctions.vultureFn,
-      type: [""],
+      types: [""],
     },
     attack: { initial: 3, current: 3 },
     life: { initial: 6, current: 6 },
@@ -360,7 +360,7 @@ export const animals: IAnimal[] = [
       description:
         "Cassowary uses its casque and claws to knock enemy paralyzing it for 1 round.",
       toDo: skillsFunctions.cassowaryFn,
-      type: [""],
+      types: [""],
     },
     attack: { initial: 7, current: 7 },
     life: { initial: 7, current: 7 },
@@ -378,7 +378,7 @@ export const animals: IAnimal[] = [
       description:
         "When Parrot kills its first enemy automatically copies its skill.",
       toDo: skillsFunctions.parrotFn,
-      type: [""],
+      types: [""],
     },
     attack: { initial: 3, current: 3 },
     life: { initial: 4, current: 4 },
@@ -396,7 +396,7 @@ export const animals: IAnimal[] = [
       description:
         "When attacking, Mosquito drains enemy's life points adding it to its life.",
       toDo: skillsFunctions.mosquitoFn,
-      type: [""],
+      types: [""],
     },
     attack: { initial: 2, current: 2 },
     life: { initial: 1, current: 1 },
@@ -414,7 +414,7 @@ export const animals: IAnimal[] = [
       description:
         "Before dying, Scorpion stings its enemy inflicting 1 damage per round for 3 rounds.",
       toDo: skillsFunctions.scorpionFn,
-      type: [""],
+      types: [""],
     },
     attack: { initial: 9, current: 9 },
     life: { initial: 5, current: 5 },
@@ -432,7 +432,7 @@ export const animals: IAnimal[] = [
       description:
         "Bee can sting its enemy making 3 extra damage, but will die after doing it.",
       toDo: skillsFunctions.beeFn,
-      type: [""],
+      types: [""],
     },
     attack: { initial: 4, current: 4 },
     life: { initial: 3, current: 3 },
@@ -450,7 +450,7 @@ export const animals: IAnimal[] = [
       description:
         "Spider can wrap its enemy paralyzing it, so it can't use its ability for 2 rounds.",
       toDo: skillsFunctions.spiderFn,
-      type: [""],
+      types: [""],
     },
     attack: { initial: 6, current: 6 },
     life: { initial: 4, current: 4 },
@@ -468,7 +468,7 @@ export const animals: IAnimal[] = [
       description:
         "Bear nails its claws making enemy bleed, inflicting 1 damage per round until it dies.",
       toDo: skillsFunctions.bearFn,
-      type: [""],
+      types: [""],
     },
     attack: { initial: 8, current: 8 },
     life: { initial: 11, current: 11 },
@@ -486,7 +486,7 @@ export const animals: IAnimal[] = [
       description:
         "Lion roars and scares enemy so it can't attack for 3 rounds.",
       toDo: skillsFunctions.lionFn,
-      type: [""],
+      types: [""],
     },
     attack: { initial: 11, current: 11 },
     life: { initial: 12, current: 12 },
@@ -504,7 +504,7 @@ export const animals: IAnimal[] = [
       description:
         "Gorilla beats its chest getting motivation from nowhere, increasing its attack by 1.",
       toDo: skillsFunctions.gorillaFn,
-      type: [""],
+      types: [""],
     },
     attack: { initial: 8, current: 8 },
     life: { initial: 11, current: 11 },
@@ -522,7 +522,7 @@ export const animals: IAnimal[] = [
       description:
         "Cheetah is hidden behind bush. Can't be targeted until it attacks first.",
       toDo: skillsFunctions.cheetahFn,
-      type: [""],
+      types: [""],
     },
     attack: { initial: 7, current: 7 },
     life: { initial: 7, current: 7 },
@@ -539,7 +539,7 @@ export const animals: IAnimal[] = [
       name: "Bite the wound",
       description: "Hyena can bite an injuried enemy, making 2 extra damage.",
       toDo: skillsFunctions.hyenaFn,
-      type: [""],
+      types: [""],
     },
     attack: { initial: 7, current: 7 },
     life: { initial: 8, current: 8 },
@@ -557,7 +557,7 @@ export const animals: IAnimal[] = [
       description:
         "Elephant stomps decreasing all enemies' attack by 1. Enemies' attack can't be less than 1.",
       toDo: skillsFunctions.elephantFn,
-      type: [""],
+      types: [""],
     },
     attack: { initial: 6, current: 6 },
     life: { initial: 12, current: 12 },
@@ -593,19 +593,4 @@ export const getPlants = (): IPlants => {
     pc: fourCards.slice(0, 3),
     user: fourCards.slice(3, 6),
   };
-};
-
-export const getAnimalsInfo = () => {
-  const getSpeciesLength = (emoji: string) => {
-    return animals.filter((animal) => animal.species === emoji).length;
-  };
-  console.log(
-    animals.length + " cards,",
-    getSpeciesLength("🦎") + " reptiles,",
-    getSpeciesLength("🐸") + " amphibians,",
-    getSpeciesLength("🦈") + " fishes,",
-    getSpeciesLength("🦅") + " birds,",
-    getSpeciesLength("🦂") + " insects,",
-    getSpeciesLength("🐺") + " mammals"
-  );
 };

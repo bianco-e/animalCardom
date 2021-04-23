@@ -9,45 +9,45 @@ const lastTenGames = [
     usedCards: {
       own: [
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: true,
         },
         {
-          species: "Lion",
+          name: "Lion",
           survived: false,
         },
         {
-          species: "Mosquito",
+          name: "Mosquito",
           survived: true,
         },
         {
-          species: "Gorilla",
+          name: "Gorilla",
           survived: true,
         },
         {
-          species: "Electric Eel",
+          name: "Electric Eel",
           survived: true,
         },
       ],
       pc: [
         {
-          species: "Shark",
+          name: "Shark",
           survived: true,
         },
         {
-          species: "Bear",
+          name: "Bear",
           survived: true,
         },
         {
-          species: "Toad",
+          name: "Toad",
           survived: true,
         },
         {
-          species: "Salamander",
+          name: "Salamander",
           survived: true,
         },
         {
-          species: "Cheetah",
+          name: "Cheetah",
           survived: false,
         },
       ],
@@ -88,45 +88,45 @@ const lastTenGames = [
     usedCards: {
       own: [
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: true,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: true,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: true,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: true,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: false,
         },
       ],
       pc: [
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: true,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: true,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: true,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: true,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: false,
         },
       ],
@@ -167,45 +167,45 @@ const lastTenGames = [
     usedCards: {
       own: [
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: false,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: true,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: false,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: false,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: true,
         },
       ],
       pc: [
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: true,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: true,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: true,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: false,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: false,
         },
       ],
@@ -246,45 +246,45 @@ const lastTenGames = [
     usedCards: {
       own: [
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: true,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: false,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: false,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: true,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: true,
         },
       ],
       pc: [
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: true,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: true,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: true,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: false,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: false,
         },
       ],
@@ -325,45 +325,45 @@ const lastTenGames = [
     usedCards: {
       own: [
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: false,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: false,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: true,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: true,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: true,
         },
       ],
       pc: [
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: true,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: true,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: true,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: true,
         },
         {
-          species: "Elephant",
+          name: "Elephant",
           survived: true,
         },
       ],
@@ -417,12 +417,12 @@ export default function History() {
                 {usedCards.own.map((card) => {
                   return (
                     <CardThumbnail
-                      key={card.species}
+                      key={card.name}
                       disabled={!card.survived}
                       image={`/images/animals/adult-${cardSpeciesToLowerCase(
-                        card.species
+                        card.name
                       )}.webp`}
-                      species={card.species}
+                      name={card.name}
                     ></CardThumbnail>
                   );
                 })}
@@ -446,12 +446,12 @@ export default function History() {
                 {usedCards.pc.map((card) => {
                   return (
                     <CardThumbnail
-                      key={card.species}
+                      key={card.name}
                       disabled={!card.survived}
                       image={`/images/animals/adult-${cardSpeciesToLowerCase(
-                        card.species
+                        card.name
                       )}.webp`}
-                      species={card.species}
+                      name={card.name}
                     ></CardThumbnail>
                   );
                 })}

@@ -13,12 +13,12 @@ import {
   COMPUTER_THINK,
   SET_TERRAIN,
 } from "../context/HandsContext/types";
-import { getAnimalsInfo, terrains } from "../data/data";
+import { terrains } from "../data/data";
 import SidePanel from "../components/SidePanel";
 import { IAnimal, ITerrain } from "../interfaces";
 
 const emptyTerrain = {
-  type: "",
+  name: "",
   color: "#fff",
   speciesToBuff: "",
   image: "",
@@ -43,7 +43,6 @@ export default function App() {
   };
 
   useEffect(() => {
-    getAnimalsInfo();
     setTerrain(getTerrain());
   }, []); //eslint-disable-line
 

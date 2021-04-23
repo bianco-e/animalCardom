@@ -7,24 +7,57 @@ import Spinner from "../components/Spinner";
 import { IAnimal } from "../interfaces";
 import { sortCardsAlphabetically } from "../utils";
 import Card from "../components/Card";
-import { getAllAnimalsCards } from "../queries/animalsCards";
+import {
+  getAllAnimalsCards,
+  getFilteredAnimalsCards,
+} from "../queries/animalsCards";
+import { getOwnedCards } from "../queries/user";
 
 export default function Collection() {
+  const [speciesFilter, setSpeciesFilter] = useState<string>();
+  const [skillTypeFilter, setSkillTypeFilter] = useState<string>();
+  const [owningFilter, setOwningFilter] = useState<boolean>();
   const [cardsToShow, setCardsToShow] = useState<IAnimal[]>([]);
+  const [ownedCards, setOwnedCards] = useState<IAnimal[]>([]);
+
   useEffect(() => {
     getAllAnimalsCards().then((res) => {
       if (res && res.animals) {
         setCardsToShow(sortCardsAlphabetically(res.animals));
       }
     });
+    getOwnedCards("").then((res) => {
+      if (res && res.owned_cards) {
+        setOwnedCards(res.owned_cards);
+      }
+    });
   }, []);
+
+  useEffect(() => {
+    const sendingOwnedCards = owningFilter
+      ? ownedCards.map(({ name }) => name)
+      : undefined;
+    getFilteredAnimalsCards(
+      speciesFilter,
+      skillTypeFilter,
+      sendingOwnedCards
+    ).then((res) => {
+      if (res && res.animals) {
+        setCardsToShow(sortCardsAlphabetically(res.animals));
+      }
+    });
+  }, [speciesFilter, skillTypeFilter, owningFilter]);
 
   const opacityForPreview = "1";
 
   return (
     <MenuLayout>
       <>
-        <CollectionFilter />
+        <CollectionFilter
+          setSpeciesFilter={setSpeciesFilter}
+          setSkillTypeFilter={setSkillTypeFilter}
+          setOwningFilter={setOwningFilter}
+        />
         <MenuTitle>Collection</MenuTitle>
         {cardsToShow.length > 0 ? (
           <>

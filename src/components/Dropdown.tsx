@@ -66,9 +66,12 @@ export default function Dropdown({ closedText, options, width }: IProps) {
         </svg>
       </LogButton>
       <OptionsContainer ref={dropdownRef} display={isOpened ? "flex" : "none"}>
-        {options.map((opt) => {
+        {options.map((opt, idx) => {
           return (
-            <Option onClick={() => handleSelection(opt.fn, opt.text)}>
+            <Option
+              fWeight={idx === 0 ? "normal" : "bold"}
+              onClick={() => handleSelection(opt.fn, opt.text)}
+            >
               {opt.text}
             </Option>
           );
@@ -85,6 +88,10 @@ interface WrapperProps {
 
 interface OptionsContainerProps {
   display?: string;
+}
+
+interface OptionProps {
+  fWeight?: string;
 }
 
 const Wrapper = styled.div`
@@ -123,7 +130,7 @@ const Option = styled.span`
   border-bottom: 2px solid #b9935a;
   cursor: pointer;
   display: flex;
-  font-weight: bold;
+  font-weight: ${(p: OptionProps) => p.fWeight || "bold"};
   justify-content: center;
   padding: 10px 15px;
   width: calc(100% - 30px);

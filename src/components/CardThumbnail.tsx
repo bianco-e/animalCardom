@@ -4,18 +4,18 @@ import { AnimalCard } from "./Card";
 
 interface IProps {
   disabled: boolean;
-  species: string;
+  name: string;
   image: string;
 }
 
-export default function CardThumbnail({ image, disabled, species }: IProps) {
+export default function CardThumbnail({ image, disabled, name }: IProps) {
   return (
     <Card
       isCardSelected={false}
       isParalyzed={false}
       opacity={disabled ? "0.5" : "1"}
     >
-      <span className="animal-name">{species}</span>
+      <span className="animal-name">{name}</span>
       <img className="animal-picture" src={image} />
     </Card>
   );

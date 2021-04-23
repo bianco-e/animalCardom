@@ -18,12 +18,12 @@ export default function ({ userCampaignLevel }: IProps) {
   }, [containerRef.current]);
 
   const handleTerrainSelection = (terrain: ITerrain) => {
-    console.log(`${terrain.type} selected`);
+    console.log(`${terrain.name} selected`);
   };
   return (
     <Wrapper ref={containerRef}>
       {terrains.map((terrain, idx) => {
-        const { image, type } = terrain;
+        const { image, name } = terrain;
         const isDisabled = idx > userCampaignLevel;
         return (
           <TerrainContainer
@@ -31,10 +31,10 @@ export default function ({ userCampaignLevel }: IProps) {
             bgImage={image}
             containerWidth={containerWidth}
             disabled={isDisabled}
-            key={type}
+            key={name}
             level={idx + 1}
             onClick={() => !isDisabled && handleTerrainSelection(terrain)}
-            title={isDisabled ? "Locked" : type}
+            title={isDisabled ? "Locked" : name}
           ></TerrainContainer>
         );
       })}
