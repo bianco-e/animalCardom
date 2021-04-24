@@ -10,17 +10,15 @@ import {
 import HandsContext, { IHandsContext } from "../context/HandsContext";
 import {
   COMPUTER_PLAY,
-  RESTART_GAME,
   COMPUTER_THINK,
-  SET_TERRAIN,
   SET_CARDS,
 } from "../context/HandsContext/types";
-import SidePanel from "../components/SidePanel";
+import SidePanel from "../components/GamePanel";
 import { IAnimal, IPlant, ITerrain } from "../interfaces";
 import { getUserMe } from "../queries/user";
 import { newTerrain, newCampaignGame, newRandomGame } from "../queries/games";
 import Spinner from "../components/Spinner";
-import { Text } from "../components/styled-components";
+import ModalResultContent from "../components/ModalResultContent";
 
 const emptyTerrain = {
   name: "",
@@ -31,6 +29,7 @@ const emptyTerrain = {
 
 export default function App() {
   const [state, dispatch] = useContext<IHandsContext>(HandsContext);
+  const [isCampaignGame, setIsCampaignGame] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userName, setUserName] = useState<string>("");
   const [terrain, setTerrain] = useState<ITerrain>(emptyTerrain);
@@ -39,16 +38,19 @@ export default function App() {
   const { pathname, search } = useLocation();
   const { hands, plants, pcTurn, pcPlay, triggerPcAttack } = state;
 
-  const newGameResHandler = (res?: {
+  interface Response {
     user: { animals: IAnimal[]; plants: IPlant[] };
     pc: { animals: IAnimal[]; plants: IPlant[] };
-  }) => {
+  }
+
+  const newGameResHandler = (speciesToBuff: string, res?: Response) => {
     setIsLoading(false);
     if (res && res.user && res.pc) {
       dispatch({
         type: SET_CARDS,
         hands: { pc: res.pc.animals, user: res.user.animals },
         plants: { pc: res.pc.plants, user: res.user.plants },
+        speciesToBuff,
       });
     }
   };
@@ -62,15 +64,14 @@ export default function App() {
       newTerrain().then((res) => {
         if (res && res.name) {
           setTerrain(res);
-          newRandomGame().then((res) => newGameResHandler(res));
-          dispatch({
-            type: SET_TERRAIN,
-            speciesToBuff: res.speciesToBuff,
-          });
+          newRandomGame().then((res) =>
+            newGameResHandler(res.speciesToBuff, res)
+          );
         }
       });
     } else {
       // is campaign game
+      setIsCampaignGame(true);
       const [, authId] = document.cookie.split("auth=");
       if (authId) {
         getUserMe(authId).then((res) => {
@@ -80,16 +81,12 @@ export default function App() {
             const { campaign_level } = profile;
             const [, level] = search.split("?lv=");
             if (parseFloat(level) === campaign_level) {
-              newTerrain(campaign_level).then((res) => {
-                if (res && res.name) {
-                  newCampaignGame(campaign_level, owned_cards).then((res) =>
-                    newGameResHandler(res)
+              newTerrain(campaign_level).then((terrainRes) => {
+                if (terrainRes && terrainRes.name) {
+                  newCampaignGame(campaign_level, owned_cards).then((gameRes) =>
+                    newGameResHandler(terrainRes.speciesToBuff, gameRes)
                   );
-                  setTerrain(res);
-                  dispatch({
-                    type: SET_TERRAIN,
-                    speciesToBuff: res.speciesToBuff,
-                  });
+                  setTerrain(terrainRes);
                 }
               });
             } else history.push("/menu");
@@ -111,11 +108,9 @@ export default function App() {
     if (hands.pc.length && hands.user.length) {
       if (getLiveCards(hands.pc).length === 0) {
         setModal("win");
-        dispatch({ type: RESTART_GAME });
       }
       if (getLiveCards(hands.user).length === 0) {
         setModal("lose");
-        dispatch({ type: RESTART_GAME });
       }
     }
   }, [hands.pc, hands.user]); //eslint-disable-line
@@ -132,36 +127,19 @@ export default function App() {
     }
   }, [pcTurn, triggerPcAttack]); //eslint-disable-line
 
-  const getModalContent = (modal: string) => {
-    if (modal === "win") {
-      return (
-        <>
-          <Title>You won!</Title>
-          <Text>Good game! Nature always win against computers!</Text>
-        </>
-      );
-    }
-    if (modal === "lose") {
-      return (
-        <>
-          <Title>You lost!</Title>
-          <Text>
-            Nice try! PC defeated you this time, but nature always takes
-            revenge!
-          </Text>
-        </>
-      );
-    }
-  };
-
   return (
     <>
       <Wrapper bgImg={terrain!.image}>
         <SidePanel plants={plants} terrain={terrain!} userName={userName} />
         <Board>
           {modal && (
-            <CustomModal closeModal={() => setModal("")}>
-              {getModalContent(modal)}
+            <CustomModal closeModal={() => {}} withCloseButton={false}>
+              <ModalResultContent
+                closeModal={() => setModal("")}
+                modal={modal}
+                isCampaignGame={isCampaignGame}
+                setTerrain={setTerrain}
+              />
             </CustomModal>
           )}
           <Hand hand={hands.pc} belongsToUser={false} />
@@ -223,8 +201,4 @@ const BoardText = styled.h4`
   @media (${SMALL_RESPONSIVE_BREAK}) {
     font-size: 12px;
   }
-`;
-const Title = styled.span`
-  font-size: 18px;
-  font-weight: bold;
 `;

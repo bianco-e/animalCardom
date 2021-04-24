@@ -6,11 +6,9 @@ import { HandKey, IAnimal, IHands, IPlant, IPlants } from "../../interfaces";
 import {
   COMPUTER_PLAY,
   COMPUTER_THINK,
-  RESTART_GAME,
   SELECT_CARD,
   SELECT_PLANT,
   SET_CARDS,
-  SET_TERRAIN,
 } from "./types";
 export interface IHandsAction {
   hands: IHands;
@@ -335,20 +333,26 @@ const setTerrain = (state: IHandsState, speciesToBuff: string) => {
   };
 };
 
-const setCards = (state: IHandsState, hands: IHands, plants: IPlants) => {
-  return {
-    ...state,
-    hands,
-    plants,
-  };
+const setCards = (
+  state: IHandsState,
+  hands: IHands,
+  plants: IPlants,
+  speciesToBuff: string
+) => {
+  return setTerrain(
+    {
+      ...state,
+      hands,
+      plants,
+    },
+    speciesToBuff
+  );
 };
 
 const reducer = (state: IHandsState, action: IHandsAction) => {
   switch (action.type) {
     case SET_CARDS:
-      return setCards(state, action.hands, action.plants);
-    case SET_TERRAIN:
-      return setTerrain(state, action.speciesToBuff);
+      return setCards(state, action.hands, action.plants, action.speciesToBuff);
     case SELECT_CARD:
       return selectCard(state, action.name);
     case SELECT_PLANT:
@@ -361,8 +365,6 @@ const reducer = (state: IHandsState, action: IHandsAction) => {
         triggerPcAttack: true,
         pcPlay: "Thinking...",
       };
-    case RESTART_GAME:
-      return newGame();
     default:
       return state;
   }

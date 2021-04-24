@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import CustomModal from "../components/CustomModal";
 import NavBar from "../components/NavBar";
+import ModalWelcomeContent from "../components/ModalWelcomeContent";
 import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
 import { ACButton, ComingSoon, Text } from "../components/styled-components";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -12,6 +13,7 @@ export default function WelcomePage() {
   const history = useHistory();
   const [inputValue, setInputValue] = useState<string>("");
   const [modal, setModal] = useState<string>("");
+  const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false);
 
   const isMobile = () => {
     if (
@@ -25,6 +27,8 @@ export default function WelcomePage() {
 
   useEffect(() => {
     isMobile();
+    const guest = localStorage.getItem("guest");
+    guest && setInputValue(guest);
   }, []);
 
   const goToPlay = () => {
@@ -32,70 +36,12 @@ export default function WelcomePage() {
       localStorage.setItem("guest", inputValue);
       history.push(`/play`);
       setInputValue("");
-    } else {
-      setModal("nameError");
-    }
+    } else setShowErrorMessage(true);
   };
 
   const onKeyDownFn = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       goToPlay();
-    }
-  };
-
-  const getModalContent = (modal: string) => {
-    if (modal === "nameError") {
-      return (
-        <>
-          <Title>Nameless people are not allowed in Animal Cardom!</Title>
-          <Text>Please enter a name and try to play again</Text>
-        </>
-      );
-    }
-    if (modal === "mobileDetected") {
-      return (
-        <>
-          <Title>Mobile device detected</Title>
-          <Text>
-            You could be using Animal Cardom from a mobile device. In that case,
-            we recommend to rotate the screen for a better experience
-          </Text>
-        </>
-      );
-    }
-    if (modal === "rules") {
-      return (
-        <>
-          <Title>Animal Cardom rules</Title>
-          <Text>
-            You have five different animals cards, and three different plants to
-            apply on them if wanted. A terrain will be randomly set at the very
-            start. Each card has an ability, an attack and life points, and also
-            belongs to a species which can give you benefits or not depending on
-            the terrain or other cards' abilities. The objective is to kill all
-            opponent's cards. Have fun!
-          </Text>
-        </>
-      );
-    }
-    if (modal === "terrains") {
-      return (
-        <>
-          <Title>Available terrains</Title>
-          There are 6 different terrains. One is randomly set when game begins
-          and benefits a species increasing attack by 1
-          {[
-            "- Sea buffs 🦈 animals",
-            "- Swamp buffs 🐸 animals",
-            "- Jungle buffs 🐺 animals",
-            "- Desert buffs 🦂 animals",
-            "- Mountain buffs 🦅 animals",
-            "- Forest buffs 🦎 animals",
-          ].map((text) => (
-            <Text>{text}</Text>
-          ))}
-        </>
-      );
     }
   };
 
@@ -108,10 +54,15 @@ export default function WelcomePage() {
       <Title>Welcome to Animal Cardom!</Title>
       {modal && (
         <CustomModal closeModal={() => setModal("")}>
-          {getModalContent(modal)}
+          <ModalWelcomeContent modal={modal} />
         </CustomModal>
       )}
       <Container>
+        {showErrorMessage && (
+          <ErrorMessage>
+            Nameless people are not allowed in Animal Cardom!
+          </ErrorMessage>
+        )}
         <Input
           type="text"
           placeholder="Enter your name to play as guest"
@@ -135,6 +86,16 @@ export default function WelcomePage() {
   );
 }
 
+const ErrorMessage = styled.span`
+  font-size: 12px;
+  font-weight: bold;
+  color: #dd5540;
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  top: 60px;
+`;
 const Wrapper = styled.div`
   align-items: center;
   background-image: url(/images/welcome-background.png);
@@ -160,6 +121,7 @@ const Container = styled.div`
   height: 50vh;
   justify-content: space-around;
   margin: auto;
+  position: relative;
   width: 40%;
   @media (${SMALL_RESPONSIVE_BREAK}) {
     width: 85%;

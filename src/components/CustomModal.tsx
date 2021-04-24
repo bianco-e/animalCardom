@@ -8,12 +8,14 @@ interface IProps {
   closeModal: () => void;
   children?: JSX.Element;
   forSpinner?: boolean;
+  withCloseButton?: boolean;
 }
 
 export default function SimpleModal({
   closeModal,
   children,
   forSpinner,
+  withCloseButton = true,
 }: IProps) {
   const contentRef = useRef<HTMLDivElement>(null);
   const handleKeyDown = (e: KeyboardEvent) => {
@@ -54,7 +56,9 @@ export default function SimpleModal({
       <Wrapper>
         <Content forSpinner={forSpinner} ref={contentRef}>
           {children}
-          {!forSpinner && <Button onClick={() => closeModal()}>Close</Button>}
+          {!forSpinner && withCloseButton && (
+            <Button onClick={() => closeModal()}>Close</Button>
+          )}
         </Content>
       </Wrapper>,
       modalRoot
@@ -86,7 +90,8 @@ const Content = styled.div`
     !p.forSpinner && "inset 0px 0px 10px black"};
   display: flex;
   flex-direction: column;
-  padding: 0 1.3em 0 1.3em;
+  padding: 30px;
+  width: 600px;
   z-index: 30;
   @media (${SMALL_RESPONSIVE_BREAK}) {
     width: 80%;
@@ -98,5 +103,5 @@ const Button = styled.button`
   color: black;
   cursor: pointer;
   font-size: 10px;
-  margin: 0 0 2% 0;
+  margin: 10px 0;
 `;

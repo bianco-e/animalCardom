@@ -3,6 +3,7 @@ import styled from "styled-components";
 interface ButtonProps {
   fWeight?: string;
   selected?: boolean;
+  margin?: string;
 }
 interface TextProps {
   color?: string;
@@ -20,8 +21,6 @@ interface ImageProps {
 interface MessageProps {
   margin?: string;
 }
-
-interface TooltipProps {}
 
 export const Text = styled.span`
   color: ${(p: TextProps) => p.color};
@@ -47,6 +46,7 @@ export const ACButton = styled.button`
   height: 60px;
   font-size: 20px;
   font-weight: ${(p: ButtonProps) => p.fWeight};
+  margin: ${(p: ButtonProps) => p.margin};
   padding: 6px 10px;
   position: relative;
   width: 100%;
@@ -123,4 +123,10 @@ export const Tooltip = styled.div`
     left: 50%;
     top: -3px;
   }
+`;
+
+export const ModalTitle = styled.span`
+  font-size: 18px;
+  font-weight: bold;
+  margin: 10px 0;
 `;
