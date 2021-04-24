@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
 import Plant from "./Plant";
+import CustomModal from "./CustomModal";
 import {
   LARGE_RESPONSIVE_BREAK,
   MEDIUM_RESPONSIVE_BREAK,
   SMALL_RESPONSIVE_BREAK,
 } from "../utils/constants";
-import { Text, Tooltip } from "./styled-components";
+import { ACButton, ModalTitle, Text, Tooltip } from "./styled-components";
 import { IPlants, ITerrain } from "../interfaces/index";
 
 interface IProps {
@@ -17,6 +19,20 @@ interface IProps {
 
 export default function SidePanel({ plants, terrain, userName }: IProps) {
   const [showTerrainTooltip, setShowTerrainTooltip] = useState<boolean>(false);
+  const [soundState, setSoundState] = useState<"off" | "on">("on");
+  const [showExitModal, setShowExitModal] = useState<boolean>(false);
+  const history = useHistory();
+  useEffect(() => {
+    localStorage.setItem("sound", soundState);
+  }, [soundState]);
+
+  const handleSoundButton = () => {
+    const soundToSet = soundState === "off" ? "on" : "off";
+    setSoundState(soundToSet);
+  };
+  const handleExit = () => {
+    setShowExitModal(true);
+  };
   return (
     <LeftPanel bgImage={terrain.image}>
       <HalfPanel>
@@ -33,6 +49,17 @@ export default function SidePanel({ plants, terrain, userName }: IProps) {
         onMouseEnter={() => setShowTerrainTooltip(true)}
         onMouseLeave={() => setShowTerrainTooltip(false)}
       >
+        <OptionsPanel>
+          <button onClick={handleSoundButton}>
+            <img
+              alt="sound-button"
+              src={`/icons/sound-${soundState}-icon.png`}
+            />
+          </button>
+          <button onClick={handleExit}>
+            <img alt="exit-button" src={`/icons/exit-icon.png`} />
+          </button>
+        </OptionsPanel>
         {showTerrainTooltip && (
           <Tooltip>
             {terrain.name !== "Neutral"
@@ -51,6 +78,28 @@ export default function SidePanel({ plants, terrain, userName }: IProps) {
           return <Plant plant={plant}></Plant>;
         })}
       </HalfPanel>
+      {showExitModal && (
+        <CustomModal
+          closeModal={() => setShowExitModal(false)}
+          withCloseButton={false}
+        >
+          <>
+            <ModalTitle>You are about to exit the app</ModalTitle>
+            <Text margin="15px 0">
+              All this game progress is going to be lost.
+            </Text>
+            <Text>Are you sure?</Text>
+            <ACButton
+              fWeight="bold"
+              margin="20px 0"
+              onClick={() => setShowExitModal(false)}
+            >
+              Stay
+            </ACButton>
+            <ACButton onClick={() => history.push("/")}>Leave</ACButton>
+          </>
+        </CustomModal>
+      )}
     </LeftPanel>
   );
 }
@@ -141,5 +190,36 @@ const TerrainName = styled.h3`
   }
   @media (${SMALL_RESPONSIVE_BREAK}) {
     font-size: 14px;
+  }
+`;
+const OptionsPanel = styled.div`
+  align-items: center;
+  background: #d4a257;
+  border-radius: 0 50px 50px 0;
+  border: 2px solid #b9935a;
+  border-left: 0;
+  box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 110px;
+  position: absolute;
+  right: -27px;
+  top: calc(50% - 55);
+  width: 25px;
+  > button {
+    background: none;
+    border: 0;
+    cursor: pointer;
+    height: 15px;
+    margin-bottom: 25px;
+    z-index: 1;
+    &:last-child {
+      margin-bottom: 0;
+    }
+    > img {
+      height: 100%;
+      width: 100%;
+    }
   }
 `;
