@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import SimpleModal from "../components/CustomModal";
+import CustomModal from "../components/CustomModal";
 import NavBar from "../components/NavBar";
 import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
-import { ACButton, ComingSoon } from "../components/styled-components";
+import { ACButton, ComingSoon, Text } from "../components/styled-components";
 import { useAuth0 } from "@auth0/auth0-react";
 
 export default function WelcomePage() {
   const { user, isAuthenticated } = useAuth0();
   const history = useHistory();
   const [inputValue, setInputValue] = useState<string>("");
-  const [modalSign, setModalSign] = useState<any>("");
+  const [modal, setModal] = useState<string>("");
 
   const isMobile = () => {
     if (
@@ -19,7 +19,7 @@ export default function WelcomePage() {
         navigator.userAgent
       )
     ) {
-      setModalSign("device");
+      setModal("mobileDetected");
     }
   };
 
@@ -33,13 +33,69 @@ export default function WelcomePage() {
       history.push(`/play`);
       setInputValue("");
     } else {
-      setModalSign("nameError");
+      setModal("nameError");
     }
   };
 
   const onKeyDownFn = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       goToPlay();
+    }
+  };
+
+  const getModalContent = (modal: string) => {
+    if (modal === "nameError") {
+      return (
+        <>
+          <Title>Nameless people are not allowed in Animal Cardom!</Title>
+          <Text>Please enter a name and try to play again</Text>
+        </>
+      );
+    }
+    if (modal === "mobileDetected") {
+      return (
+        <>
+          <Title>Mobile device detected</Title>
+          <Text>
+            You could be using Animal Cardom from a mobile device. In that case,
+            we recommend to rotate the screen for a better experience
+          </Text>
+        </>
+      );
+    }
+    if (modal === "rules") {
+      return (
+        <>
+          <Title>Animal Cardom rules</Title>
+          <Text>
+            You have five different animals cards, and three different plants to
+            apply on them if wanted. A terrain will be randomly set at the very
+            start. Each card has an ability, an attack and life points, and also
+            belongs to a species which can give you benefits or not depending on
+            the terrain or other cards' abilities. The objective is to kill all
+            opponent's cards. Have fun!
+          </Text>
+        </>
+      );
+    }
+    if (modal === "terrains") {
+      return (
+        <>
+          <Title>Available terrains</Title>
+          There are 6 different terrains. One is randomly set when game begins
+          and benefits a species increasing attack by 1
+          {[
+            "- Sea buffs 🦈 animals",
+            "- Swamp buffs 🐸 animals",
+            "- Jungle buffs 🐺 animals",
+            "- Desert buffs 🦂 animals",
+            "- Mountain buffs 🦅 animals",
+            "- Forest buffs 🦎 animals",
+          ].map((text) => (
+            <Text>{text}</Text>
+          ))}
+        </>
+      );
     }
   };
 
@@ -50,8 +106,10 @@ export default function WelcomePage() {
         username={user && user.given_name && user.given_name}
       />
       <Title>Welcome to Animal Cardom!</Title>
-      {modalSign && (
-        <SimpleModal setShowModal={setModalSign} sign={modalSign} />
+      {modal && (
+        <CustomModal closeModal={() => setModal("")}>
+          {getModalContent(modal)}
+        </CustomModal>
       )}
       <Container>
         <Input
@@ -70,10 +128,8 @@ export default function WelcomePage() {
           <ComingSoon>Coming soon!</ComingSoon>
           PvP
         </ACButton>
-        <ACButton onClick={() => setModalSign("rules")}>Rules</ACButton>
-        <ACButton onClick={() => setModalSign("terrains")}>
-          See Terrains
-        </ACButton>
+        <ACButton onClick={() => setModal("rules")}>Rules</ACButton>
+        <ACButton onClick={() => setModal("terrains")}>See Terrains</ACButton>
       </Container>
     </Wrapper>
   );

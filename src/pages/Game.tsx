@@ -19,6 +19,8 @@ import SidePanel from "../components/SidePanel";
 import { IAnimal, IPlant, ITerrain } from "../interfaces";
 import { getUserMe } from "../queries/user";
 import { newTerrain, newCampaignGame, newRandomGame } from "../queries/games";
+import Spinner from "../components/Spinner";
+import { Text } from "../components/styled-components";
 
 const emptyTerrain = {
   name: "",
@@ -29,10 +31,10 @@ const emptyTerrain = {
 
 export default function App() {
   const [state, dispatch] = useContext<IHandsContext>(HandsContext);
-  const [isLoading, setIsLoading] = useState<string>("loading");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userName, setUserName] = useState<string>("");
   const [terrain, setTerrain] = useState<ITerrain>(emptyTerrain);
-  const [modalSign, setModalSign] = useState<any>("");
+  const [modal, setModal] = useState<string>("");
   const history = useHistory();
   const { pathname, search } = useLocation();
   const { hands, plants, pcTurn, pcPlay, triggerPcAttack } = state;
@@ -41,7 +43,7 @@ export default function App() {
     user: { animals: IAnimal[]; plants: IPlant[] };
     pc: { animals: IAnimal[]; plants: IPlant[] };
   }) => {
-    setIsLoading("");
+    setIsLoading(false);
     if (res && res.user && res.pc) {
       dispatch({
         type: SET_CARDS,
@@ -52,7 +54,7 @@ export default function App() {
   };
 
   const checkUserAndStartGame = () => {
-    setIsLoading("loading");
+    setIsLoading(true);
     if (!pathname.startsWith("/game")) {
       // is game for guests
       const guest = localStorage.getItem("guest");
@@ -108,11 +110,11 @@ export default function App() {
   useEffect(() => {
     if (hands.pc.length && hands.user.length) {
       if (getLiveCards(hands.pc).length === 0) {
-        setModalSign("win");
+        setModal("win");
         dispatch({ type: RESTART_GAME });
       }
       if (getLiveCards(hands.user).length === 0) {
-        setModalSign("lose");
+        setModal("lose");
         dispatch({ type: RESTART_GAME });
       }
     }
@@ -130,23 +132,48 @@ export default function App() {
     }
   }, [pcTurn, triggerPcAttack]); //eslint-disable-line
 
+  const getModalContent = (modal: string) => {
+    if (modal === "win") {
+      return (
+        <>
+          <Title>You won!</Title>
+          <Text>Good game! Nature always win against computers!</Text>
+        </>
+      );
+    }
+    if (modal === "lose") {
+      return (
+        <>
+          <Title>You lost!</Title>
+          <Text>
+            Nice try! PC defeated you this time, but nature always takes
+            revenge!
+          </Text>
+        </>
+      );
+    }
+  };
+
   return (
     <>
       <Wrapper bgImg={terrain!.image}>
         <SidePanel plants={plants} terrain={terrain!} userName={userName} />
         <Board>
-          {modalSign && (
-            <CustomModal setShowModal={setModalSign} sign={modalSign} />
-          )}
-          {modalSign && (
-            <CustomModal setShowModal={setModalSign} sign={modalSign} />
+          {modal && (
+            <CustomModal closeModal={() => setModal("")}>
+              {getModalContent(modal)}
+            </CustomModal>
           )}
           <Hand hand={hands.pc} belongsToUser={false} />
-          <Text>{pcPlay}</Text>
+          <BoardText>{pcPlay}</BoardText>
           <Hand hand={hands.user} belongsToUser={true} />
         </Board>
       </Wrapper>
-      {isLoading && <CustomModal setShowModal={setIsLoading} sign="loading" />}
+      {isLoading && (
+        <CustomModal closeModal={() => setIsLoading(false)} forSpinner={true}>
+          <Spinner />
+        </CustomModal>
+      )}
     </>
   );
 }
@@ -180,7 +207,7 @@ const Board = styled.div`
     min-height: 285px;
   }
 `;
-const Text = styled.h4`
+const BoardText = styled.h4`
   align-items: center;
   border-radius: 5px;
   color: ${({ color }) => color};
@@ -196,4 +223,8 @@ const Text = styled.h4`
   @media (${SMALL_RESPONSIVE_BREAK}) {
     font-size: 12px;
   }
+`;
+const Title = styled.span`
+  font-size: 18px;
+  font-weight: bold;
 `;
