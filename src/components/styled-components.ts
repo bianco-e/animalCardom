@@ -21,6 +21,8 @@ interface MessageProps {
   margin?: string;
 }
 
+interface TooltipProps {}
+
 export const Text = styled.span`
   color: ${(p: TextProps) => p.color};
   font-size: ${(p: TextProps) => p.fSize};
@@ -98,4 +100,27 @@ export const Message = styled.span`
   font-size: 18px;
   font-weight: bold;
   margin: ${(p: MessageProps) => p.margin};
+`;
+
+export const Tooltip = styled.div`
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.3);
+  font-size: 10px;
+  padding: 5px;
+  position: absolute;
+  text-align: center;
+  text-shadow: none;
+  top: calc(50% + 17px);
+  z-index: 5;
+  &:before {
+    content: "";
+    background: #fff;
+    height: 8px;
+    width: 8px;
+    transform: rotate(45deg);
+    position: absolute;
+    left: 50%;
+    top: -3px;
+  }
 `;

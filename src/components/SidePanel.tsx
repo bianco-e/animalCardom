@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Plant from "./Plant";
 import {
@@ -6,7 +6,7 @@ import {
   MEDIUM_RESPONSIVE_BREAK,
   SMALL_RESPONSIVE_BREAK,
 } from "../utils/constants";
-import { Text } from "./styled-components";
+import { Text, Tooltip } from "./styled-components";
 import { IPlants, ITerrain } from "../interfaces/index";
 
 interface IProps {
@@ -16,6 +16,7 @@ interface IProps {
 }
 
 export default function SidePanel({ plants, terrain, userName }: IProps) {
+  const [showTerrainTooltip, setShowTerrainTooltip] = useState<boolean>(false);
   return (
     <LeftPanel bgImage={terrain.image}>
       <HalfPanel>
@@ -29,8 +30,16 @@ export default function SidePanel({ plants, terrain, userName }: IProps) {
       </HalfPanel>
       <TerrainName
         color={terrain.color}
-        title={`All animals belonging to ${terrain.speciesToBuff} feel like home in ${terrain.name}. Their attack is increased by 1`}
+        onMouseEnter={() => setShowTerrainTooltip(true)}
+        onMouseLeave={() => setShowTerrainTooltip(false)}
       >
+        {showTerrainTooltip && (
+          <Tooltip>
+            {terrain.name !== "Neutral"
+              ? `${terrain.speciesToBuff} feel like home in ${terrain.name}.`
+              : "In Neutral terrain attack is not increased"}
+          </Tooltip>
+        )}
         {terrain.name}
       </TerrainName>
       <HalfPanel>
@@ -123,6 +132,7 @@ const TerrainName = styled.h3`
   display: flex;
   height: 33%;
   justify-content: center;
+  position: relative;
   text-shadow: rgba(10, 10, 10, 0.6) 0px 1px 5px;
   @media (${MEDIUM_RESPONSIVE_BREAK}) {
     width: 90px;
