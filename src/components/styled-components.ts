@@ -17,6 +17,10 @@ interface ImageProps {
   width?: string;
 }
 
+interface MessageProps {
+  margin?: string;
+}
+
 export const Text = styled.span`
   color: ${(p: TextProps) => p.color};
   font-size: ${(p: TextProps) => p.fSize};
@@ -88,4 +92,10 @@ export const MenuTitle = styled.span`
     top: 48%;
     left: -90px;
   }
+`;
+
+export const Message = styled.span`
+  font-size: 18px;
+  font-weight: bold;
+  margin: ${(p: MessageProps) => p.margin};
 `;

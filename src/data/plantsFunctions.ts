@@ -5,7 +5,7 @@ const poisonCardInAHand = (
   arr: IAnimal[],
   poisoned: Poisoned,
   animalToTreat: IAnimal
-) => {
+): IAnimal[] => {
   return arr.map((card) => {
     if (card === animalToTreat) {
       return {
@@ -20,7 +20,7 @@ const healCardInAHand = (
   arr: IAnimal[],
   amountToHeal: number,
   animalToTreat: IAnimal
-) => {
+): IAnimal[] => {
   return arr.map((card) => {
     if (card === animalToTreat && typeof card.life.current === "number") {
       return {
@@ -41,7 +41,7 @@ const paralyzeCardInAHand = (
   arr: IAnimal[],
   roundsNumber: number,
   animalToTreat: IAnimal
-) => {
+): IAnimal[] => {
   return arr.map((card) => {
     if (card === animalToTreat) {
       return {
@@ -56,7 +56,7 @@ const setCardAttackInAHand = (
   arr: IAnimal[],
   attackAmount: number,
   animalToTreat: IAnimal
-) => {
+): IAnimal[] => {
   return arr.map((card) => {
     if (card === animalToTreat) {
       return {
@@ -74,8 +74,11 @@ const setHandInState = (
   state: IHandsState,
   hand: HandKey,
   newHand: IAnimal[]
-) => {
+): IHandsState => {
   const { hands, usedPlants, selectedPlant } = state;
+  const newUsedPlants = selectedPlant
+    ? [...usedPlants, selectedPlant]
+    : usedPlants;
   return {
     ...state,
     hands: {
@@ -84,11 +87,11 @@ const setHandInState = (
     },
     animalToTreat: undefined,
     selectedPlant: undefined,
-    usedPlants: [...usedPlants, selectedPlant],
+    usedPlants: newUsedPlants,
   };
 };
 
-const ricinumFn = (state: IHandsState, hand: HandKey) => {
+const ricinumFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { animalToTreat, hands } = state;
   const poison = { damage: 1, rounds: 3 };
   if (hands[hand].includes(animalToTreat!)) {
@@ -97,7 +100,7 @@ const ricinumFn = (state: IHandsState, hand: HandKey) => {
   } else return state;
 };
 
-const aloeFn = (state: IHandsState, hand: HandKey) => {
+const aloeFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { animalToTreat, hands } = state;
   const otherHand = hand === "pc" ? "user" : "pc";
   if (
@@ -109,7 +112,7 @@ const aloeFn = (state: IHandsState, hand: HandKey) => {
   } else return state;
 };
 
-const peyoteFn = (state: IHandsState, hand: HandKey) => {
+const peyoteFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { animalToTreat, hands } = state;
   if (hands[hand].includes(animalToTreat!) && animalToTreat!.paralyzed === 0) {
     const newHand = paralyzeCardInAHand(hands[hand], 2, animalToTreat!);
@@ -117,7 +120,7 @@ const peyoteFn = (state: IHandsState, hand: HandKey) => {
   } else return state;
 };
 
-const jewelweedFn = (state: IHandsState, hand: HandKey) => {
+const jewelweedFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { animalToTreat, hands } = state;
   const poison = { damage: 0, rounds: 0 };
   const otherHand = hand === "pc" ? "user" : "pc";
@@ -130,7 +133,7 @@ const jewelweedFn = (state: IHandsState, hand: HandKey) => {
   } else return state;
 };
 
-const coffeeFn = (state: IHandsState, hand: HandKey) => {
+const coffeeFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { animalToTreat, hands } = state;
   const otherHand = hand === "pc" ? "user" : "pc";
   if (
@@ -142,7 +145,7 @@ const coffeeFn = (state: IHandsState, hand: HandKey) => {
   } else return state;
 };
 
-const withaniaFn = (state: IHandsState, hand: HandKey) => {
+const withaniaFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { animalToTreat, hands } = state;
   const otherHand = hand === "pc" ? "user" : "pc";
   if (hands[otherHand].includes(animalToTreat!)) {
@@ -151,13 +154,21 @@ const withaniaFn = (state: IHandsState, hand: HandKey) => {
   } else return state;
 };
 
-const plantsFunctions = {
-  ricinumFn,
-  aloeFn,
-  peyoteFn,
-  jewelweedFn,
-  coffeeFn,
-  withaniaFn,
-};
-
-export default plantsFunctions;
+export default function getPlantFn(name: string) {
+  switch (name) {
+    case "Ricinum":
+      return ricinumFn;
+    case "Aloe":
+      return aloeFn;
+    case "Peyote":
+      return peyoteFn;
+    case "Jewelweed":
+      return jewelweedFn;
+    case "Coffee":
+      return coffeeFn;
+    case "Withania":
+      return withaniaFn;
+    default:
+      return (state: IHandsState, hand: HandKey) => state;
+  }
+}

@@ -1,5 +1,5 @@
 import { IHandsState } from "../context/HandsContext";
-import { HandKey, IAnimal, Poisoned } from "../interfaces";
+import { HandKey, IAnimal, IHands, Poisoned } from "../interfaces";
 
 const poisonEnemy = (arr: IAnimal[], defender: IAnimal, poisoned: Poisoned) => {
   return arr.map((card) => {
@@ -163,13 +163,13 @@ const setHandInState = (
   };
 };
 
-const bearFn = (state: IHandsState, hand: HandKey) => {
+const bearFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, defender } = state;
   const newHand = makeEnemyBleed(hands[hand], defender!);
   return setHandInState(state, hand, newHand);
 };
 
-const beeFn = (state: IHandsState, hand: HandKey) => {
+const beeFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, defender, attacker } = state;
   const damage = 3;
   const otherHand = hand === "pc" ? "user" : "pc";
@@ -182,7 +182,7 @@ const beeFn = (state: IHandsState, hand: HandKey) => {
   };
 };
 
-const blowfishFn = (state: IHandsState, hand: HandKey) => {
+const blowfishFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, attacker } = state;
   const attackAmount = 2;
   const otherHand = hand === "pc" ? "user" : "pc";
@@ -195,35 +195,35 @@ const blowfishFn = (state: IHandsState, hand: HandKey) => {
   return setHandInState(state, otherHand, newHand);
 };
 
-const cassowaryFn = (state: IHandsState, hand: HandKey) => {
+const cassowaryFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, defender } = state;
   const roundsNumber = 1;
   const newHand = paralyzeEnemy(hands[hand], defender!, roundsNumber);
   return setHandInState(state, hand, newHand);
 };
 
-const chameleonFn = (state: IHandsState, hand: HandKey) => {
+const chameleonFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, attacker } = state;
   const otherHand = hand === "pc" ? "user" : "pc";
   const newHand = setTargeteableAsTrue(hands[otherHand], attacker!);
   return setHandInState(state, otherHand, newHand);
 };
 
-const cheetahFn = (state: IHandsState, hand: HandKey) => {
+const cheetahFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, attacker } = state;
   const otherHand = hand === "pc" ? "user" : "pc";
   const newHand = setTargeteableAsTrue(hands[otherHand], attacker!);
   return setHandInState(state, otherHand, newHand);
 };
 
-const crocodileFn = (state: IHandsState, hand: HandKey) => {
+const crocodileFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, defender } = state;
   const damage = 2;
   const newHand = makeExtraDamage(hands[hand], defender!, damage);
   return setHandInState(state, hand, newHand);
 };
 
-const eagleFn = (state: IHandsState, hand: HandKey) => {
+const eagleFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, defender, attacker } = state;
   const damage = 2;
   if (attacker!.species !== "🦂") {
@@ -235,21 +235,21 @@ const eagleFn = (state: IHandsState, hand: HandKey) => {
   }
 };
 
-const electriceelFn = (state: IHandsState, hand: HandKey) => {
+const electriceelFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, defender } = state;
   const roundsNumber = 2;
   const newHand = paralyzeEnemy(hands[hand], defender!, roundsNumber);
   return setHandInState(state, hand, newHand);
 };
 
-const elephantFn = (state: IHandsState, hand: HandKey) => {
+const elephantFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands } = state;
   const attackAmount = 1;
   const newHand = decreaseEnemiesAttack(hands[hand], attackAmount);
   return setHandInState(state, hand, newHand);
 };
 
-const gorillaFn = (state: IHandsState, hand: HandKey) => {
+const gorillaFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, attacker } = state;
   const attackAmount = 1;
   const otherHand = hand === "pc" ? "user" : "pc";
@@ -262,7 +262,7 @@ const gorillaFn = (state: IHandsState, hand: HandKey) => {
   return setHandInState(state, otherHand, newHand);
 };
 
-const hyenaFn = (state: IHandsState, hand: HandKey) => {
+const hyenaFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, defender } = state;
   const damage = 2;
   if (defender!.life.current < defender!.life.initial) {
@@ -271,7 +271,7 @@ const hyenaFn = (state: IHandsState, hand: HandKey) => {
   } else return state;
 };
 
-const komododragonFn = (state: IHandsState, hand: HandKey) => {
+const komododragonFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, defender } = state;
   const poison = { damage: 1, rounds: 1 };
   const damage = 1;
@@ -280,14 +280,14 @@ const komododragonFn = (state: IHandsState, hand: HandKey) => {
   return setHandInState(state, hand, newHand);
 };
 
-const lionFn = (state: IHandsState, hand: HandKey) => {
+const lionFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, defender } = state;
   const roundsNumber = 3;
   const newHand = paralyzeEnemy(hands[hand], defender!, roundsNumber);
   return setHandInState(state, hand, newHand);
 };
 
-const mosquitoFn = (state: IHandsState, hand: HandKey) => {
+const mosquitoFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, attacker } = state;
   const otherHand = hand === "pc" ? "user" : "pc";
   const newHand = healItself(
@@ -298,14 +298,14 @@ const mosquitoFn = (state: IHandsState, hand: HandKey) => {
   return setHandInState(state, otherHand, newHand);
 };
 
-const orcFn = (state: IHandsState, hand: HandKey) => {
+const orcFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, defender } = state;
   const roundsNumber = 1;
   const newHand = paralyzeEnemy(hands[hand], defender!, roundsNumber);
   return setHandInState(state, hand, newHand);
 };
 
-const parrotFn = (state: IHandsState, hand: HandKey) => {
+const parrotFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, defender, attacker } = state;
   const otherHand = hand === "pc" ? "user" : "pc";
   const updatedDefender = hands[hand].find(
@@ -317,7 +317,7 @@ const parrotFn = (state: IHandsState, hand: HandKey) => {
   } else return state;
 };
 
-const salamanderFn = (state: IHandsState, hand: HandKey) => {
+const salamanderFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, attacker } = state;
   const healthAmount = 1;
   const otherHand = hand === "pc" ? "user" : "pc";
@@ -327,14 +327,14 @@ const salamanderFn = (state: IHandsState, hand: HandKey) => {
   } else return state;
 };
 
-const scorpionFn = (state: IHandsState, hand: HandKey) => {
+const scorpionFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, defender } = state;
   const poison = { damage: 1, rounds: 3 };
   const newHand = poisonEnemy(hands[hand], defender!, poison);
   return setHandInState(state, hand, newHand);
 };
 
-const sharkFn = (state: IHandsState, hand: HandKey) => {
+const sharkFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, attacker } = state;
   const attackAmount = 2;
   const otherHand = hand === "pc" ? "user" : "pc";
@@ -349,28 +349,28 @@ const sharkFn = (state: IHandsState, hand: HandKey) => {
   } else return state;
 };
 
-const snakeFn = (state: IHandsState, hand: HandKey) => {
+const snakeFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, defender } = state;
   const poison = { damage: 1, rounds: 3 };
   const newHand = poisonEnemy(hands[hand], defender!, poison);
   return setHandInState(state, hand, newHand);
 };
 
-const spiderFn = (state: IHandsState, hand: HandKey) => {
+const spiderFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, defender } = state;
   const roundsNumber = 2;
   const newHand = paralyzeEnemy(hands[hand], defender!, roundsNumber);
   return setHandInState(state, hand, newHand);
 };
 
-const stingrayFn = (state: IHandsState, hand: HandKey) => {
+const stingrayFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, defender } = state;
   const poison = { damage: 1, rounds: 1 };
   const newHand = poisonEnemy(hands[hand], defender!, poison);
   return setHandInState(state, hand, newHand);
 };
 
-const toadFn = (state: IHandsState, hand: HandKey) => {
+const toadFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, defender } = state;
   if (defender!.species === "🦂") {
     const newHand = killInstantly(hands[hand], defender!);
@@ -378,7 +378,7 @@ const toadFn = (state: IHandsState, hand: HandKey) => {
   } else return state;
 };
 
-const tortoiseFn = (state: IHandsState, hand: HandKey) => {
+const tortoiseFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, attacker } = state;
   const healthAmount = 2;
   const otherHand = hand === "pc" ? "user" : "pc";
@@ -386,7 +386,7 @@ const tortoiseFn = (state: IHandsState, hand: HandKey) => {
   return setHandInState(state, otherHand, newHand);
 };
 
-const vultureFn = (state: IHandsState, hand: HandKey) => {
+const vultureFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, attacker } = state;
   const attackAmount = 4;
   const otherHand = hand === "pc" ? "user" : "pc";
@@ -405,33 +405,61 @@ const vultureFn = (state: IHandsState, hand: HandKey) => {
   } else return state;
 };
 
-const skillsFunctions = {
-  crocodileFn,
-  tortoiseFn,
-  snakeFn,
-  komododragonFn,
-  chameleonFn,
-  toadFn,
-  salamanderFn,
-  sharkFn,
-  stingrayFn,
-  orcFn,
-  blowfishFn,
-  electriceelFn,
-  eagleFn,
-  vultureFn,
-  cassowaryFn,
-  parrotFn,
-  mosquitoFn,
-  scorpionFn,
-  beeFn,
-  spiderFn,
-  bearFn,
-  lionFn,
-  gorillaFn,
-  cheetahFn,
-  hyenaFn,
-  elephantFn,
-};
-
-export default skillsFunctions;
+export default function getSkillFn(name: string) {
+  switch (name) {
+    case "Crocodile":
+      return crocodileFn;
+    case "Tortoise":
+      return tortoiseFn;
+    case "Snake":
+      return snakeFn;
+    case "Komodo Dragon":
+      return komododragonFn;
+    case "Chameleon":
+      return chameleonFn;
+    case "Toad":
+      return toadFn;
+    case "Salamander":
+      return salamanderFn;
+    case "Shark":
+      return sharkFn;
+    case "Stingray":
+      return stingrayFn;
+    case "Orc":
+      return orcFn;
+    case "Blowfish":
+      return blowfishFn;
+    case "Electric Eel":
+      return electriceelFn;
+    case "Eagle":
+      return eagleFn;
+    case "Vulture":
+      return vultureFn;
+    case "Cassowary":
+      return cassowaryFn;
+    case "Parrot":
+      return parrotFn;
+    case "Mosquito":
+      return mosquitoFn;
+    case "Scorpion":
+      return scorpionFn;
+    case "Bee":
+      return beeFn;
+    case "Spider":
+      return spiderFn;
+    case "Bear":
+      return bearFn;
+    case "Lion":
+      return lionFn;
+    case "Gorilla":
+      return gorillaFn;
+    case "Cheetah":
+      return cheetahFn;
+    case "Hyena":
+      return hyenaFn;
+    case "Elephant":
+      return elephantFn;
+    default:
+      return (state: IHandsState) => state;
+  }
+}

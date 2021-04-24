@@ -12,10 +12,10 @@ import { IPlants, ITerrain } from "../interfaces/index";
 interface IProps {
   plants: IPlants;
   terrain: ITerrain;
+  userName: string;
 }
 
-export default function SidePanel({ plants, terrain }: IProps) {
-  const guestName = localStorage.getItem("guest");
+export default function SidePanel({ plants, terrain, userName }: IProps) {
   return (
     <LeftPanel bgImage={terrain.image}>
       <HalfPanel>
@@ -35,9 +35,9 @@ export default function SidePanel({ plants, terrain }: IProps) {
       </TerrainName>
       <HalfPanel>
         <Text fSize="18px" fWeight="bold" padding="5px">
-          {guestName}
+          {userName}
         </Text>
-        <PlayerNameTab>{guestName}</PlayerNameTab>
+        <PlayerNameTab>{userName}</PlayerNameTab>
         {plants.user.map((plant) => {
           return <Plant plant={plant}></Plant>;
         })}

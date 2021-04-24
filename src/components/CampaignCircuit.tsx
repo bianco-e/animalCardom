@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
 import { terrains } from "../data/data";
 import { ITerrain } from "../interfaces";
 
@@ -10,6 +11,7 @@ interface IProps {
 export default function ({ userCampaignLevel }: IProps) {
   const [containerWidth, setContainerWidth] = useState<number>(200);
   const containerRef = useRef<HTMLDivElement>(null);
+  const history = useHistory();
 
   useEffect(() => {
     if (containerRef.current) {
@@ -17,9 +19,10 @@ export default function ({ userCampaignLevel }: IProps) {
     }
   }, [containerRef.current]);
 
-  const handleTerrainSelection = (terrain: ITerrain) => {
-    console.log(`${terrain.name} selected`);
+  const handleTerrainSelection = () => {
+    history.push(`/game?lv=${userCampaignLevel}`);
   };
+
   return (
     <Wrapper ref={containerRef}>
       {terrains.map((terrain, idx) => {
@@ -33,7 +36,7 @@ export default function ({ userCampaignLevel }: IProps) {
             disabled={isDisabled}
             key={name}
             level={idx + 1}
-            onClick={() => !isDisabled && handleTerrainSelection(terrain)}
+            onClick={() => !isDisabled && handleTerrainSelection()}
             title={isDisabled ? "Locked" : name}
           ></TerrainContainer>
         );

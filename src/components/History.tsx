@@ -3,475 +3,88 @@ import styled from "styled-components";
 import CardThumbnail from "./CardThumbnail";
 import PlantThumbnail from "./PlantThumbnail";
 import { cardSpeciesToLowerCase } from "../utils";
-const lastTenGames = [
-  {
-    won: true,
-    usedCards: {
-      own: [
-        {
-          name: "Elephant",
-          survived: true,
-        },
-        {
-          name: "Lion",
-          survived: false,
-        },
-        {
-          name: "Mosquito",
-          survived: true,
-        },
-        {
-          name: "Gorilla",
-          survived: true,
-        },
-        {
-          name: "Electric Eel",
-          survived: true,
-        },
-      ],
-      pc: [
-        {
-          name: "Shark",
-          survived: true,
-        },
-        {
-          name: "Bear",
-          survived: true,
-        },
-        {
-          name: "Toad",
-          survived: true,
-        },
-        {
-          name: "Salamander",
-          survived: true,
-        },
-        {
-          name: "Cheetah",
-          survived: false,
-        },
-      ],
-    },
-    usedPlants: {
-      own: [
-        {
-          name: "Withania",
-          applied: true,
-        },
-        {
-          name: "Coffee",
-          applied: false,
-        },
-        {
-          name: "Peyote",
-          applied: true,
-        },
-      ],
-      pc: [
-        {
-          name: "Jewelweed",
-          applied: true,
-        },
-        {
-          name: "Aloe",
-          applied: true,
-        },
-        {
-          name: "Ricinum",
-          applied: false,
-        },
-      ],
-    },
-  },
-  {
-    won: true,
-    usedCards: {
-      own: [
-        {
-          name: "Elephant",
-          survived: true,
-        },
-        {
-          name: "Elephant",
-          survived: true,
-        },
-        {
-          name: "Elephant",
-          survived: true,
-        },
-        {
-          name: "Elephant",
-          survived: true,
-        },
-        {
-          name: "Elephant",
-          survived: false,
-        },
-      ],
-      pc: [
-        {
-          name: "Elephant",
-          survived: true,
-        },
-        {
-          name: "Elephant",
-          survived: true,
-        },
-        {
-          name: "Elephant",
-          survived: true,
-        },
-        {
-          name: "Elephant",
-          survived: true,
-        },
-        {
-          name: "Elephant",
-          survived: false,
-        },
-      ],
-    },
-    usedPlants: {
-      own: [
-        {
-          name: "Withania",
-          applied: true,
-        },
-        {
-          name: "Coffee",
-          applied: false,
-        },
-        {
-          name: "Peyote",
-          applied: true,
-        },
-      ],
-      pc: [
-        {
-          name: "Jewelweed",
-          applied: true,
-        },
-        {
-          name: "Aloe",
-          applied: true,
-        },
-        {
-          name: "Ricinum",
-          applied: false,
-        },
-      ],
-    },
-  },
-  {
-    won: false,
-    usedCards: {
-      own: [
-        {
-          name: "Elephant",
-          survived: false,
-        },
-        {
-          name: "Elephant",
-          survived: true,
-        },
-        {
-          name: "Elephant",
-          survived: false,
-        },
-        {
-          name: "Elephant",
-          survived: false,
-        },
-        {
-          name: "Elephant",
-          survived: true,
-        },
-      ],
-      pc: [
-        {
-          name: "Elephant",
-          survived: true,
-        },
-        {
-          name: "Elephant",
-          survived: true,
-        },
-        {
-          name: "Elephant",
-          survived: true,
-        },
-        {
-          name: "Elephant",
-          survived: false,
-        },
-        {
-          name: "Elephant",
-          survived: false,
-        },
-      ],
-    },
-    usedPlants: {
-      own: [
-        {
-          name: "Withania",
-          applied: true,
-        },
-        {
-          name: "Coffee",
-          applied: false,
-        },
-        {
-          name: "Peyote",
-          applied: true,
-        },
-      ],
-      pc: [
-        {
-          name: "Jewelweed",
-          applied: true,
-        },
-        {
-          name: "Aloe",
-          applied: true,
-        },
-        {
-          name: "Ricinum",
-          applied: false,
-        },
-      ],
-    },
-  },
-  {
-    won: true,
-    usedCards: {
-      own: [
-        {
-          name: "Elephant",
-          survived: true,
-        },
-        {
-          name: "Elephant",
-          survived: false,
-        },
-        {
-          name: "Elephant",
-          survived: false,
-        },
-        {
-          name: "Elephant",
-          survived: true,
-        },
-        {
-          name: "Elephant",
-          survived: true,
-        },
-      ],
-      pc: [
-        {
-          name: "Elephant",
-          survived: true,
-        },
-        {
-          name: "Elephant",
-          survived: true,
-        },
-        {
-          name: "Elephant",
-          survived: true,
-        },
-        {
-          name: "Elephant",
-          survived: false,
-        },
-        {
-          name: "Elephant",
-          survived: false,
-        },
-      ],
-    },
-    usedPlants: {
-      own: [
-        {
-          name: "Withania",
-          applied: true,
-        },
-        {
-          name: "Coffee",
-          applied: false,
-        },
-        {
-          name: "Peyote",
-          applied: true,
-        },
-      ],
-      pc: [
-        {
-          name: "Jewelweed",
-          applied: true,
-        },
-        {
-          name: "Aloe",
-          applied: true,
-        },
-        {
-          name: "Ricinum",
-          applied: false,
-        },
-      ],
-    },
-  },
-  {
-    won: false,
-    usedCards: {
-      own: [
-        {
-          name: "Elephant",
-          survived: false,
-        },
-        {
-          name: "Elephant",
-          survived: false,
-        },
-        {
-          name: "Elephant",
-          survived: true,
-        },
-        {
-          name: "Elephant",
-          survived: true,
-        },
-        {
-          name: "Elephant",
-          survived: true,
-        },
-      ],
-      pc: [
-        {
-          name: "Elephant",
-          survived: true,
-        },
-        {
-          name: "Elephant",
-          survived: true,
-        },
-        {
-          name: "Elephant",
-          survived: true,
-        },
-        {
-          name: "Elephant",
-          survived: true,
-        },
-        {
-          name: "Elephant",
-          survived: true,
-        },
-      ],
-    },
-    usedPlants: {
-      own: [
-        {
-          name: "Withania",
-          applied: true,
-        },
-        {
-          name: "Coffee",
-          applied: false,
-        },
-        {
-          name: "Peyote",
-          applied: true,
-        },
-      ],
-      pc: [
-        {
-          name: "Jewelweed",
-          applied: true,
-        },
-        {
-          name: "Aloe",
-          applied: true,
-        },
-        {
-          name: "Ricinum",
-          applied: false,
-        },
-      ],
-    },
-  },
-];
+import { Game } from "../interfaces";
+import { Message } from "./styled-components";
 
-export default function History() {
+interface IProps {
+  lastGames: Game[];
+}
+
+export default function History({ lastGames }: IProps) {
   return (
     <Wrapper>
-      {lastTenGames.map((game, idx) => {
-        const { won, usedCards, usedPlants } = game;
-        return (
-          <HistoryCard key={idx}>
-            <Result bgColor={won ? "green" : "red"}>
-              {won ? "Won" : "Lost"}
-            </Result>
-            <PlayerStats>
-              <b>You</b>
-              <CardsContainer>
-                {usedCards.own.map((card) => {
-                  return (
-                    <CardThumbnail
-                      key={card.name}
-                      disabled={!card.survived}
-                      image={`/images/animals/adult-${cardSpeciesToLowerCase(
-                        card.name
-                      )}.webp`}
-                      name={card.name}
-                    ></CardThumbnail>
-                  );
-                })}
-              </CardsContainer>
-              <CardsContainer>
-                {usedPlants.own.map((plant) => {
-                  return (
-                    <PlantThumbnail
-                      key={plant.name}
-                      disabled={!plant.applied}
-                      image={`/images/plants/${plant.name.toLowerCase()}.webp`}
-                      name={plant.name}
-                    ></PlantThumbnail>
-                  );
-                })}
-              </CardsContainer>
-            </PlayerStats>
-            <PlayerStats>
-              <b>PC</b>
-              <CardsContainer>
-                {usedCards.pc.map((card) => {
-                  return (
-                    <CardThumbnail
-                      key={card.name}
-                      disabled={!card.survived}
-                      image={`/images/animals/adult-${cardSpeciesToLowerCase(
-                        card.name
-                      )}.webp`}
-                      name={card.name}
-                    ></CardThumbnail>
-                  );
-                })}
-              </CardsContainer>
-              <CardsContainer>
-                {usedPlants.pc.map((plant) => {
-                  return (
-                    <PlantThumbnail
-                      key={plant.name}
-                      disabled={!plant.applied}
-                      image={`/images/plants/${plant.name.toLowerCase()}.webp`}
-                      name={plant.name}
-                    ></PlantThumbnail>
-                  );
-                })}
-              </CardsContainer>
-            </PlayerStats>
-          </HistoryCard>
-        );
-      })}
+      {lastGames.length > 0 ? (
+        lastGames.map((game, idx) => {
+          const { won, usedAnimals, usedPlants } = game;
+          return (
+            <HistoryCard key={idx}>
+              <Result bgColor={won ? "green" : "red"}>
+                {won ? "Won" : "Lost"}
+              </Result>
+              <PlayerStats>
+                <b>You</b>
+                <CardsContainer>
+                  {usedAnimals.user.map((card) => {
+                    return (
+                      <CardThumbnail
+                        key={card.name}
+                        disabled={!card.survived}
+                        image={`/images/animals/adult-${cardSpeciesToLowerCase(
+                          card.name
+                        )}.webp`}
+                        name={card.name}
+                      ></CardThumbnail>
+                    );
+                  })}
+                </CardsContainer>
+                <CardsContainer>
+                  {usedPlants.user.map((plant) => {
+                    return (
+                      <PlantThumbnail
+                        key={plant.name}
+                        disabled={!plant.applied}
+                        image={`/images/plants/${plant.name.toLowerCase()}.webp`}
+                        name={plant.name}
+                      ></PlantThumbnail>
+                    );
+                  })}
+                </CardsContainer>
+              </PlayerStats>
+              <PlayerStats>
+                <b>PC</b>
+                <CardsContainer>
+                  {usedAnimals.pc.map((card) => {
+                    return (
+                      <CardThumbnail
+                        key={card.name}
+                        disabled={!card.survived}
+                        image={`/images/animals/adult-${cardSpeciesToLowerCase(
+                          card.name
+                        )}.webp`}
+                        name={card.name}
+                      ></CardThumbnail>
+                    );
+                  })}
+                </CardsContainer>
+                <CardsContainer>
+                  {usedPlants.pc.map((plant) => {
+                    return (
+                      <PlantThumbnail
+                        key={plant.name}
+                        disabled={!plant.applied}
+                        image={`/images/plants/${plant.name.toLowerCase()}.webp`}
+                        name={plant.name}
+                      ></PlantThumbnail>
+                    );
+                  })}
+                </CardsContainer>
+              </PlayerStats>
+            </HistoryCard>
+          );
+        })
+      ) : (
+        <Message>Mmm... Looks like you still didn't finish any game</Message>
+      )}
     </Wrapper>
   );
 }

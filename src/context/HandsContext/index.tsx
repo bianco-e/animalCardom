@@ -1,15 +1,20 @@
 import React, { useReducer } from "react";
-import { getCards, getPlants } from "../../data/data";
-import { IAnimal, IHands, IPlant } from "../../interfaces";
+import getPlantFn from "../../data/plantsFunctions";
+import getSkillFn from "../../data/skillsFunctions";
+import { HandKey, IAnimal, IHands, IPlant, IPlants } from "../../interfaces";
+
 import {
   COMPUTER_PLAY,
   COMPUTER_THINK,
   RESTART_GAME,
   SELECT_CARD,
   SELECT_PLANT,
+  SET_CARDS,
   SET_TERRAIN,
 } from "./types";
 export interface IHandsAction {
+  hands: IHands;
+  plants: IPlants;
   speciesToBuff: string;
   name: string;
   plant: IPlant;
@@ -18,7 +23,7 @@ export interface IHandsAction {
 export type IHandsContext = (IHandsState | any)[];
 export interface IHandsState {
   hands: IHands;
-  plants: { pc: IPlant[]; user: IPlant[] };
+  plants: IPlants;
   animalToTreat?: IAnimal;
   selectedPlant?: IPlant;
   usedPlants: IPlant[];
@@ -31,8 +36,8 @@ export interface IHandsState {
 }
 
 const newGame = (): IHandsState => ({
-  hands: getCards(),
-  plants: getPlants(),
+  hands: { user: [], pc: [] },
+  plants: { user: [], pc: [] },
   animalToTreat: undefined,
   selectedPlant: undefined,
   usedPlants: [],
@@ -60,7 +65,7 @@ const getHighestAttackCard = (hand: IAnimal[]) => {
   });
 };
 
-const attackAndApplySkill = (state: IHandsState, hand: "pc" | "user") => {
+const attackAndApplySkill = (state: IHandsState, hand: HandKey) => {
   const { defender, attacker, hands } = state;
   if (
     defender &&
@@ -81,20 +86,20 @@ const attackAndApplySkill = (state: IHandsState, hand: "pc" | "user") => {
     };
     return attacker.paralyzed > 0
       ? newState
-      : attacker.skill.toDo(newState, hand);
-  }
+      : getSkillFn(attacker.name)(newState, hand);
+  } else return state;
 };
 
 const applyPlantToCard = (
   plant: IPlant,
   card: IAnimal,
   state: IHandsState,
-  hand: "pc" | "user"
-) => {
+  hand: HandKey
+): IHandsState => {
   const plantMessage =
     hand === "user" ? ` and used ${plant.name} on ${card.name}` : "";
   if (card.targeteable) {
-    return plant.toDo(
+    return getPlantFn(plant.name)(
       {
         ...state,
         selectedPlant: plant,
@@ -106,7 +111,7 @@ const applyPlantToCard = (
   } else return state;
 };
 
-const checkWhatPlantToUse = (state: IHandsState) => {
+const checkWhatPlantToUse = (state: IHandsState): IHandsState => {
   const { plants, usedPlants, hands } = state;
   const pcLiveCards = getLiveCards(hands.pc);
   const userLiveCards = getLiveCards(hands.user);
@@ -153,7 +158,6 @@ const computerDamage = (state: IHandsState) => {
   const { defender, attacker, pcTurn, hands } = state;
   const pcAnswer = `${attacker!.name} attacked ${defender!.name}`;
   const newState = attackAndApplySkill(state, "user");
-
   if (getLiveCards(hands.user).length > 0) {
     return checkWhatPlantToUse({
       ...newState,
@@ -181,7 +185,7 @@ const computerPlay = (state: IHandsState) => {
 
 const damageEnemy = (state: IHandsState) => {
   const newState = attackAndApplySkill(state, "pc");
-  return getLiveCards(newState.hands.pc).length === 0
+  return getLiveCards(newState!.hands.pc).length === 0
     ? {
         ...newState,
         attacker: undefined,
@@ -331,8 +335,18 @@ const setTerrain = (state: IHandsState, speciesToBuff: string) => {
   };
 };
 
+const setCards = (state: IHandsState, hands: IHands, plants: IPlants) => {
+  return {
+    ...state,
+    hands,
+    plants,
+  };
+};
+
 const reducer = (state: IHandsState, action: IHandsAction) => {
   switch (action.type) {
+    case SET_CARDS:
+      return setCards(state, action.hands, action.plants);
     case SET_TERRAIN:
       return setTerrain(state, action.speciesToBuff);
     case SELECT_CARD:

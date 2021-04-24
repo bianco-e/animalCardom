@@ -10,6 +10,7 @@ interface ModalTexts {
   win: Sign;
   lose: Sign;
   device: Sign;
+  loading: Sign;
 }
 
 interface Sign {
@@ -23,6 +24,10 @@ interface Sign {
 const modalRoot = document.getElementById("modal-root");
 
 const modalTexts: ModalTexts = {
+  loading: {
+    title: "spinner",
+    paragraphs: [""],
+  },
   nameError: {
     title: "Nameless people are not allowed in Animal Cardom!",
     paragraphs: ["Please enter a name and try to play again"],

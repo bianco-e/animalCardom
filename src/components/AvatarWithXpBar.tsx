@@ -5,14 +5,18 @@ const STROKE_WIDTH = 10;
 const CIRCLE_RADIUS = 70;
 const CIRCLE_CIRCUMFERENCE = CIRCLE_RADIUS * 2 * Math.PI;
 
-export default function AvatarWithXpBar() {
+interface IProps {
+  havingXp: number;
+}
+
+export default function AvatarWithXpBar({ havingXp }: IProps) {
   const [dashoffset, setDashoffset] = useState<number>();
   const [level, setLevel] = useState<number>();
-  const totalXp = 780;
-  const currentLvlXp = totalXp % MAX_XP;
+
+  const currentLvlXp = havingXp % MAX_XP;
   useEffect(() => {
     const percent = (currentLvlXp * 100) / MAX_XP;
-    setLevel(Math.floor(totalXp / 1000) + 1);
+    setLevel(Math.floor(havingXp / 1000) + 1);
     setDashoffset(
       CIRCLE_CIRCUMFERENCE - (percent / 100) * CIRCLE_CIRCUMFERENCE
     );

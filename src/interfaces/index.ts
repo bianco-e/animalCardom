@@ -18,8 +18,7 @@ export interface Skill {
 }
 
 export interface IHands {
-  pc: IAnimal[];
-  user: IAnimal[];
+  [x: string]: IAnimal[];
 }
 
 export interface IPlants {
@@ -52,4 +51,19 @@ export interface ITerrain {
   image: string;
   name: string;
   color: string;
+}
+
+export interface Game {
+  created_at: string;
+  terrain: { name: string; image: string };
+  xp_earned: number;
+  won: boolean;
+  usedAnimals: {
+    user: [{ name: string; survived: boolean }];
+    pc: [{ name: string; survived: boolean }];
+  };
+  usedPlants: {
+    user: [{ name: string; applied: boolean }];
+    pc: [{ name: string; applied: boolean }];
+  };
 }

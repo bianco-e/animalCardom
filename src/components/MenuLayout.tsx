@@ -1,14 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import SideMenu from "../components/SideMenu";
 import Spinner from "../components/Spinner";
 import { Redirect } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import { getUserMe } from "../queries/user";
 
 export default function MenuLayout({ children }: { children: JSX.Element }) {
   const { user, isAuthenticated, isLoading } = useAuth0();
 
-  console.log(user);
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      document.cookie = `auth=${user.sub}; max-age=43200; path=/;`;
+      getUserMe(user.sub).then((res) => {
+        if (res) {
+          if (res.error && res.error === "user_not_found") {
+            // first time user is logging in
+            console.log("So this is your first time around");
+          }
+        }
+      });
+    }
+  }, [isAuthenticated]);
+
   return isLoading ? (
     <Spinner />
   ) : !isAuthenticated ? (

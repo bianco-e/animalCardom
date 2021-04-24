@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { MenuTitle } from "../components/styled-components";
+import { MenuTitle, Message } from "../components/styled-components";
 import MenuLayout from "../components/MenuLayout";
 import CollectionFilter from "../components/CollectionFilter";
 import Spinner from "../components/Spinner";
@@ -11,7 +11,7 @@ import {
   getAllAnimalsCards,
   getFilteredAnimalsCards,
 } from "../queries/animalsCards";
-import { getOwnedCards } from "../queries/user";
+import { getUserProfile } from "../queries/user";
 
 export default function Collection() {
   const [speciesFilter, setSpeciesFilter] = useState<string>();
@@ -19,18 +19,31 @@ export default function Collection() {
   const [owningFilter, setOwningFilter] = useState<boolean>();
   const [cardsToShow, setCardsToShow] = useState<IAnimal[]>([]);
   const [ownedCards, setOwnedCards] = useState<IAnimal[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const getCardOpacity = (name: string): string => {
+    if (ownedCards.find((card) => card.name === name)) {
+      return "1";
+    }
+    return "0.7";
+  };
 
   useEffect(() => {
+    setIsLoading(true);
     getAllAnimalsCards().then((res) => {
+      setIsLoading(false);
       if (res && res.animals) {
         setCardsToShow(sortCardsAlphabetically(res.animals));
       }
     });
-    getOwnedCards("").then((res) => {
-      if (res && res.owned_cards) {
-        setOwnedCards(res.owned_cards);
-      }
-    });
+    const [, authId] = document.cookie.split("auth=");
+    if (authId) {
+      getUserProfile(authId).then((res) => {
+        if (res && res.owned_cards) {
+          setOwnedCards(res.owned_cards);
+        }
+      });
+    }
   }, []);
 
   useEffect(() => {
@@ -48,8 +61,6 @@ export default function Collection() {
     });
   }, [speciesFilter, skillTypeFilter, owningFilter]);
 
-  const opacityForPreview = "1";
-
   return (
     <MenuLayout>
       <>
@@ -59,44 +70,44 @@ export default function Collection() {
           setOwningFilter={setOwningFilter}
         />
         <MenuTitle>Collection</MenuTitle>
-        {cardsToShow.length > 0 ? (
-          <>
-            <CardsContainer>
-              {cardsToShow.map((card) => {
-                const {
-                  attack,
-                  bleeding,
-                  name,
-                  image,
-                  life,
-                  paralyzed,
-                  poisoned,
-                  skill,
-                  species,
-                  targeteable,
-                } = card;
-                return (
-                  <Card
-                    attack={attack}
-                    belongsToUser={false}
-                    bleeding={bleeding}
-                    species={species}
-                    image={image}
-                    key={name}
-                    life={life}
-                    opacityForPreview={opacityForPreview}
-                    paralyzed={paralyzed}
-                    poisoned={poisoned}
-                    skill={skill}
-                    name={name}
-                    targeteable={targeteable}
-                  ></Card>
-                );
-              })}
-            </CardsContainer>
-          </>
-        ) : (
+        {isLoading ? (
           <Spinner />
+        ) : cardsToShow.length > 0 ? (
+          <CardsContainer>
+            {cardsToShow.map((card) => {
+              const {
+                attack,
+                bleeding,
+                name,
+                image,
+                life,
+                paralyzed,
+                poisoned,
+                skill,
+                species,
+                targeteable,
+              } = card;
+              return (
+                <Card
+                  attack={attack}
+                  belongsToUser={false}
+                  bleeding={bleeding}
+                  species={species}
+                  image={image}
+                  key={name}
+                  life={life}
+                  opacityForPreview={getCardOpacity(name)}
+                  paralyzed={paralyzed}
+                  poisoned={poisoned}
+                  skill={skill}
+                  name={name}
+                  targeteable={targeteable}
+                ></Card>
+              );
+            })}
+          </CardsContainer>
+        ) : (
+          <Message margin="75px 0 0 0">No animals found.</Message>
         )}
       </>
     </MenuLayout>

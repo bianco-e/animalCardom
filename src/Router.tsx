@@ -12,6 +12,7 @@ const MainRouter = () => {
     <BrowserRouter>
       <Route exact path="/" render={() => <WelcomePage />} />
       <Route exact path="/play" render={() => <Game />} />
+      <Route exact path="/game" render={() => <Game />} />
       <Route exact path="/menu" render={() => <Menu />} />
       <Route exact path="/campaign" render={() => <Campaign />} />
       <Route exact path="/profile" render={() => <Profile />} />
