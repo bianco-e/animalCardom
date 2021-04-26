@@ -12,51 +12,6 @@ import AvatarWithXpBar from "./AvatarWithXpBar";
 import Spinner from "./Spinner";
 import { ACButton, ModalTitle, Text } from "./styled-components";
 
-const getStatsToSaveGame = (
-  setter: (xp: number) => void,
-  authId: string,
-  won: boolean,
-  state: IHandsState,
-  loaderSetter: (bool: boolean) => void
-): void => {
-  const mapCardsToSave = (handKey: HandKey) =>
-    state.hands[handKey].map((card) => ({
-      name: card.name,
-      survived: card.life.current !== "DEAD",
-    }));
-  const mapPlantsToSave = (handKey: HandKey) =>
-    state.plants[handKey].map((plant) => {
-      const wasApplied = state.usedPlants.find((pl) => pl.name === plant.name)
-        ? true
-        : false;
-      return {
-        name: plant.name,
-        applied: wasApplied,
-      };
-    });
-
-  const gameToSave = {
-    created_at: new Date().getTime().toString(),
-    terrain: state.terrainName!,
-    xp_earned: 300,
-    won,
-    usedAnimals: {
-      pc: mapCardsToSave("pc"),
-      user: mapCardsToSave("user"),
-    },
-    usedPlants: {
-      pc: mapPlantsToSave("pc"),
-      user: mapPlantsToSave("user"),
-    },
-  };
-  saveGameResult(authId, gameToSave).then((res) => {
-    if (res && res.xp !== undefined) {
-      loaderSetter(false);
-      setter(res.xp);
-    }
-  });
-};
-
 interface IProps {
   closeModal: () => void;
   isCampaignGame: boolean;
@@ -75,17 +30,56 @@ export default function ModalResultContent({
   const [havingXp, setHavingXp] = useState<number>(0);
   const history = useHistory();
 
+  const getStatsToSaveGame = (
+    authId: string,
+    won: boolean,
+    state: IHandsState
+  ): void => {
+    const mapCardsToSave = (handKey: HandKey) =>
+      state.hands[handKey].map((card) => ({
+        name: card.name,
+        survived: card.life.current !== "DEAD",
+      }));
+    const mapPlantsToSave = (handKey: HandKey) =>
+      state.plants[handKey].map((plant) => {
+        const wasApplied = state.usedPlants.find((pl) => pl.name === plant.name)
+          ? true
+          : false;
+        return {
+          name: plant.name,
+          applied: wasApplied,
+        };
+      });
+
+    const gameToSave = {
+      created_at: new Date().getTime().toString(),
+      terrain: state.terrainName!,
+      xp_earned: 300,
+      won,
+      usedAnimals: {
+        pc: mapCardsToSave("pc"),
+        user: mapCardsToSave("user"),
+      },
+      usedPlants: {
+        pc: mapPlantsToSave("pc"),
+        user: mapPlantsToSave("user"),
+      },
+    };
+
+    saveGameResult(authId, gameToSave).then((res) => {
+      if (res && res.xp !== undefined) {
+        setIsLoadingProfile(false);
+        setHavingXp(res.xp);
+      }
+    });
+  };
+
   useEffect(() => {
+    console.log("state", state);
     const authId = getCookie("auth=");
     if (isCampaignGame && authId) {
       setIsLoadingProfile(true);
-      getStatsToSaveGame(
-        setHavingXp,
-        authId,
-        modal === "win",
-        state,
-        setIsLoadingProfile
-      );
+      getStatsToSaveGame(authId, modal === "win", state);
     }
   }, []); //eslint-disable-line
 

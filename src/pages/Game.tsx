@@ -100,7 +100,6 @@ export default function App() {
   };
 
   const getLiveCards = (hand: IAnimal[]) => {
-    console.log("hand", hand);
     console.log(hand.filter((card) => card.life.current !== "DEAD"));
     return hand.filter((card) => card.life.current !== "DEAD");
   };

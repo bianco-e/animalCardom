@@ -11,7 +11,6 @@ interface IProps {
 }
 
 export default function History({ lastGames }: IProps) {
-  console.log(lastGames);
   return (
     <Wrapper>
       {lastGames.length > 0 ? (

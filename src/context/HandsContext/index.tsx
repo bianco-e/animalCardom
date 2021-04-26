@@ -13,6 +13,7 @@ import {
 import {
   COMPUTER_PLAY,
   COMPUTER_THINK,
+  EMPTY_STATE,
   SELECT_CARD,
   SELECT_PLANT,
   SET_CARDS,
@@ -369,6 +370,8 @@ const reducer = (state: IHandsState, action: IHandsAction) => {
       return selectPlant(state, action.plant);
     case COMPUTER_PLAY:
       return computerPlay(state);
+    case EMPTY_STATE:
+      return newGame();
     case COMPUTER_THINK:
       return {
         ...state,

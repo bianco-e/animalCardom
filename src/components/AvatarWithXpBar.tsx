@@ -13,14 +13,14 @@ export default function AvatarWithXpBar({ havingXp }: IProps) {
   const [dashoffset, setDashoffset] = useState<number>();
   const [level, setLevel] = useState<number>();
 
-  const currentLvlXp = havingXp % MAX_XP;
   useEffect(() => {
+    const currentLvlXp = havingXp % MAX_XP;
     const percent = (currentLvlXp * 100) / MAX_XP;
     setLevel(Math.floor(havingXp / 1000) + 1);
     setDashoffset(
       CIRCLE_CIRCUMFERENCE - (percent / 100) * CIRCLE_CIRCUMFERENCE
     );
-  }, [currentLvlXp]); //eslint-disable-line
+  }, [havingXp]);
 
   return (
     <Wrapper
@@ -51,9 +51,6 @@ export default function AvatarWithXpBar({ havingXp }: IProps) {
       />
       <span>
         Lv. <b>{level}</b>
-      </span>
-      <span>
-        <b>{currentLvlXp}</b>/<span>{MAX_XP}</span>
       </span>
     </Wrapper>
   );
