@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 import MenuLayout from "../components/MenuLayout";
 
 export default function Menu() {
@@ -9,5 +8,3 @@ export default function Menu() {
     </MenuLayout>
   );
 }
-
-const Wrapper = styled.div``;

@@ -1,6 +1,6 @@
 const API_URL = "http://localhost:5000/";
 
-const ACPost = (body: any) => ({
+export const ACPost = (body: any) => ({
   method: "POST",
   headers: {
     "Content-Type": "application/json",

@@ -16,7 +16,7 @@ export default function CardThumbnail({ image, disabled, name }: IProps) {
       opacity={disabled ? "0.5" : "1"}
     >
       <span className="animal-name">{name}</span>
-      <img className="animal-picture" src={image} />
+      <img alt={name} className="animal-picture" src={image} />
     </Card>
   );
 }
@@ -24,7 +24,7 @@ export default function CardThumbnail({ image, disabled, name }: IProps) {
 const Card = styled(AnimalCard)`
   cursor: default;
   height: 80px;
-  width: 18%;
+  width: 16%;
   > .animal-name {
     font-size: 9px;
     font-weight: bold;

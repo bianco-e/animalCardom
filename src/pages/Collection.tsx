@@ -5,7 +5,7 @@ import MenuLayout from "../components/MenuLayout";
 import CollectionFilter from "../components/CollectionFilter";
 import Spinner from "../components/Spinner";
 import { IAnimal } from "../interfaces";
-import { sortCardsAlphabetically } from "../utils";
+import { getCookie, sortCardsAlphabetically } from "../utils";
 import Card from "../components/Card";
 import {
   getAllAnimalsCards,
@@ -18,14 +18,14 @@ export default function Collection() {
   const [skillTypeFilter, setSkillTypeFilter] = useState<string>();
   const [owningFilter, setOwningFilter] = useState<boolean>();
   const [cardsToShow, setCardsToShow] = useState<IAnimal[]>([]);
-  const [ownedCards, setOwnedCards] = useState<IAnimal[]>([]);
+  const [ownedCards, setOwnedCards] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const getCardOpacity = (name: string): string => {
-    if (ownedCards.find((card) => card.name === name)) {
+    if (ownedCards.find((card) => card === name)) {
       return "1";
     }
-    return "0.7";
+    return "0.6";
   };
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function Collection() {
         setCardsToShow(sortCardsAlphabetically(res.animals));
       }
     });
-    const [, authId] = document.cookie.split("auth=");
+    const authId = getCookie("auth=");
     if (authId) {
       getUserProfile(authId).then((res) => {
         if (res && res.owned_cards) {
@@ -48,7 +48,7 @@ export default function Collection() {
 
   useEffect(() => {
     const sendingOwnedCards = owningFilter
-      ? ownedCards.map(({ name }) => name)
+      ? ownedCards.map((card) => card)
       : undefined;
     getFilteredAnimalsCards(
       speciesFilter,
@@ -59,7 +59,7 @@ export default function Collection() {
         setCardsToShow(sortCardsAlphabetically(res.animals));
       }
     });
-  }, [speciesFilter, skillTypeFilter, owningFilter]);
+  }, [speciesFilter, skillTypeFilter, owningFilter]); //eslint-disable-line
 
   return (
     <MenuLayout>

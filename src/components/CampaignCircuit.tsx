@@ -2,13 +2,12 @@ import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import { terrains } from "../data/data";
-import { ITerrain } from "../interfaces";
 
 const ANGLE = 360 / (terrains.length - 1);
 interface IProps {
-  userCampaignLevel: number;
+  xp: number;
 }
-export default function ({ userCampaignLevel }: IProps) {
+export default function ({ xp }: IProps) {
   const [containerWidth, setContainerWidth] = useState<number>(200);
   const containerRef = useRef<HTMLDivElement>(null);
   const history = useHistory();
@@ -17,17 +16,17 @@ export default function ({ userCampaignLevel }: IProps) {
     if (containerRef.current) {
       setContainerWidth(containerRef.current.offsetWidth);
     }
-  }, [containerRef.current]);
+  }, [containerRef.current]); //eslint-disable-line
 
   const handleTerrainSelection = () => {
-    history.push(`/game?lv=${userCampaignLevel}`);
+    history.push(`/game?x=${xp}`);
   };
 
   return (
     <Wrapper ref={containerRef}>
       {terrains.map((terrain, idx) => {
         const { image, name } = terrain;
-        const isDisabled = idx > userCampaignLevel;
+        const isDisabled = idx > xp / 1000;
         return (
           <TerrainContainer
             angle={`${ANGLE * idx - 40}`}

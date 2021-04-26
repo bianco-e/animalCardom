@@ -1,7 +1,14 @@
 import React, { useReducer } from "react";
 import getPlantFn from "../../data/plantsFunctions";
 import getSkillFn from "../../data/skillsFunctions";
-import { HandKey, IAnimal, IHands, IPlant, IPlants } from "../../interfaces";
+import {
+  HandKey,
+  IAnimal,
+  IHands,
+  IPlant,
+  IPlants,
+  ITerrain,
+} from "../../interfaces";
 
 import {
   COMPUTER_PLAY,
@@ -13,9 +20,9 @@ import {
 export interface IHandsAction {
   hands: IHands;
   plants: IPlants;
-  speciesToBuff: string;
   name: string;
   plant: IPlant;
+  terrain: ITerrain;
   type: string;
 }
 export type IHandsContext = (IHandsState | any)[];
@@ -27,6 +34,7 @@ export interface IHandsState {
   usedPlants: IPlant[];
   attacker?: IAnimal;
   defender?: IAnimal;
+  terrainName?: string;
   underAttack?: string;
   pcTurn: boolean;
   triggerPcAttack: boolean;
@@ -42,6 +50,7 @@ const newGame = (): IHandsState => ({
   attacker: undefined,
   defender: undefined,
   underAttack: undefined,
+  terrainName: undefined,
   pcTurn: false,
   triggerPcAttack: false,
   pcPlay: "",
@@ -313,10 +322,10 @@ const applyPoisonDamage = (arr: IAnimal[]) => {
   });
 };
 
-const setTerrain = (state: IHandsState, speciesToBuff: string) => {
+const setTerrain = (state: IHandsState, terrain: ITerrain) => {
   const buffCards = (arr: IAnimal[]) => {
     return arr.map((card) => {
-      if (card.species === speciesToBuff) {
+      if (card.species === terrain.speciesToBuff) {
         return {
           ...card,
           attack: { ...card.attack, current: card.attack.current + 1 },
@@ -326,6 +335,7 @@ const setTerrain = (state: IHandsState, speciesToBuff: string) => {
   };
   return {
     ...state,
+    terrainName: terrain.name,
     hands: {
       pc: buffCards(state.hands.pc),
       user: buffCards(state.hands.user),
@@ -337,7 +347,7 @@ const setCards = (
   state: IHandsState,
   hands: IHands,
   plants: IPlants,
-  speciesToBuff: string
+  terrain: ITerrain
 ) => {
   return setTerrain(
     {
@@ -345,14 +355,14 @@ const setCards = (
       hands,
       plants,
     },
-    speciesToBuff
+    terrain
   );
 };
 
 const reducer = (state: IHandsState, action: IHandsAction) => {
   switch (action.type) {
     case SET_CARDS:
-      return setCards(state, action.hands, action.plants, action.speciesToBuff);
+      return setCards(state, action.hands, action.plants, action.terrain);
     case SELECT_CARD:
       return selectCard(state, action.name);
     case SELECT_PLANT:

@@ -6,6 +6,7 @@ import History from "../components/History";
 import { getLastGames, getUserProfile } from "../queries/user";
 import { Game } from "../interfaces";
 import Spinner from "../components/Spinner";
+import { getCookie } from "../utils";
 
 export default function Profile() {
   const [havingXp, setHavingXp] = useState<number>(0);
@@ -14,15 +15,14 @@ export default function Profile() {
   const [isLoadingLastGames, setIsLoadingLastGames] = useState<boolean>(false);
 
   useEffect(() => {
-    const [, authId] = document.cookie.split("auth=");
+    const authId = getCookie("auth=");
     if (authId) {
       setIsLoadingAvatar(true);
       setIsLoadingLastGames(true);
       getUserProfile(authId).then((res) => {
         setIsLoadingLastGames(false);
-        if (res && res.profile) {
-          const { xp } = res.profile;
-          setHavingXp(xp);
+        if (res && res.xp) {
+          setHavingXp(res.xp);
         }
       });
       getLastGames(authId).then((res) => {

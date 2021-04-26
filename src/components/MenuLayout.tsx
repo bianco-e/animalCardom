@@ -21,7 +21,7 @@ export default function MenuLayout({ children }: { children: JSX.Element }) {
         }
       });
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, user]);
 
   return isLoading ? (
     <Spinner />

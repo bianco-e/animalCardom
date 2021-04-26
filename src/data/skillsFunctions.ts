@@ -1,5 +1,5 @@
 import { IHandsState } from "../context/HandsContext";
-import { HandKey, IAnimal, IHands, Poisoned } from "../interfaces";
+import { HandKey, IAnimal, Poisoned } from "../interfaces";
 
 const poisonEnemy = (arr: IAnimal[], defender: IAnimal, poisoned: Poisoned) => {
   return arr.map((card) => {

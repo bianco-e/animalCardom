@@ -11,11 +11,19 @@ interface IProps {
 }
 
 export default function History({ lastGames }: IProps) {
+  console.log(lastGames);
   return (
     <Wrapper>
       {lastGames.length > 0 ? (
         lastGames.map((game, idx) => {
-          const { won, usedAnimals, usedPlants } = game;
+          const {
+            won,
+            usedAnimals,
+            usedPlants,
+            terrain,
+            created_at,
+            xp_earned,
+          } = game;
           return (
             <HistoryCard key={idx}>
               <Result bgColor={won ? "green" : "red"}>
@@ -79,6 +87,13 @@ export default function History({ lastGames }: IProps) {
                   })}
                 </CardsContainer>
               </PlayerStats>
+              <DetailsPanel>
+                <span className="terrain">{terrain}</span>
+                <span className="date">XP: {xp_earned}</span>
+                <span className="date">
+                  {new Date(created_at).toLocaleDateString()}
+                </span>
+              </DetailsPanel>
             </HistoryCard>
           );
         })
@@ -110,6 +125,32 @@ const HistoryCard = styled.div`
   padding: 15px 60px;
   position: relative;
   width: 75%;
+`;
+const DetailsPanel = styled.div`
+  align-items: center;
+  background: #d4a257;
+  border-radius: 50px 50px 0 0;
+  border: 2px solid #b9935a;
+  border-bottom: 0;
+  box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.6);
+  content: "";
+  display: flex;
+  flex-direction: column;
+  height: 45px;
+  justify-content: space-around;
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  width: 180px;
+  bottom: 0;
+  > .terrain {
+    font-size: 11px;
+  }
+  > .date {
+    font-size: 9px;
+    font-weight: bold;
+  }
 `;
 const PlayerStats = styled.div`
   align-items: center;

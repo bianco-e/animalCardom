@@ -19,6 +19,7 @@ import { getUserMe } from "../queries/user";
 import { newTerrain, newCampaignGame, newRandomGame } from "../queries/games";
 import Spinner from "../components/Spinner";
 import ModalResultContent from "../components/ModalResultContent";
+import { getCookie } from "../utils";
 
 const emptyTerrain = {
   name: "",
@@ -43,14 +44,14 @@ export default function App() {
     pc: { animals: IAnimal[]; plants: IPlant[] };
   }
 
-  const newGameResHandler = (speciesToBuff: string, res?: Response) => {
+  const newGameResHandler = (terrain: ITerrain, res?: Response) => {
     setIsLoading(false);
     if (res && res.user && res.pc) {
       dispatch({
         type: SET_CARDS,
         hands: { pc: res.pc.animals, user: res.user.animals },
         plants: { pc: res.pc.plants, user: res.user.plants },
-        speciesToBuff,
+        terrain,
       });
     }
   };
@@ -61,29 +62,31 @@ export default function App() {
       // is game for guests
       const guest = localStorage.getItem("guest");
       guest ? setUserName(guest) : history.push("/");
-      newTerrain().then((res) => {
-        if (res && res.name) {
-          setTerrain(res);
-          newRandomGame().then((res) =>
-            newGameResHandler(res.speciesToBuff, res)
-          );
+      newTerrain().then((terrainRes) => {
+        if (terrainRes && terrainRes.name) {
+          setTerrain(terrainRes);
+          newRandomGame().then((res) => newGameResHandler(terrainRes, res));
         }
       });
     } else {
       // is campaign game
       setIsCampaignGame(true);
-      const [, authId] = document.cookie.split("auth=");
+      const authId = getCookie("auth=");
       if (authId) {
-        getUserMe(authId).then((res) => {
-          if (res && res.profile && res.owned_cards && res.first_name) {
-            setUserName(res.first_name);
-            const { owned_cards, profile } = res;
-            const { campaign_level } = profile;
-            const [, level] = search.split("?lv=");
-            if (parseFloat(level) === campaign_level) {
-              newTerrain(campaign_level).then((terrainRes) => {
+        getUserMe(authId).then((userRes) => {
+          if (
+            userRes &&
+            userRes.xp !== undefined &&
+            userRes.owned_cards &&
+            userRes.first_name
+          ) {
+            setUserName(userRes.first_name);
+            const { owned_cards, xp } = userRes;
+            const [, xpParam] = search.split("?x=");
+            if (parseInt(xpParam) === xp) {
+              newTerrain(xp).then((terrainRes) => {
                 if (terrainRes && terrainRes.name) {
-                  newCampaignGame(campaign_level, owned_cards).then((gameRes) =>
+                  newCampaignGame(xp, owned_cards).then((gameRes) =>
                     newGameResHandler(terrainRes.speciesToBuff, gameRes)
                   );
                   setTerrain(terrainRes);
@@ -97,6 +100,8 @@ export default function App() {
   };
 
   const getLiveCards = (hand: IAnimal[]) => {
+    console.log("hand", hand);
+    console.log(hand.filter((card) => card.life.current !== "DEAD"));
     return hand.filter((card) => card.life.current !== "DEAD");
   };
 
@@ -106,11 +111,11 @@ export default function App() {
 
   useEffect(() => {
     if (hands.pc.length && hands.user.length) {
-      if (getLiveCards(hands.pc).length === 0) {
-        setModal("win");
-      }
       if (getLiveCards(hands.user).length === 0) {
         setModal("lose");
+      }
+      if (getLiveCards(hands.pc).length === 0) {
+        setModal("win");
       }
     }
   }, [hands.pc, hands.user]); //eslint-disable-line

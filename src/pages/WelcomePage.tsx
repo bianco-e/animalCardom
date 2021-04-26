@@ -5,7 +5,7 @@ import CustomModal from "../components/CustomModal";
 import NavBar from "../components/NavBar";
 import ModalWelcomeContent from "../components/ModalWelcomeContent";
 import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
-import { ACButton, ComingSoon, Text } from "../components/styled-components";
+import { ACButton, ComingSoon } from "../components/styled-components";
 import { useAuth0 } from "@auth0/auth0-react";
 
 export default function WelcomePage() {

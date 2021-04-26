@@ -1,13 +1,61 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import HandsContext, { IHandsContext } from "../context/HandsContext";
+import HandsContext, {
+  IHandsContext,
+  IHandsState,
+} from "../context/HandsContext";
 import { SET_CARDS } from "../context/HandsContext/types";
-import { ITerrain } from "../interfaces";
-import { newRandomGame, newTerrain } from "../queries/games";
-import { getUserProfile } from "../queries/user";
+import { HandKey, ITerrain } from "../interfaces";
+import { newRandomGame, newTerrain, saveGameResult } from "../queries/games";
+import { getCookie } from "../utils";
 import AvatarWithXpBar from "./AvatarWithXpBar";
 import Spinner from "./Spinner";
 import { ACButton, ModalTitle, Text } from "./styled-components";
+
+const getStatsToSaveGame = (
+  setter: (xp: number) => void,
+  authId: string,
+  won: boolean,
+  state: IHandsState,
+  loaderSetter: (bool: boolean) => void
+): void => {
+  const mapCardsToSave = (handKey: HandKey) =>
+    state.hands[handKey].map((card) => ({
+      name: card.name,
+      survived: card.life.current !== "DEAD",
+    }));
+  const mapPlantsToSave = (handKey: HandKey) =>
+    state.plants[handKey].map((plant) => {
+      const wasApplied = state.usedPlants.find((pl) => pl.name === plant.name)
+        ? true
+        : false;
+      return {
+        name: plant.name,
+        applied: wasApplied,
+      };
+    });
+
+  const gameToSave = {
+    created_at: new Date().getTime().toString(),
+    terrain: state.terrainName!,
+    xp_earned: 300,
+    won,
+    usedAnimals: {
+      pc: mapCardsToSave("pc"),
+      user: mapCardsToSave("user"),
+    },
+    usedPlants: {
+      pc: mapPlantsToSave("pc"),
+      user: mapPlantsToSave("user"),
+    },
+  };
+  saveGameResult(authId, gameToSave).then((res) => {
+    if (res && res.xp !== undefined) {
+      loaderSetter(false);
+      setter(res.xp);
+    }
+  });
+};
 
 interface IProps {
   closeModal: () => void;
@@ -28,17 +76,18 @@ export default function ModalResultContent({
   const history = useHistory();
 
   useEffect(() => {
-    const [, authId] = document.cookie.split("auth=");
+    const authId = getCookie("auth=");
     if (isCampaignGame && authId) {
       setIsLoadingProfile(true);
-      getUserProfile(authId).then((res) => {
-        setIsLoadingProfile(false);
-        if (res && res.profile) {
-          setHavingXp(res.profile.xp);
-        }
-      });
+      getStatsToSaveGame(
+        setHavingXp,
+        authId,
+        modal === "win",
+        state,
+        setIsLoadingProfile
+      );
     }
-  }, []);
+  }, []); //eslint-disable-line
 
   const handlePlayAgain = () => {
     setisLoadingNewGame(true);
@@ -53,15 +102,13 @@ export default function ModalResultContent({
               type: SET_CARDS,
               hands: { pc: gameRes.pc.animals, user: gameRes.user.animals },
               plants: { pc: gameRes.pc.plants, user: gameRes.user.plants },
-              speciesToBuff: terrainRes.speciesToBuff,
+              terrain: terrainRes,
             });
           }
         });
       }
     });
   };
-
-  const handleRoute = (path: string) => history.push(path);
 
   return (
     <>
@@ -71,32 +118,6 @@ export default function ModalResultContent({
           <Text margin={isCampaignGame ? "0 0 20px 0" : "0"}>
             Good game! Nature always win against computers!
           </Text>
-          {isCampaignGame ? (
-            <>
-              <AvatarWithXpBar havingXp={havingXp} />
-              <ACButton
-                margin="20px 0"
-                onClick={() => handleRoute("/campaign")}
-              >
-                Go to campaign menu
-              </ACButton>
-            </>
-          ) : (
-            <>
-              {isLoadingNewGame ? (
-                <Spinner />
-              ) : (
-                <>
-                  <ACButton margin="10px 0 5px 0" onClick={handlePlayAgain}>
-                    Play again
-                  </ACButton>
-                  <ACButton margin="5px 0" onClick={() => handleRoute("/")}>
-                    Go to menu
-                  </ACButton>
-                </>
-              )}
-            </>
-          )}
         </>
       ) : (
         modal === "lose" && (
@@ -106,28 +127,40 @@ export default function ModalResultContent({
               Nice try! PC defeated you this time, but nature always takes
               revenge!
             </Text>
-            {isCampaignGame ? (
-              <>
-                <AvatarWithXpBar havingXp={havingXp} />
-                <ACButton
-                  margin="20px 0"
-                  onClick={() => handleRoute("/campaign")}
-                >
-                  Go to campaign menu
-                </ACButton>
-              </>
-            ) : (
-              <>
-                <ACButton margin="10px 0 5px 0" onClick={handlePlayAgain}>
-                  Play again
-                </ACButton>
-                <ACButton margin="5px 0" onClick={() => handleRoute("/")}>
-                  Go to menu
-                </ACButton>
-              </>
-            )}
           </>
         )
+      )}
+      {isCampaignGame ? (
+        <>
+          {isLoadingProfile ? (
+            <Spinner />
+          ) : (
+            <>
+              <AvatarWithXpBar havingXp={havingXp} />
+              <ACButton
+                margin="20px 0"
+                onClick={() => history.push("/campaign")}
+              >
+                Go to campaign menu
+              </ACButton>
+            </>
+          )}
+        </>
+      ) : (
+        <>
+          {isLoadingNewGame ? (
+            <Spinner />
+          ) : (
+            <>
+              <ACButton margin="10px 0 5px 0" onClick={handlePlayAgain}>
+                Play again
+              </ACButton>
+              <ACButton margin="5px 0" onClick={() => history.push("/")}>
+                Go to menu
+              </ACButton>
+            </>
+          )}
+        </>
       )}
     </>
   );

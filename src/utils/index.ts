@@ -37,3 +37,11 @@ export const getCurrentSection = (path: string): string =>
   ["/profile", "/campaign", "/collection"].includes(path)
     ? capitalize(path.substring(1))
     : "";
+
+export const getCookie = (name: string) => {
+  return document.cookie
+    .split(";")
+    .map((c) => c.trim())
+    .find((c) => c.startsWith(name))
+    ?.substring(5);
+};

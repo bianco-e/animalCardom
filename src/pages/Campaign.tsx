@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import CampaignCircuit from "../components/CampaignCircuit";
 import CampaignProgress from "../components/CampaignProgress";
 import MenuLayout from "../components/MenuLayout";
 import Spinner from "../components/Spinner";
 import { getUserProfile } from "../queries/user";
+import { getCookie } from "../utils";
 
 export default function Campaign() {
-  const [userCampaignLevel, setuserCampaignLevel] = useState<number>(0);
+  const [havingXp, sethavingXp] = useState(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    const [, authId] = document.cookie.split("auth=");
+    const authId = getCookie("auth=");
     if (authId) {
       setIsLoading(true);
       getUserProfile(authId).then((res) => {
         setIsLoading(false);
-        if (res && res.profile) {
-          const { campaign_level } = res.profile;
-          setuserCampaignLevel(campaign_level);
+        if (res && res.xp) {
+          console.log("current xp", res.xp);
+          sethavingXp(res.xp);
         }
       });
     }
@@ -31,13 +31,11 @@ export default function Campaign() {
           <Spinner />
         ) : (
           <>
-            <CampaignProgress userCampaignLevel={userCampaignLevel} />
-            <CampaignCircuit userCampaignLevel={userCampaignLevel} />
+            <CampaignProgress xp={havingXp} />
+            <CampaignCircuit xp={havingXp} />
           </>
         )}
       </>
     </MenuLayout>
   );
 }
-
-const Wrapper = styled.div``;

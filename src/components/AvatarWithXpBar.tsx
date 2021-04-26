@@ -20,7 +20,7 @@ export default function AvatarWithXpBar({ havingXp }: IProps) {
     setDashoffset(
       CIRCLE_CIRCUMFERENCE - (percent / 100) * CIRCLE_CIRCUMFERENCE
     );
-  }, [currentLvlXp]);
+  }, [currentLvlXp]); //eslint-disable-line
 
   return (
     <Wrapper
@@ -43,7 +43,12 @@ export default function AvatarWithXpBar({ havingXp }: IProps) {
           cy={CIRCLE_RADIUS + STROKE_WIDTH * 2}
         />
       </svg>
-      <img src="/images/welcome-background.png" height={135} width={135} />
+      <img
+        alt="avatar"
+        src="/images/welcome-background.png"
+        height={135}
+        width={135}
+      />
       <span>
         Lv. <b>{level}</b>
       </span>

@@ -3,10 +3,10 @@ import styled from "styled-components";
 
 const TOTAL_LEVELS = 9;
 interface IProps {
-  userCampaignLevel: number;
+  xp: number;
 }
-export default function CampaignProgress({ userCampaignLevel }: IProps) {
-  const barWidth = (userCampaignLevel / TOTAL_LEVELS) * 100;
+export default function CampaignProgress({ xp }: IProps) {
+  const barWidth = (xp / 1000 / TOTAL_LEVELS) * 100;
   return (
     <Wrapper>
       <Title>Campaign Progress</Title>

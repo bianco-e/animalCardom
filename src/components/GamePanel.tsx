@@ -64,7 +64,7 @@ export default function SidePanel({ plants, terrain, userName }: IProps) {
           <Tooltip>
             {terrain.name !== "Neutral"
               ? `${terrain.speciesToBuff} feel like home in ${terrain.name}.`
-              : "In Neutral terrain attack is not increased"}
+              : "In Neutral terrain there's no benefit"}
           </Tooltip>
         )}
         {terrain.name}

@@ -43,12 +43,12 @@ export default function SimpleModal({
   useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, []); //eslint-disable-line
 
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
-  }, []);
+  }, []); //eslint-disable-line
 
   return (
     modalRoot &&

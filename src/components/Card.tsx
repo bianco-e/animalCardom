@@ -102,7 +102,9 @@ export default function Card({
         />
       </Injury>
       <CornerIcon>{species}</CornerIcon>
-      {!targeteable && <CornerIcon className="animal-status">🚫</CornerIcon>}
+      {!targeteable && (
+        <CornerIcon className="animal-status">{`\u{1F6AB}`}</CornerIcon> //unicode for emoji
+      )}
       {bleeding && (
         <CornerIcon className="animal-status">
           <Image className="bleeding-drop" src={utilitiesIcons.blood} />
@@ -147,11 +149,11 @@ export default function Card({
 
         {poisoned.rounds === 0 ? (
           <Text className="life-heart" margin="2px">
-            🖤
+            {`\u{1F5A4}`} {/* unicode for black heart emoji */}
           </Text>
         ) : (
           <Text className="life-heart" margin="2px">
-            💚
+            {`\u{1F49A}`} {/* unicode for green heart emoji */}
           </Text>
         )}
 

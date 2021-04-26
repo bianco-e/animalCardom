@@ -55,15 +55,15 @@ export interface ITerrain {
 
 export interface Game {
   created_at: string;
-  terrain: { name: string; image: string };
+  terrain: string;
   xp_earned: number;
   won: boolean;
   usedAnimals: {
-    user: [{ name: string; survived: boolean }];
-    pc: [{ name: string; survived: boolean }];
+    user: { name: string; survived: boolean }[];
+    pc: { name: string; survived: boolean }[];
   };
   usedPlants: {
-    user: [{ name: string; applied: boolean }];
-    pc: [{ name: string; applied: boolean }];
+    user: { name: string; applied: boolean }[];
+    pc: { name: string; applied: boolean }[];
   };
 }
