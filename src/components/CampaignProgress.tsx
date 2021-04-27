@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const TOTAL_LEVELS = 9;
+const TOTAL_LEVELS = 7;
 interface IProps {
   xp: number;
 }

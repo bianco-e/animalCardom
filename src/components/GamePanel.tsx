@@ -96,7 +96,7 @@ export default function SidePanel({ plants, terrain, userName }: IProps) {
             >
               Stay
             </ACButton>
-            <ACButton onClick={() => history.push("/")}>Leave</ACButton>
+            <ACButton onClick={() => history.push("/menu")}>Leave</ACButton>
           </>
         </CustomModal>
       )}

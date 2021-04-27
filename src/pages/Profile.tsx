@@ -9,24 +9,21 @@ import Spinner from "../components/Spinner";
 import { getCookie } from "../utils";
 
 export default function Profile() {
-  const [havingXp, setHavingXp] = useState<number>(0);
   const [lastGames, setLastGames] = useState<Game[]>([]);
-  const [isLoadingAvatar, setIsLoadingAvatar] = useState<boolean>(false);
   const [isLoadingLastGames, setIsLoadingLastGames] = useState<boolean>(false);
+  const [havingXp, setHavingXp] = useState<number>(0);
 
   useEffect(() => {
     const authId = getCookie("auth=");
     if (authId) {
-      setIsLoadingAvatar(true);
       setIsLoadingLastGames(true);
       getUserProfile(authId).then((res) => {
-        setIsLoadingLastGames(false);
         if (res && res.xp) {
           setHavingXp(res.xp);
         }
       });
       getLastGames(authId).then((res) => {
-        setIsLoadingAvatar(false);
+        setIsLoadingLastGames(false);
         if (res && res.games) {
           const { games } = res;
           setLastGames(games);
@@ -38,11 +35,7 @@ export default function Profile() {
   return (
     <MenuLayout>
       <>
-        {isLoadingAvatar ? (
-          <Spinner />
-        ) : (
-          <AvatarWithXpBar havingXp={havingXp} />
-        )}
+        <AvatarWithXpBar havingXp={havingXp} />
         <MenuTitle>History</MenuTitle>
         {isLoadingLastGames ? <Spinner /> : <History lastGames={lastGames} />}
       </>

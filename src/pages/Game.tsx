@@ -31,6 +31,7 @@ const emptyTerrain = {
 export default function App() {
   const [state, dispatch] = useContext<IHandsContext>(HandsContext);
   const [isCampaignGame, setIsCampaignGame] = useState<boolean>(false);
+  const [currentXp, setCurrentXp] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userName, setUserName] = useState<string>("");
   const [terrain, setTerrain] = useState<ITerrain>(emptyTerrain);
@@ -84,10 +85,11 @@ export default function App() {
             const { owned_cards, xp } = userRes;
             const [, xpParam] = search.split("?x=");
             if (parseInt(xpParam) === xp) {
+              setCurrentXp(xp);
               newTerrain(xp).then((terrainRes) => {
                 if (terrainRes && terrainRes.name) {
                   newCampaignGame(xp, owned_cards).then((gameRes) =>
-                    newGameResHandler(terrainRes.speciesToBuff, gameRes)
+                    newGameResHandler(terrainRes, gameRes)
                   );
                   setTerrain(terrainRes);
                 }
@@ -99,10 +101,8 @@ export default function App() {
     }
   };
 
-  const getLiveCards = (hand: IAnimal[]) => {
-    console.log(hand.filter((card) => card.life.current !== "DEAD"));
-    return hand.filter((card) => card.life.current !== "DEAD");
-  };
+  const getLiveCards = (hand: IAnimal[]) =>
+    hand.filter((card) => card.life.current !== "DEAD");
 
   useEffect(() => {
     checkUserAndStartGame();
@@ -143,6 +143,7 @@ export default function App() {
                 modal={modal}
                 isCampaignGame={isCampaignGame}
                 setTerrain={setTerrain}
+                currentXp={currentXp}
               />
             </CustomModal>
           )}

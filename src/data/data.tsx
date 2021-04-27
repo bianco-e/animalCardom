@@ -14,18 +14,6 @@ export const terrains: ITerrain[] = [
     image: "/images/terrains/neutral.jpg",
   },
   {
-    name: "Jungle",
-    color: "#006400",
-    speciesToBuff: "🐺",
-    image: "/images/terrains/jungle.jpeg",
-  },
-  {
-    name: "Sea",
-    color: "#87CEEB",
-    speciesToBuff: "🦈",
-    image: "/images/terrains/sea.webp",
-  },
-  {
     name: "Swamp",
     color: "#228B22",
     speciesToBuff: "🐸",
@@ -44,9 +32,21 @@ export const terrains: ITerrain[] = [
     image: "/images/terrains/mountain.webp",
   },
   {
+    name: "Sea",
+    color: "#87CEEB",
+    speciesToBuff: "🦈",
+    image: "/images/terrains/sea.webp",
+  },
+  {
     name: "Forest",
     color: "#2E8B57",
     speciesToBuff: "🦎",
     image: "/images/terrains/forest.jpeg",
+  },
+  {
+    name: "Jungle",
+    color: "#006400",
+    speciesToBuff: "🐺",
+    image: "/images/terrains/jungle.jpeg",
   },
 ];

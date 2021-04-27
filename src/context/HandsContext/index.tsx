@@ -61,17 +61,16 @@ const initialState = newGame();
 
 const Context = React.createContext<IHandsContext>([initialState]);
 
-const getRandomIdx = (arr: any[]) => {
-  return arr[Math.floor(Math.random() * arr.length)];
-};
-const getLiveCards = (arr: IAnimal[]) => {
-  return arr.filter((card) => card.life.current !== "DEAD");
-};
-const getHighestAttackCard = (hand: IAnimal[]) => {
-  return hand.reduce((acc, value) => {
+const getRandomIdx = (arr: any[]) =>
+  arr[Math.floor(Math.random() * arr.length)];
+
+const getLiveCards = (arr: IAnimal[]) =>
+  arr.filter((card) => card.life.current !== "DEAD");
+
+const getHighestAttackCard = (hand: IAnimal[]) =>
+  hand.reduce((acc, value) => {
     return value.attack.current > acc.attack.current ? value : acc;
   });
-};
 
 const attackAndApplySkill = (state: IHandsState, hand: HandKey) => {
   const { defender, attacker, hands } = state;

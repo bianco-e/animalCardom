@@ -1,22 +1,18 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 const MAX_XP = 1000;
-const STROKE_WIDTH = 10;
+const STROKE_WIDTH = 11;
 const CIRCLE_RADIUS = 70;
 const CIRCLE_CIRCUMFERENCE = CIRCLE_RADIUS * 2 * Math.PI;
 
-interface IProps {
-  havingXp: number;
-}
-
-export default function AvatarWithXpBar({ havingXp }: IProps) {
-  const [dashoffset, setDashoffset] = useState<number>();
+export default function AvatarWithXpBar({ havingXp }: { havingXp: number }) {
+  const [dashoffset, setDashoffset] = useState<number>(CIRCLE_CIRCUMFERENCE);
   const [level, setLevel] = useState<number>();
 
   useEffect(() => {
     const currentLvlXp = havingXp % MAX_XP;
     const percent = (currentLvlXp * 100) / MAX_XP;
-    setLevel(Math.floor(havingXp / 1000) + 1);
+    setLevel(Math.floor(havingXp / MAX_XP) + 1);
     setDashoffset(
       CIRCLE_CIRCUMFERENCE - (percent / 100) * CIRCLE_CIRCUMFERENCE
     );
@@ -27,7 +23,7 @@ export default function AvatarWithXpBar({ havingXp }: IProps) {
       dasharray={`${CIRCLE_CIRCUMFERENCE} ${CIRCLE_CIRCUMFERENCE}`}
       dashoffset={dashoffset}
     >
-      <svg className="progress-ring" height="170" width="170">
+      <svg height="170" width="170">
         <defs>
           <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" stop-color="#5f0a87" />
@@ -67,8 +63,8 @@ const Wrapper = styled.div`
   position: relative;
   > svg {
     position: absolute;
-    left: -23px;
-    top: -13px;
+    left: -25px;
+    top: -12px;
     .progress-ring__circle {
       stroke: url(#gradient);
       stroke-dasharray: ${(p: WrapperProps) => p.dasharray};

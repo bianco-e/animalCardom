@@ -19,8 +19,6 @@ export const newRandomGame = () => {
 export const newTerrain = (xp?: number) => {
   const campaignTerrains = [
     "neutral",
-    "neutral",
-    "neutral",
     "swamp",
     "desert",
     "mountain",

@@ -12,20 +12,34 @@ import AvatarWithXpBar from "./AvatarWithXpBar";
 import Spinner from "./Spinner";
 import { ACButton, ModalTitle, Text } from "./styled-components";
 
+const getXpToEarn = (current: number): number => {
+  switch (current) {
+    case 0:
+      return 300;
+    case 300:
+      return 300;
+    case 600:
+      return 400;
+    default:
+      return 1000;
+  }
+};
+
 interface IProps {
   closeModal: () => void;
+  currentXp?: number;
   isCampaignGame: boolean;
   modal: string;
   setTerrain: (terrain: ITerrain) => void;
 }
 export default function ModalResultContent({
   closeModal,
+  currentXp,
   isCampaignGame,
   modal,
   setTerrain,
 }: IProps) {
   const [state, dispatch] = useContext<IHandsContext>(HandsContext);
-  const [isLoadingProfile, setIsLoadingProfile] = useState<boolean>(false);
   const [isLoadingNewGame, setisLoadingNewGame] = useState<boolean>(false);
   const [havingXp, setHavingXp] = useState<number>(0);
   const history = useHistory();
@@ -51,10 +65,13 @@ export default function ModalResultContent({
         };
       });
 
+    const xpToEarn: number =
+      currentXp !== undefined ? getXpToEarn(currentXp) : 0;
+
     const gameToSave = {
       created_at: new Date().getTime().toString(),
       terrain: state.terrainName!,
-      xp_earned: 300,
+      xp_earned: xpToEarn,
       won,
       usedAnimals: {
         pc: mapCardsToSave("pc"),
@@ -68,17 +85,14 @@ export default function ModalResultContent({
 
     saveGameResult(authId, gameToSave).then((res) => {
       if (res && res.xp !== undefined) {
-        setIsLoadingProfile(false);
         setHavingXp(res.xp);
       }
     });
   };
 
   useEffect(() => {
-    console.log("state", state);
     const authId = getCookie("auth=");
     if (isCampaignGame && authId) {
-      setIsLoadingProfile(true);
       getStatsToSaveGame(authId, modal === "win", state);
     }
   }, []); //eslint-disable-line
@@ -126,19 +140,10 @@ export default function ModalResultContent({
       )}
       {isCampaignGame ? (
         <>
-          {isLoadingProfile ? (
-            <Spinner />
-          ) : (
-            <>
-              <AvatarWithXpBar havingXp={havingXp} />
-              <ACButton
-                margin="20px 0"
-                onClick={() => history.push("/campaign")}
-              >
-                Go to campaign menu
-              </ACButton>
-            </>
-          )}
+          <AvatarWithXpBar havingXp={havingXp} />
+          <ACButton margin="20px 0" onClick={() => history.push("/campaign")}>
+            Go to campaign menu
+          </ACButton>
         </>
       ) : (
         <>
