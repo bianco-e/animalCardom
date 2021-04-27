@@ -91,7 +91,7 @@ const modifyAnimalAttack = (
   arr: IAnimal[],
   animal: IAnimal,
   attackAmount: number,
-  operator: string
+  operator: "+" | "-"
 ) => {
   return arr.map((card) => {
     if (card.name === animal.name) {
@@ -103,6 +103,20 @@ const modifyAnimalAttack = (
             operator === "+"
               ? card.attack.current + attackAmount
               : card.attack.current - attackAmount,
+        },
+      };
+    } else return card;
+  });
+};
+
+const increaseAlliesAttack = (arr: IAnimal[], attackAmount: number) => {
+  return arr.map((card) => {
+    if (card.life.current !== "DEAD") {
+      return {
+        ...card,
+        attack: {
+          ...card.attack,
+          current: card.attack.current + attackAmount,
         },
       };
     } else return card;
@@ -161,6 +175,13 @@ const setHandInState = (
       [hand]: newHand,
     },
   };
+};
+
+const alligatorFn = (state: IHandsState, hand: HandKey): IHandsState => {
+  const { hands, defender } = state;
+  const damage = 1;
+  const newHand = makeExtraDamage(hands[hand], defender!, damage);
+  return setHandInState(state, hand, newHand);
 };
 
 const bearFn = (state: IHandsState, hand: HandKey): IHandsState => {
@@ -287,6 +308,13 @@ const lionFn = (state: IHandsState, hand: HandKey): IHandsState => {
   return setHandInState(state, hand, newHand);
 };
 
+const littleLionFn = (state: IHandsState, hand: HandKey): IHandsState => {
+  const { hands, defender } = state;
+  const roundsNumber = 3;
+  const newHand = paralyzeEnemy(hands[hand], defender!, roundsNumber);
+  return setHandInState(state, hand, newHand);
+};
+
 const mosquitoFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, attacker } = state;
   const otherHand = hand === "pc" ? "user" : "pc";
@@ -296,6 +324,13 @@ const mosquitoFn = (state: IHandsState, hand: HandKey): IHandsState => {
     attacker!.attack.current
   );
   return setHandInState(state, otherHand, newHand);
+};
+
+const octopusFn = (state: IHandsState, hand: HandKey): IHandsState => {
+  const { hands, defender } = state;
+  const roundsNumber = 1;
+  const newHand = paralyzeEnemy(hands[hand], defender!, roundsNumber);
+  return setHandInState(state, hand, newHand);
 };
 
 const orcFn = (state: IHandsState, hand: HandKey): IHandsState => {
@@ -370,7 +405,13 @@ const stingrayFn = (state: IHandsState, hand: HandKey): IHandsState => {
   return setHandInState(state, hand, newHand);
 };
 
-const toadFn = (state: IHandsState, hand: HandKey): IHandsState => {
+const swordfishFn = (state: IHandsState, hand: HandKey): IHandsState => {
+  const { hands, defender } = state;
+  const newHand = makeEnemyBleed(hands[hand], defender!);
+  return setHandInState(state, hand, newHand);
+};
+
+const toadAndFrogFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, defender } = state;
   if (defender!.species === "🦂") {
     const newHand = killInstantly(hands[hand], defender!);
@@ -405,8 +446,18 @@ const vultureFn = (state: IHandsState, hand: HandKey): IHandsState => {
   } else return state;
 };
 
+const wolfFn = (state: IHandsState, hand: HandKey): IHandsState => {
+  const { hands } = state;
+  const attackAmount = 1;
+  const otherHand = hand === "pc" ? "user" : "pc";
+  const newHand = increaseAlliesAttack(hands[otherHand], attackAmount);
+  return setHandInState(state, otherHand, newHand);
+};
+
 export default function getSkillFn(name: string) {
   switch (name) {
+    case "Alligator":
+      return alligatorFn;
     case "Crocodile":
       return crocodileFn;
     case "Tortoise":
@@ -417,14 +468,20 @@ export default function getSkillFn(name: string) {
       return komododragonFn;
     case "Chameleon":
       return chameleonFn;
+    case "Frog":
+      return toadAndFrogFn;
     case "Toad":
-      return toadFn;
+      return toadAndFrogFn;
     case "Salamander":
       return salamanderFn;
     case "Shark":
       return sharkFn;
     case "Stingray":
       return stingrayFn;
+    case "Swordfish":
+      return swordfishFn;
+    case "Octopus":
+      return octopusFn;
     case "Orc":
       return orcFn;
     case "Blowfish":
@@ -451,6 +508,8 @@ export default function getSkillFn(name: string) {
       return bearFn;
     case "Lion":
       return lionFn;
+    case "Little Lion":
+      return littleLionFn;
     case "Gorilla":
       return gorillaFn;
     case "Cheetah":
@@ -459,6 +518,8 @@ export default function getSkillFn(name: string) {
       return hyenaFn;
     case "Elephant":
       return elephantFn;
+    case "Wolf":
+      return wolfFn;
     default:
       return (state: IHandsState) => state;
   }
