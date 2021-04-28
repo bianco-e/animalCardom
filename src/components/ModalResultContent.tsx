@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import HandsContext, {
   IHandsContext,
   IHandsState,
@@ -12,17 +12,11 @@ import AvatarWithXpBar from "./AvatarWithXpBar";
 import Spinner from "./Spinner";
 import { ACButton, ModalTitle, Text } from "./styled-components";
 
-const getXpToEarn = (current: number): number => {
-  switch (current) {
-    case 0:
-      return 300;
-    case 300:
-      return 300;
-    case 600:
-      return 400;
-    default:
-      return 1000;
+const getXpToEarn = (current: number, xpParam: number): number => {
+  if (xpParam > current) {
+    return 450;
   }
+  return 0;
 };
 
 interface IProps {
@@ -43,6 +37,7 @@ export default function ModalResultContent({
   const [isLoadingNewGame, setisLoadingNewGame] = useState<boolean>(false);
   const [havingXp, setHavingXp] = useState<number>(0);
   const history = useHistory();
+  const { search } = useLocation();
 
   const getStatsToSaveGame = (
     authId: string,
@@ -65,8 +60,9 @@ export default function ModalResultContent({
         };
       });
 
+    const xpParam = parseInt(search.split("?x=")[1]);
     const xpToEarn: number =
-      currentXp !== undefined ? getXpToEarn(currentXp) : 0;
+      currentXp !== undefined ? getXpToEarn(currentXp, xpParam) : 0;
 
     const gameToSave = {
       created_at: new Date().getTime().toString(),

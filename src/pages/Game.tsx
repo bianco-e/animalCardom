@@ -26,6 +26,7 @@ const emptyTerrain = {
   color: "#fff",
   speciesToBuff: "",
   image: "",
+  getRequiredXp: (current: number) => 0,
 };
 
 export default function App() {
@@ -83,12 +84,17 @@ export default function App() {
           ) {
             setUserName(userRes.first_name);
             const { owned_cards, xp } = userRes;
-            const [, xpParam] = search.split("?x=");
-            if (parseInt(xpParam) === xp) {
+            const xpParam = parseInt(search.split("?x=")[1]);
+            if (
+              xpParam <= xp &&
+              [0, 450, 900, 1350, 1800, 2250, 2700, 3150, 3600].includes(
+                xpParam
+              )
+            ) {
               setCurrentXp(xp);
-              newTerrain(xp).then((terrainRes) => {
+              newTerrain(xpParam).then((terrainRes) => {
                 if (terrainRes && terrainRes.name) {
-                  newCampaignGame(xp, owned_cards).then((gameRes) =>
+                  newCampaignGame(xpParam, owned_cards).then((gameRes) =>
                     newGameResHandler(terrainRes, gameRes)
                   );
                   setTerrain(terrainRes);

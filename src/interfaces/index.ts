@@ -51,6 +51,7 @@ export interface ITerrain {
   image: string;
   name: string;
   color: string;
+  getRequiredXp: (current: number) => number;
 }
 
 export interface Game {

@@ -18,13 +18,14 @@ export default function ({ xp }: IProps) {
     }
   }, [containerRef.current]); //eslint-disable-line
 
-  const handleCampaignGame = () => history.push(`/game?x=${xp}`);
+  const handleCampaignGame = (xp: number) => history.push(`/game?x=${xp}`);
 
   return (
     <Wrapper ref={containerRef}>
       {terrains.map((terrain, idx) => {
-        const { image, name } = terrain;
-        const isDisabled = idx > xp / 1000;
+        const { image, name, getRequiredXp } = terrain;
+        const requiredXp = getRequiredXp(xp);
+        const isDisabled = requiredXp > xp;
         return (
           <TerrainContainer
             angle={`${ANGLE * idx - 40}`}
@@ -33,7 +34,7 @@ export default function ({ xp }: IProps) {
             disabled={isDisabled}
             key={name}
             level={idx + 1}
-            onClick={() => !isDisabled && handleCampaignGame()}
+            onClick={() => !isDisabled && handleCampaignGame(requiredXp)}
             title={isDisabled ? "Locked" : name}
           ></TerrainContainer>
         );

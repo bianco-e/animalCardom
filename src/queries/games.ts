@@ -17,17 +17,31 @@ export const newRandomGame = () => {
 };
 
 export const newTerrain = (xp?: number) => {
-  const campaignTerrains = [
-    "neutral",
-    "swamp",
-    "desert",
-    "mountain",
-    "sea",
-    "forest",
-    "jungle",
-  ];
-  const query =
-    xp !== undefined ? `?name=${campaignTerrains[Math.floor(xp / 1000)]}` : "";
+  const getTerrainName = () => {
+    switch (xp) {
+      case 0:
+        return "neutral";
+      case 450:
+        return "neutral";
+      case 900:
+        return "neutral";
+      case 1350:
+        return "swamp";
+      case 1800:
+        return "desert";
+      case 2250:
+        return "mountain";
+      case 2700:
+        return "sea";
+      case 3150:
+        return "forest";
+      case 3600:
+        return "jungle";
+      default:
+        return "";
+    }
+  };
+  const query = `?name=${getTerrainName()}`;
   return fetch(`${API_URL}terrains/new${query}`)
     .then((res) => res.json())
     .catch((err) => console.error(err));
