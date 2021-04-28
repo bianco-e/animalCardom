@@ -45,3 +45,35 @@ export const getCookie = (name: string) => {
     .find((c) => c.startsWith(name))
     ?.substring(5);
 };
+
+export const getNewUserTemplate = (user: {
+  sub: string;
+  picture: string;
+  email: string;
+  given_name: string;
+  family_name: string;
+  locale: string;
+}) => {
+  const initialAnimals = [
+    "Alligator",
+    "Basilisk Lizard",
+    "Little Lion",
+    "Octopus",
+    "Vulture",
+  ];
+  const { sub, picture, email, given_name, family_name, locale } = user;
+  return {
+    auth_id: sub,
+    picture,
+    email,
+    first_name: given_name,
+    last_name: family_name,
+    locale,
+    preferences: {
+      language: "en",
+    },
+    xp: 0,
+    owned_cards: initialAnimals,
+    hand: initialAnimals,
+  };
+};

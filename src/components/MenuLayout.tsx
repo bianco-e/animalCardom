@@ -4,7 +4,8 @@ import SideMenu from "../components/SideMenu";
 import Spinner from "../components/Spinner";
 import { Redirect } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { getUserMe } from "../queries/user";
+import { getUserMe, createUser } from "../queries/user";
+import { getNewUserTemplate } from "../utils";
 
 export default function MenuLayout({ children }: { children: JSX.Element }) {
   const { user, isAuthenticated, isLoading } = useAuth0();
@@ -15,8 +16,12 @@ export default function MenuLayout({ children }: { children: JSX.Element }) {
       getUserMe(user.sub).then((res) => {
         if (res) {
           if (res.error && res.error === "user_not_found") {
-            // first time user is logging in
-            console.log("So this is your first time around");
+            const newUser = getNewUserTemplate(user);
+            createUser(newUser).then((userRes) => {
+              if (!userRes && !userRes.auth_id) {
+                //should redirect to error view here
+              }
+            });
           }
         }
       });

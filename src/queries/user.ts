@@ -1,5 +1,20 @@
 const API_URL = "http://localhost:5000/";
 
+interface User {
+  auth_id: string;
+  picture: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  locale: string;
+  preferences: {
+    language: string;
+  };
+  xp: number;
+  owned_cards: string[];
+  hand: string[];
+}
+
 export const ACPost = (body: any) => ({
   method: "POST",
   headers: {
@@ -7,6 +22,14 @@ export const ACPost = (body: any) => ({
   },
   body: JSON.stringify(body),
 });
+
+export const createUser = (user: User) => {
+  return fetch(`${API_URL}users/create`, {
+    ...ACPost(user),
+  })
+    .then((res) => res.json())
+    .catch((err) => console.error(err));
+};
 
 export const getUserMe = (auth_id: string) => {
   return fetch(`${API_URL}users/me`, {

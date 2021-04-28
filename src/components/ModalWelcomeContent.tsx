@@ -37,17 +37,14 @@ export default function ModalResultContent({ modal }: IProps) {
           <>
             <ModalTitle>Available terrains</ModalTitle>
             <Text textAlign="center" margin="0 0 10px 0">
-              There are 6 different terrains. One is randomly set when game
+              There are 7 different terrains. One is randomly set when game
               begins and benefits a species increasing attack by 1
             </Text>
             <Text>
-              - <b>Sea</b> buffs 🦈 animals
+              - <b>Neutral</b> doesn't buff any animal
             </Text>
             <Text>
               - <b>Swamp</b> buffs 🐸 animals
-            </Text>
-            <Text>
-              - <b>Jungle</b> buffs 🐺 animals
             </Text>
             <Text>
               - <b>Desert</b> buffs 🦂 animals
@@ -56,11 +53,13 @@ export default function ModalResultContent({ modal }: IProps) {
               - <b>Mountain</b> buffs 🦅 animals
             </Text>
             <Text>
-              {" "}
+              - <b>Sea</b> buffs 🦈 animals
+            </Text>
+            <Text>
               - <b>Forest</b> buffs 🦎 animals
             </Text>
             <Text>
-              - <b>Neutral</b> doesn't buff any animal
+              - <b>Jungle</b> buffs 🐺 animals
             </Text>
           </>
         )

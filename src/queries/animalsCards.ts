@@ -5,6 +5,11 @@ export const getAllAnimalsCards = () =>
     .then((res) => res.json())
     .catch((err) => console.error(err));
 
+export const getNewestAnimals = () =>
+  fetch(`${API_URL}animals/newest`)
+    .then((res) => res.json())
+    .catch((err) => console.error(err));
+
 export const getFilteredAnimalsCards = (
   species?: string,
   skill_type?: string,

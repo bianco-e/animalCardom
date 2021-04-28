@@ -13,6 +13,13 @@ import {
 } from "../queries/animalsCards";
 import { getUserProfile } from "../queries/user";
 
+const getCardOpacityForPreview = (cards: string[], name: string): string => {
+  if (cards.find((card) => card === name)) {
+    return "1";
+  }
+  return "0.6";
+};
+
 export default function Collection() {
   const [speciesFilter, setSpeciesFilter] = useState<string>();
   const [skillTypeFilter, setSkillTypeFilter] = useState<string>();
@@ -22,13 +29,6 @@ export default function Collection() {
   const [currentHand, setCurrentHand] = useState<string[]>([]);
   const [ownedCards, setOwnedCards] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const getCardOpacity = (name: string): string => {
-    if (ownedCards.find((card) => card === name)) {
-      return "1";
-    }
-    return "0.6";
-  };
 
   useEffect(() => {
     setIsLoading(true);
@@ -111,7 +111,7 @@ export default function Collection() {
                     image={image}
                     key={name}
                     life={life}
-                    opacityForPreview={getCardOpacity(name)}
+                    opacityForPreview="1"
                     paralyzed={paralyzed}
                     poisoned={poisoned}
                     skill={skill}
@@ -150,7 +150,7 @@ export default function Collection() {
                   image={image}
                   key={name}
                   life={life}
-                  opacityForPreview={getCardOpacity(name)}
+                  opacityForPreview={getCardOpacityForPreview(ownedCards, name)}
                   paralyzed={paralyzed}
                   poisoned={poisoned}
                   skill={skill}
