@@ -93,7 +93,9 @@ export default function History({ lastGames }: IProps) {
                 <span>XP: {xp_earned}</span>
                 <span>
                   {gameDate.toLocaleDateString()} - {gameDate.getHours()}:
-                  {gameDate.getMinutes()}
+                  {gameDate.getMinutes() < 10
+                    ? `0${gameDate.getMinutes()}`
+                    : gameDate.getMinutes()}
                 </span>
               </DetailsPanel>
             </HistoryCard>
