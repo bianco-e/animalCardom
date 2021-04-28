@@ -4,7 +4,7 @@ import HandsContext, {
   IHandsContext,
   IHandsState,
 } from "../context/HandsContext";
-import { SET_CARDS } from "../context/HandsContext/types";
+import { EMPTY_STATE, SET_CARDS } from "../context/HandsContext/types";
 import { HandKey, ITerrain } from "../interfaces";
 import { newRandomGame, newTerrain, saveGameResult } from "../queries/games";
 import { getCookie } from "../utils";
@@ -98,6 +98,7 @@ export default function ModalResultContent({
   }, []); //eslint-disable-line
 
   const handlePlayAgain = () => {
+    dispatch({ type: EMPTY_STATE });
     setisLoadingNewGame(true);
     newTerrain().then((terrainRes) => {
       if (terrainRes && terrainRes.name) {
