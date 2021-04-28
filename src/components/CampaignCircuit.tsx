@@ -1,16 +1,13 @@
-import React, { useRef, useEffect, useState, useContext } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import { terrains } from "../data/data";
-import HandsContext, { IHandsContext } from "../context/HandsContext";
-import { EMPTY_STATE } from "../context/HandsContext/types";
 
 const ANGLE = 360 / (terrains.length - 1);
 interface IProps {
   xp: number;
 }
 export default function ({ xp }: IProps) {
-  const [, dispatch] = useContext<IHandsContext>(HandsContext);
   const [containerWidth, setContainerWidth] = useState<number>(200);
   const containerRef = useRef<HTMLDivElement>(null);
   const history = useHistory();

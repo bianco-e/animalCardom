@@ -69,21 +69,28 @@ export default function Card({
   useEffect(() => {
     isCardUnderAttack && soundState === "on" && attackAudio.play();
   }, [isCardUnderAttack, soundState]);
-  return (
-    <AnimalCard
-      animation={isCardSelected && selectAnimation}
-      isCardSelected={isCardSelected}
-      isParalyzed={paralyzed > 0}
-      onClick={() => {
-        !state.pcTurn && dispatch({ type: SELECT_CARD, name });
-      }}
-      opacity={
-        opacityForPreview
-          ? opacityForPreview
-          : `${life.current === "DEAD" && "0.5"}`
+  const isForPreview = !!opacityForPreview;
+  const cardProps = isForPreview
+    ? {
+        animation: "",
+        isCardSelected: false,
+        isParalyzed: false,
+        onClick: () => {},
+        opacity: opacityForPreview ? opacityForPreview : "",
+        transform: "",
       }
-      transform={belongsToUser ? "translateY(-10px)" : "translateY(10px)"}
-    >
+    : {
+        animation: isCardSelected && selectAnimation,
+        isCardSelected,
+        isParalyzed: paralyzed > 0,
+        onClick: () => {
+          !state.pcTurn && dispatch({ type: SELECT_CARD, name });
+        },
+        opacity: `${life.current === "DEAD" && "0.5"}`,
+        transform: belongsToUser ? "translateY(-10px)" : "translateY(10px)",
+      };
+  return (
+    <AnimalCard {...cardProps}>
       <Injury animation={isCardUnderAttack && attackAnimation}>
         <img
           alt="wound"
