@@ -73,6 +73,10 @@ export default function ({
       fn: () => setSkillTypeFilter("buff"),
     },
     {
+      text: "Dodge",
+      fn: () => setSkillTypeFilter("dodge"),
+    },
+    {
       text: "Extra damage",
       fn: () => setSkillTypeFilter("extra_damage"),
     },
@@ -91,6 +95,10 @@ export default function ({
     {
       text: "Poison",
       fn: () => setSkillTypeFilter("poison"),
+    },
+    {
+      text: "Reflect",
+      fn: () => setSkillTypeFilter("reflect"),
     },
     {
       text: "Untargeteable",
