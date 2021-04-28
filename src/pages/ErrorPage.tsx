@@ -10,7 +10,7 @@ export default function ErrorPage() {
       <CardLetter>
         <Title>Oops...</Title>
         <Title>Looks like something went wrong</Title>
-        <img src="/images/welcome-background.png" width={500} />
+        <img alt="cardom" src="/images/welcome-background.png" width={500} />
         <ACButton onClick={() => push("/")}>Go to menu</ACButton>
       </CardLetter>
     </Wrapper>

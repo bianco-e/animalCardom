@@ -73,6 +73,7 @@ export default function Card({
   const cardProps = isForPreview
     ? {
         animation: "",
+        draggable: true,
         isCardSelected: false,
         isParalyzed: false,
         onClick: () => {},
@@ -93,16 +94,19 @@ export default function Card({
     <AnimalCard {...cardProps}>
       <Injury animation={isCardUnderAttack && attackAnimation}>
         <img
+          draggable="false"
           alt="wound"
           className="small-wound"
           src="/images/svg/blood-splatter.svg"
         />
         <img
+          draggable="false"
           alt="wound"
           className="big-wound"
           src="/images/svg/blood-splatter.svg"
         />
         <img
+          draggable="false"
           alt="wound"
           className="small-wound"
           src="/images/svg/blood-splatter.svg"
@@ -120,7 +124,7 @@ export default function Card({
 
       <Text className="animal-name">{name}</Text>
 
-      <Image className="animal-picture" src={image} />
+      <Image className="animal-picture" draggable="false" src={image} />
 
       <DescriptionContainer>
         <FlexSection mBottom="1px">

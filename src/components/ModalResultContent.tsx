@@ -71,7 +71,7 @@ export default function ModalResultContent({
     const gameToSave = {
       created_at: new Date().getTime().toString(),
       terrain: state.terrainName!,
-      xp_earned: xpToEarn,
+      xp_earned: won ? xpToEarn : 0,
       won,
       usedAnimals: {
         pc: mapCardsToSave("pc"),

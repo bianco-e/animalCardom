@@ -27,7 +27,7 @@ export default function MenuLayout({ children }: { children: JSX.Element }) {
         }
       });
     }
-  }, [isAuthenticated, user]);
+  }, [isAuthenticated, user]); //eslint-disable-line
 
   return isLoading ? (
     <Spinner />
