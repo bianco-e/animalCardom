@@ -32,13 +32,15 @@ export default function History({ lastGames }: IProps) {
                 <b>You</b>
                 <CardsContainer>
                   {usedAnimals.user.map((card) => {
+                    const isLittle: boolean = card.name.startsWith("Little");
+                    const cardImage = `/images/animals/${
+                      isLittle ? "" : "adult-"
+                    }${cardSpeciesToLowerCase(card.name)}.webp`;
                     return (
                       <CardThumbnail
                         key={card.name}
                         disabled={!card.survived}
-                        image={`/images/animals/adult-${cardSpeciesToLowerCase(
-                          card.name
-                        )}.webp`}
+                        image={cardImage}
                         name={card.name}
                       ></CardThumbnail>
                     );
