@@ -97,6 +97,11 @@ export default function ModalResultContent({
     }
   }, []); //eslint-disable-line
 
+  const handleRoute = (path: string) => {
+    dispatch({ type: EMPTY_STATE });
+    history.push(path);
+  };
+
   const handlePlayAgain = () => {
     dispatch({ type: EMPTY_STATE });
     setisLoadingNewGame(true);
@@ -142,7 +147,7 @@ export default function ModalResultContent({
       {isCampaignGame ? (
         <>
           <AvatarWithXpBar havingXp={havingXp} />
-          <ACButton margin="20px 0" onClick={() => history.push("/campaign")}>
+          <ACButton margin="20px 0" onClick={() => handleRoute("/campaign")}>
             Go to campaign menu
           </ACButton>
         </>
@@ -155,7 +160,7 @@ export default function ModalResultContent({
               <ACButton margin="10px 0 5px 0" onClick={handlePlayAgain}>
                 Play again
               </ACButton>
-              <ACButton margin="5px 0" onClick={() => history.push("/")}>
+              <ACButton margin="5px 0" onClick={() => handleRoute("/")}>
                 Go to menu
               </ACButton>
             </>

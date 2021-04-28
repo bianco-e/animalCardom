@@ -21,10 +21,7 @@ export default function ({ xp }: IProps) {
     }
   }, [containerRef.current]); //eslint-disable-line
 
-  const handleCampaignGame = () => {
-    dispatch({ type: EMPTY_STATE });
-    history.push(`/game?x=${xp}`);
-  };
+  const handleCampaignGame = () => history.push(`/game?x=${xp}`);
 
   return (
     <Wrapper ref={containerRef}>

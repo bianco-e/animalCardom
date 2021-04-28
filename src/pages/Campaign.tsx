@@ -17,7 +17,6 @@ export default function Campaign() {
       getUserProfile(authId).then((res) => {
         setIsLoading(false);
         if (res && res.xp) {
-          console.log("current xp", res.xp);
           sethavingXp(res.xp);
         }
       });
