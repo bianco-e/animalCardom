@@ -18,6 +18,8 @@ export default function Collection() {
   const [skillTypeFilter, setSkillTypeFilter] = useState<string>();
   const [owningFilter, setOwningFilter] = useState<boolean | undefined>();
   const [cardsToShow, setCardsToShow] = useState<IAnimal[]>([]);
+  const [allCards, setAllCards] = useState<IAnimal[]>([]);
+  const [currentHand, setCurrentHand] = useState<string[]>([]);
   const [ownedCards, setOwnedCards] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -33,14 +35,16 @@ export default function Collection() {
     getAllAnimalsCards().then((res) => {
       setIsLoading(false);
       if (res && res.animals) {
+        setAllCards(res.animals);
         setCardsToShow(sortCardsAlphabetically(res.animals));
       }
     });
     const authId = getCookie("auth=");
     if (authId) {
       getUserProfile(authId).then((res) => {
-        if (res && res.owned_cards) {
+        if (res && res.owned_cards && res.hand) {
           setOwnedCards(res.owned_cards);
+          setCurrentHand(res.hand);
         }
       });
     }
@@ -72,6 +76,53 @@ export default function Collection() {
           setSkillTypeFilter={setSkillTypeFilter}
           setOwningFilter={setOwningFilter}
         />
+        <MenuTitle>
+          Hand{" "}
+          <i>
+            <img alt="info" src="/images/icons/info-icon.png" width={10} />
+            Changes may not apply for campaign games
+          </i>
+        </MenuTitle>
+        {!(currentHand.length > 0) ? (
+          <Spinner />
+        ) : (
+          <CardsContainer>
+            {allCards
+              .filter((card) => currentHand.includes(card.name))
+              .map((card) => {
+                const {
+                  attack,
+                  bleeding,
+                  name,
+                  image,
+                  life,
+                  paralyzed,
+                  poisoned,
+                  skill,
+                  species,
+                  targeteable,
+                } = card;
+                return (
+                  <Card
+                    attack={attack}
+                    belongsToUser={false}
+                    bleeding={bleeding}
+                    species={species}
+                    image={image}
+                    key={name}
+                    life={life}
+                    opacityForPreview={getCardOpacity(name)}
+                    paralyzed={paralyzed}
+                    poisoned={poisoned}
+                    skill={skill}
+                    name={name}
+                    targeteable={targeteable}
+                  ></Card>
+                );
+              })}
+          </CardsContainer>
+        )}
+
         <MenuTitle>Collection</MenuTitle>
         {isLoading ? (
           <Spinner />

@@ -84,6 +84,11 @@ export const MenuTitle = styled.span`
   font-size: 20px;
   margin: 60px 0 0 8%;
   position: relative;
+  > i {
+    font-size: 10px;
+    font-weight: normal;
+    margin-left: 10px;
+  }
   &::before {
     background: rgba(95, 57, 0, 0.6);
     border-radius: 120px;
