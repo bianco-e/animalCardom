@@ -32,29 +32,29 @@ export default function History({ lastGames }: IProps) {
               <PlayerStats>
                 <b>You</b>
                 <CardsContainer>
-                  {usedAnimals.user.map((card) => {
-                    const isLittle: boolean = card.name.startsWith("Little");
+                  {usedAnimals.user.map(({ name, survived }) => {
+                    const isLittle: boolean = name.startsWith("Little");
                     const cardImage = `/images/animals/${
                       isLittle ? "" : "adult-"
-                    }${cardSpeciesToLowerCase(card.name)}.webp`;
+                    }${cardSpeciesToLowerCase(name)}.webp`;
                     return (
                       <CardThumbnail
-                        key={card.name}
-                        disabled={!card.survived}
+                        key={name}
+                        disabled={!survived}
                         image={cardImage}
-                        name={card.name}
+                        name={name}
                       ></CardThumbnail>
                     );
                   })}
                 </CardsContainer>
                 <CardsContainer>
-                  {usedPlants.user.map((plant) => {
+                  {usedPlants.user.map(({ name, applied }) => {
                     return (
                       <PlantThumbnail
-                        key={plant.name}
-                        disabled={!plant.applied}
-                        image={`/images/plants/${plant.name.toLowerCase()}.webp`}
-                        name={plant.name}
+                        key={name}
+                        disabled={applied}
+                        image={`/images/plants/${name.toLowerCase()}.webp`}
+                        name={name}
                       ></PlantThumbnail>
                     );
                   })}
@@ -63,27 +63,27 @@ export default function History({ lastGames }: IProps) {
               <PlayerStats>
                 <b>PC</b>
                 <CardsContainer>
-                  {usedAnimals.pc.map((card) => {
+                  {usedAnimals.pc.map(({ name, survived }) => {
                     return (
                       <CardThumbnail
-                        key={card.name}
-                        disabled={!card.survived}
+                        key={name}
+                        disabled={!survived}
                         image={`/images/animals/adult-${cardSpeciesToLowerCase(
-                          card.name
+                          name
                         )}.webp`}
-                        name={card.name}
+                        name={name}
                       ></CardThumbnail>
                     );
                   })}
                 </CardsContainer>
                 <CardsContainer>
-                  {usedPlants.pc.map((plant) => {
+                  {usedPlants.pc.map(({ name, applied }) => {
                     return (
                       <PlantThumbnail
-                        key={plant.name}
-                        disabled={!plant.applied}
-                        image={`/images/plants/${plant.name.toLowerCase()}.webp`}
-                        name={plant.name}
+                        key={name}
+                        disabled={applied}
+                        image={`/images/plants/${name.toLowerCase()}.webp`}
+                        name={name}
                       ></PlantThumbnail>
                     );
                   })}
