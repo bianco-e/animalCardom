@@ -16,7 +16,7 @@ import { getUserProfile } from "../queries/user";
 export default function Collection() {
   const [speciesFilter, setSpeciesFilter] = useState<string>();
   const [skillTypeFilter, setSkillTypeFilter] = useState<string>();
-  const [owningFilter, setOwningFilter] = useState<boolean | null>();
+  const [owningFilter, setOwningFilter] = useState<boolean | undefined>();
   const [cardsToShow, setCardsToShow] = useState<IAnimal[]>([]);
   const [ownedCards, setOwnedCards] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);

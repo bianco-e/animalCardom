@@ -13,6 +13,17 @@ export default function NavBar({ isAuthenticated, username }: IProps) {
   const { loginWithRedirect } = useAuth0();
   const history = useHistory();
   const [soundState, setSoundState] = useState<"off" | "on">("on");
+
+  useEffect(() => {
+    const currentSoundState = localStorage.getItem("sound");
+    if (
+      currentSoundState &&
+      (currentSoundState === "off" || currentSoundState === "on")
+    ) {
+      setSoundState(currentSoundState);
+    }
+  }, []);
+
   useEffect(() => {
     localStorage.setItem("sound", soundState);
   }, [soundState]);

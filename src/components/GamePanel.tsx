@@ -22,6 +22,17 @@ export default function SidePanel({ plants, terrain, userName }: IProps) {
   const [soundState, setSoundState] = useState<"off" | "on">("on");
   const [showExitModal, setShowExitModal] = useState<boolean>(false);
   const history = useHistory();
+
+  useEffect(() => {
+    const currentSoundState = localStorage.getItem("sound");
+    if (
+      currentSoundState &&
+      (currentSoundState === "off" || currentSoundState === "on")
+    ) {
+      setSoundState(currentSoundState);
+    }
+  }, []);
+
   useEffect(() => {
     localStorage.setItem("sound", soundState);
   }, [soundState]);
