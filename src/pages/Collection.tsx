@@ -16,7 +16,7 @@ import { getUserProfile } from "../queries/user";
 export default function Collection() {
   const [speciesFilter, setSpeciesFilter] = useState<string>();
   const [skillTypeFilter, setSkillTypeFilter] = useState<string>();
-  const [owningFilter, setOwningFilter] = useState<boolean>();
+  const [owningFilter, setOwningFilter] = useState<boolean | null>();
   const [cardsToShow, setCardsToShow] = useState<IAnimal[]>([]);
   const [ownedCards, setOwnedCards] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -50,10 +50,13 @@ export default function Collection() {
     const sendingOwnedCards = owningFilter
       ? ownedCards.map((card) => card)
       : undefined;
+    const sendingOwnedCardsToFilter =
+      owningFilter === false ? ownedCards.map((card) => card) : undefined;
     getFilteredAnimalsCards(
       speciesFilter,
       skillTypeFilter,
-      sendingOwnedCards
+      sendingOwnedCards,
+      sendingOwnedCardsToFilter
     ).then((res) => {
       if (res && res.animals) {
         setCardsToShow(sortCardsAlphabetically(res.animals));

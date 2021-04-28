@@ -5,7 +5,7 @@ import Dropdown from "./Dropdown";
 interface IProps {
   setSpeciesFilter: (cards: string) => void;
   setSkillTypeFilter: (cards: string) => void;
-  setOwningFilter: (cards: boolean) => void;
+  setOwningFilter: (bool: boolean | undefined) => void;
 }
 
 export default function ({
@@ -47,7 +47,7 @@ export default function ({
   const ownedDropdownOptions = [
     {
       text: "Owning",
-      fn: () => setOwningFilter(false),
+      fn: () => setOwningFilter(undefined),
     },
     {
       text: "Owned",
