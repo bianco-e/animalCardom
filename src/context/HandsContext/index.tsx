@@ -1,6 +1,7 @@
 import React, { useReducer } from "react";
 import getPlantFn from "../../data/plantsFunctions";
-import getSkillFn from "../../data/skillsFunctions";
+import getOffensiveSkillFn from "../../data/offensiveSkillsFunctions";
+import getDefensiveSkillFn from "../../data/defensiveSkillsFunctions";
 import {
   HandKey,
   IAnimal,
@@ -72,7 +73,7 @@ const getHighestAttackCard = (hand: IAnimal[]) =>
     return value.attack.current > acc.attack.current ? value : acc;
   });
 
-const attackAndApplySkill = (state: IHandsState, hand: HandKey) => {
+const attackAndApplySkill = (state: IHandsState, enemyHandKey: HandKey) => {
   const { defender, attacker, hands } = state;
   if (
     defender &&
@@ -80,20 +81,20 @@ const attackAndApplySkill = (state: IHandsState, hand: HandKey) => {
     hands &&
     typeof defender.life.current === "number"
   ) {
-    const statsDiff = defender.life.current - attacker.attack.current;
     const newState = {
       ...state,
       underAttack: defender.name,
-      hands: {
-        ...hands,
-        [hand]: restRoundAndBleedingDmg(
-          applyPoisonDamage(applyAttackDamage(hands[hand], statsDiff, defender))
+      hands: passRoundAndApplyEffects(
+        applyPoisonDamage(
+          applyAttackDamage(hands, attacker, defender!, enemyHandKey),
+          enemyHandKey
         ),
-      },
+        enemyHandKey
+      ),
     };
     return attacker.paralyzed > 0
       ? newState
-      : getSkillFn(attacker.name)(newState, hand);
+      : getOffensiveSkillFn(attacker.name)(newState, enemyHandKey);
   } else return state;
 };
 
@@ -101,10 +102,10 @@ const applyPlantToCard = (
   plant: IPlant,
   card: IAnimal,
   state: IHandsState,
-  hand: HandKey
+  enemyHandKey: HandKey
 ): IHandsState => {
   const plantMessage =
-    hand === "user" ? ` and used ${plant.name} on ${card.name}` : "";
+    enemyHandKey === "user" ? ` and used ${plant.name} on ${card.name}` : "";
   if (card.targeteable) {
     return getPlantFn(plant.name)(
       {
@@ -113,7 +114,7 @@ const applyPlantToCard = (
         animalToTreat: card,
         pcPlay: state.pcPlay + plantMessage,
       },
-      hand
+      enemyHandKey
     );
   } else return state;
 };
@@ -252,8 +253,8 @@ const selectPlant = (state: IHandsState, plant: IPlant) => {
   } else return state;
 };
 
-const restRoundAndBleedingDmg = (arr: IAnimal[]) => {
-  const restParalyzedRound = arr.map((card) => {
+const passRoundAndApplyEffects = (hands: IHands, enemyHandKey: HandKey) => {
+  const minusParalyzedRound = hands[enemyHandKey].map((card) => {
     if (card.paralyzed > 0) {
       return {
         ...card,
@@ -261,7 +262,7 @@ const restRoundAndBleedingDmg = (arr: IAnimal[]) => {
       };
     } else return card;
   });
-  const restPoisonedRound = restParalyzedRound.map((card) => {
+  const minusPoisonedRound = minusParalyzedRound.map((card) => {
     if (card.poisoned.rounds > 0) {
       return {
         ...card,
@@ -272,54 +273,58 @@ const restRoundAndBleedingDmg = (arr: IAnimal[]) => {
       };
     } else return card;
   });
-  return restPoisonedRound.map((card) => {
-    if (card.bleeding && typeof card.life.current === "number") {
-      return {
-        ...card,
-        life: {
-          ...card.life,
-          current: card.life.current - 1 < 1 ? "DEAD" : card.life.current - 1,
-        },
-      };
-    } else return card;
-  });
+  return {
+    ...hands,
+    [enemyHandKey]: minusPoisonedRound.map((card) => {
+      if (card.bleeding && typeof card.life.current === "number") {
+        return {
+          ...card,
+          life: {
+            ...card.life,
+            current: card.life.current - 1 < 1 ? "DEAD" : card.life.current - 1,
+          },
+        };
+      } else return card;
+    }),
+  };
 };
 
 const applyAttackDamage = (
-  arr: IAnimal[],
-  statsDiff: number,
-  defender: IAnimal
+  hands: IHands,
+  attacker: IAnimal,
+  defender: IAnimal,
+  enemyHandKey: HandKey
 ) => {
-  return arr.map((card) => {
-    if (card.name === defender.name) {
-      return {
-        ...card,
-        life: {
-          ...card.life,
-          current: statsDiff < 1 ? "DEAD" : statsDiff,
-        },
-      };
-    } else {
-      return card;
-    }
-  });
+  const statsDiff =
+    typeof defender.life.current === "number"
+      ? defender.life.current - attacker.attack.current
+      : undefined;
+  return getDefensiveSkillFn(defender.name)(
+    hands,
+    attacker,
+    defender,
+    enemyHandKey,
+    statsDiff!
+  );
 };
 
-const applyPoisonDamage = (arr: IAnimal[]) => {
-  return arr.map((card) => {
-    if (card.poisoned.rounds > 0 && typeof card.life.current === "number") {
-      return {
-        ...card,
-        life: {
-          ...card.life,
-          current:
-            card.life.current - card.poisoned.damage < 1
-              ? "DEAD"
-              : card.life.current - card.poisoned.damage,
-        },
-      };
-    } else return card;
-  });
+const applyPoisonDamage = (hands: IHands, enemyHandKey: HandKey): IHands => {
+  const applyPoisonInAHand = (arr: IAnimal[]) =>
+    arr.map((card) => {
+      if (card.poisoned.rounds > 0 && typeof card.life.current === "number") {
+        return {
+          ...card,
+          life: {
+            ...card.life,
+            current:
+              card.life.current - card.poisoned.damage < 1
+                ? "DEAD"
+                : card.life.current - card.poisoned.damage,
+          },
+        };
+      } else return card;
+    });
+  return { ...hands, [enemyHandKey]: applyPoisonInAHand(hands[enemyHandKey]) };
 };
 
 const setTerrain = (state: IHandsState, terrain: ITerrain) => {
