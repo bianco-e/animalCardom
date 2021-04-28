@@ -24,9 +24,8 @@ export default function Profile() {
       });
       getLastGames(authId).then((res) => {
         setIsLoadingLastGames(false);
-        if (res && res.games) {
-          const { games } = res;
-          setLastGames(games);
+        if (res) {
+          setLastGames(res);
         }
       });
     }

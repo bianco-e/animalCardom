@@ -64,6 +64,33 @@ const basiliskLizardFn = (
     }),
   };
 };
+const combStarFn = (
+  hands: IHands,
+  attacker: IAnimal,
+  defender: IAnimal,
+  enemyHandKey: HandKey,
+  statsDiff: number
+): IHands => {
+  const ownHandKey = enemyHandKey === "pc" ? "user" : "pc";
+  return {
+    [ownHandKey]: hands[ownHandKey].map((animal) => {
+      if (animal.name === attacker.name && defender.paralyzed === 0) {
+        return {
+          ...animal,
+          poisoned: {
+            damage: 1,
+            rounds: 5,
+          },
+        };
+      } else return animal;
+    }),
+    [enemyHandKey]: hands[enemyHandKey].map((animal) => {
+      if (animal.name === defender.name) {
+        return applyDmg(animal, statsDiff);
+      } else return animal;
+    }),
+  };
+};
 const hedgehogFn = (
   hands: IHands,
   attacker: IAnimal,
@@ -149,6 +176,8 @@ export default function getSkillFn(name: string) {
       return ballBugFn;
     case "Basilisk Lizard":
       return basiliskLizardFn;
+    case "Comb Star":
+      return combStarFn;
     case "Hedgehog":
       return hedgehogFn;
     case "Lizard":
