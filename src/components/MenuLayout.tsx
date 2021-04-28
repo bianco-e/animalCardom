@@ -2,13 +2,14 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import SideMenu from "../components/SideMenu";
 import Spinner from "../components/Spinner";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getUserMe, createUser } from "../queries/user";
 import { getNewUserTemplate } from "../utils";
 
 export default function MenuLayout({ children }: { children: JSX.Element }) {
   const { user, isAuthenticated, isLoading } = useAuth0();
+  const { push } = useHistory();
 
   useEffect(() => {
     if (isAuthenticated && user) {
@@ -19,7 +20,7 @@ export default function MenuLayout({ children }: { children: JSX.Element }) {
             const newUser = getNewUserTemplate(user);
             createUser(newUser).then((userRes) => {
               if (!userRes && !userRes.auth_id) {
-                //should redirect to error view here
+                push("/error");
               }
             });
           }
