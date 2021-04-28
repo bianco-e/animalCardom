@@ -11,19 +11,19 @@ export const terrains: ITerrain[] = [
     name: "Neutral",
     color: "#000",
     speciesToBuff: "",
-    image: "/images/terrains/neutral.jpg",
+    image: "/images/terrains/neutral.webp",
   },
   {
     name: "Swamp",
     color: "#228B22",
     speciesToBuff: "🐸",
-    image: "/images/terrains/swamp.jpeg",
+    image: "/images/terrains/swamp.webp",
   },
   {
     name: "Desert",
     color: "#DEB887",
     speciesToBuff: "🦂",
-    image: "/images/terrains/desert.jpeg",
+    image: "/images/terrains/desert.webp",
   },
   {
     name: "Mountain",
@@ -41,12 +41,12 @@ export const terrains: ITerrain[] = [
     name: "Forest",
     color: "#2E8B57",
     speciesToBuff: "🦎",
-    image: "/images/terrains/forest.jpeg",
+    image: "/images/terrains/forest.webp",
   },
   {
     name: "Jungle",
     color: "#006400",
     speciesToBuff: "🐺",
-    image: "/images/terrains/jungle.jpeg",
+    image: "/images/terrains/jungle.webp",
   },
 ];

@@ -23,8 +23,9 @@ export default function History({ lastGames }: IProps) {
             created_at,
             xp_earned,
           } = game;
+          const gameDate = new Date(created_at);
           return (
-            <HistoryCard key={idx}>
+            <HistoryCard terrain={terrain.toLowerCase()} key={idx}>
               <Result bgColor={won ? "green" : "red"}>
                 {won ? "Won" : "Lost"}
               </Result>
@@ -89,10 +90,10 @@ export default function History({ lastGames }: IProps) {
                 </CardsContainer>
               </PlayerStats>
               <DetailsPanel>
-                <span className="terrain">{terrain}</span>
-                <span className="date">XP: {xp_earned}</span>
-                <span className="date">
-                  {new Date(created_at).toLocaleDateString()}
+                <span>XP: {xp_earned}</span>
+                <span>
+                  {gameDate.toLocaleDateString()} - {gameDate.getHours()}:
+                  {gameDate.getMinutes()}
                 </span>
               </DetailsPanel>
             </HistoryCard>
@@ -108,6 +109,10 @@ export default function History({ lastGames }: IProps) {
 interface ResultProps {
   bgColor?: string;
 }
+
+interface HistoryCardProps {
+  terrain?: string;
+}
 const Wrapper = styled.div`
   align-items: center;
   display: flex;
@@ -118,12 +123,16 @@ const Wrapper = styled.div`
 `;
 const HistoryCard = styled.div`
   align-items: center;
+  background-image: ${(p: HistoryCardProps) =>
+    `url('/images/terrains/${p.terrain}.webp')`};
+  background-position: center;
+  background-size: cover;
   border-radius: 5px;
   box-shadow: 0 0 10px 10px rgba(95, 57, 0, 0.2);
   display: flex;
   min-height: 80px;
   margin: 15px 0;
-  padding: 15px 60px;
+  padding: 15px 60px 5px 60px;
   position: relative;
   width: 75%;
 `;
@@ -137,20 +146,22 @@ const DetailsPanel = styled.div`
   content: "";
   display: flex;
   flex-direction: column;
-  height: 45px;
-  justify-content: space-around;
+  height: 40px;
+  justify-content: center;
   position: absolute;
   left: 50%;
   -webkit-transform: translateX(-50%);
   transform: translateX(-50%);
   width: 180px;
   bottom: 0;
-  > .terrain {
-    font-size: 11px;
-  }
-  > .date {
-    font-size: 9px;
+  > span {
+    font-size: 10px;
     font-weight: bold;
+    margin-bottom: 2px;
+    &:last-child {
+      font-size: 9px;
+      margin-bottom: 0;
+    }
   }
 `;
 const PlayerStats = styled.div`
