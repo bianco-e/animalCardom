@@ -112,14 +112,18 @@ export default function Card({
           src="/images/svg/blood-splatter.svg"
         />
       </Injury>
-      <CornerIcon>{species}</CornerIcon>
+      <CornerIconContainer>
+        <span>{species}</span>
+      </CornerIconContainer>
       {!targeteable && (
-        <CornerIcon className="animal-status">{`\u{1F6AB}`}</CornerIcon> //unicode for emoji
+        <CornerIconContainer className="animal-status">
+          <span>{`\u{1F6AB}`}</span>
+        </CornerIconContainer> //unicode for emoji
       )}
       {bleeding && (
-        <CornerIcon className="animal-status">
+        <CornerIconContainer className="animal-status">
           <Image className="bleeding-drop" src={utilitiesIcons.blood} />
-        </CornerIcon>
+        </CornerIconContainer>
       )}
 
       <Text className="animal-name">{name}</Text>
@@ -128,7 +132,14 @@ export default function Card({
 
       <DescriptionContainer>
         <FlexSection mBottom="1px">
-          <Image className="small-icon" src={utilitiesIcons.fury} />
+          <Image
+            className="small-icon"
+            src={
+              skill.types.includes("defensive")
+                ? utilitiesIcons.defense
+                : utilitiesIcons.fury
+            }
+          />
           <Text
             className="skill"
             textDeco={`${paralyzed > 0 && "line-through 1px red"}`}
@@ -236,6 +247,7 @@ export const AnimalCard = styled.button`
   flex-direction: column;
   height: 100%;
   justify-content: space-around;
+  overflow: hidden;
   opacity: ${(p: AnimalCardProps) => p.opacity};
   padding: 12px;
   position: relative;
@@ -269,14 +281,35 @@ export const AnimalCard = styled.button`
     padding: 6px;
   }
 `;
-const CornerIcon = styled.span`
-  font-size: 30px;
-  left: 2%;
+const CornerIconContainer = styled.div`
+  background: #d4a257;
+  border-radius: 50%;
+  border: 2px solid #b9935a;
+  box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.6);
+  height: 60px;
+  left: -30px;
   position: absolute;
-  top: 2%;
+  top: -30px;
+  width: 60px;
+  > span {
+    font-size: 14px;
+    position: absolute;
+    left: 32px;
+    top: 32px;
+  }
   &.animal-status {
     left: auto;
-    right: 2%;
+    right: -30px;
+    > img {
+      position: absolute;
+      right: 30px;
+      top: 30px;
+    }
+    > span {
+      left: auto;
+      right: 32px;
+      top: 32px;
+    }
   }
   @media (${MEDIUM_RESPONSIVE_BREAK}) {
     font-size: 20px;
@@ -287,12 +320,8 @@ const CornerIcon = styled.span`
 `;
 const Image = styled.img`
   &.bleeding-drop {
-    height: 25px;
-    width: 25px;
-    @media (${MEDIUM_RESPONSIVE_BREAK}) {
-      height: 20px;
-      width: 20px;
-    }
+    height: 20px;
+    width: 20px;
     @media (${SMALL_RESPONSIVE_BREAK}) {
       height: 17px;
       width: 17px;
@@ -303,6 +332,7 @@ const Image = styled.img`
     box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.6);
     height: 45%;
     width: 80%;
+    position: relative;
     @media (${LARGE_RESPONSIVE_BREAK}) {
       width: 85%;
     }

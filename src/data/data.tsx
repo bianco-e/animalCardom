@@ -2,6 +2,7 @@ import { ITerrain } from "../interfaces";
 
 export const utilitiesIcons = {
   attack: "/images/icons/attack-icon.png",
+  defense: "/images/icons/defense-icon.png",
   fury: "/images/icons/fury-icon.png",
   blood: "/images/icons/blood-icon.png",
 };
