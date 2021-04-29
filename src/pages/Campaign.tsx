@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CampaignCircuit from "../components/CampaignCircuit";
 import CampaignProgress from "../components/CampaignProgress";
 import MenuLayout from "../components/MenuLayout";

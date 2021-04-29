@@ -1,4 +1,3 @@
-import React from "react";
 import { ModalTitle, Text } from "./styled-components";
 
 interface IProps {

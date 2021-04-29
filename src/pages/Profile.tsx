@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { MenuTitle } from "../components/styled-components";
 import MenuLayout from "../components/MenuLayout";
 import AvatarWithXpBar from "../components/AvatarWithXpBar";

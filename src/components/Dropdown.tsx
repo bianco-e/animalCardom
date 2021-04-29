@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { LogButton } from "./styled-components";
 
@@ -68,12 +68,12 @@ export default function Dropdown({ closedText, options, width }: IProps) {
       <OptionsContainer ref={dropdownRef} display={isOpened ? "flex" : "none"}>
         {options.map((opt, idx) => {
           return (
-            <Option
+            <StyledOption
               fWeight={idx === 0 ? "normal" : "bold"}
               onClick={() => handleSelection(opt.fn, opt.text)}
             >
               {opt.text}
-            </Option>
+            </StyledOption>
           );
         })}
       </OptionsContainer>
@@ -124,7 +124,7 @@ const OptionsContainer = styled.div`
   width: 100%;
   z-index: 10;
 `;
-const Option = styled.span`
+const StyledOption = styled.span`
   align-items: center;
   background: #fff;
   border-bottom: 2px solid #b9935a;

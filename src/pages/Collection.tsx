@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { MenuTitle, Message } from "../components/styled-components";
 import MenuLayout from "../components/MenuLayout";

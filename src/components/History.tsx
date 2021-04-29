@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import CardThumbnail from "./CardThumbnail";
 import PlantThumbnail from "./PlantThumbnail";

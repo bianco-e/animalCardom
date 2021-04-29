@@ -1,11 +1,10 @@
-import React from "react";
 import styled from "styled-components";
 
 interface IProps {
   height?: string;
   width?: string;
 }
-export default function ({ height, width }: IProps) {
+export default function AnimatedPlaceholder({ height, width }: IProps) {
   return <Wrapper height={height} width={width}></Wrapper>;
 }
 

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import styled, { css, keyframes } from "styled-components";
 import { utilitiesIcons } from "../data/data";
 import HandsContext from "../context/HandsContext";

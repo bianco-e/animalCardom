@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import styled from "styled-components";
 import HandsContext from "../context/HandsContext";
 import { SELECT_PLANT } from "../context/HandsContext/types";

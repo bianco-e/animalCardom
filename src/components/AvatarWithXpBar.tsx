@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 const MAX_XP = 1000;
 const STROKE_WIDTH = 11;

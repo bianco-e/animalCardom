@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { IAnimal } from "../interfaces";
 import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";

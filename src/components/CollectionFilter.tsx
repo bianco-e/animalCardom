@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import Dropdown from "./Dropdown";
 
@@ -8,7 +7,7 @@ interface IProps {
   setOwningFilter: (bool: boolean | undefined) => void;
 }
 
-export default function ({
+export default function CollectionFilter({
   setSpeciesFilter,
   setSkillTypeFilter,
   setOwningFilter,

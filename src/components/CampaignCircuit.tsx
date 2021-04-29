@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import { terrains } from "../data/data";
@@ -7,7 +7,7 @@ const ANGLE = 360 / (terrains.length - 1);
 interface IProps {
   xp: number;
 }
-export default function ({ xp }: IProps) {
+export default function CampaignCircuit({ xp }: IProps) {
   const [containerWidth, setContainerWidth] = useState<number>(200);
   const containerRef = useRef<HTMLDivElement>(null);
   const history = useHistory();
