@@ -40,6 +40,7 @@ interface IProps {
   species: string;
   image: string;
   life: Stat<number | string>;
+  onPreviewClick?: (name: string) => void;
   opacityForPreview?: string;
   paralyzed: number;
   poisoned: Poisoned;
@@ -56,6 +57,7 @@ export default function Card({
   image,
   skill,
   name,
+  onPreviewClick,
   opacityForPreview,
   poisoned,
   paralyzed,
@@ -73,20 +75,19 @@ export default function Card({
   const cardProps = isForPreview
     ? {
         animation: "",
-        draggable: true,
+        cursor: onPreviewClick ? "pointer" : "default",
         isCardSelected: false,
         isParalyzed: false,
-        onClick: () => {},
+        onClick: () => onPreviewClick && onPreviewClick(name),
         opacity: opacityForPreview ? opacityForPreview : "",
         transform: "",
       }
     : {
         animation: isCardSelected && selectAnimation,
+        cursor: "pointer",
         isCardSelected,
         isParalyzed: paralyzed > 0,
-        onClick: () => {
-          !state.pcTurn && dispatch({ type: SELECT_CARD, name });
-        },
+        onClick: () => !state.pcTurn && dispatch({ type: SELECT_CARD, name }),
         opacity: `${life.current === "DEAD" && "0.5"}`,
         transform: belongsToUser ? "translateY(-10px)" : "translateY(10px)",
       };
@@ -199,6 +200,7 @@ interface InjuryProps {
 }
 interface AnimalCardProps {
   animation?: any;
+  cursor?: string;
   isCardSelected: boolean;
   isParalyzed: boolean;
   opacity: string;
@@ -242,7 +244,7 @@ export const AnimalCard = styled.button`
   border: 2px solid #b9935a;
   box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.6);
   border-radius: 5px;
-  cursor: pointer;
+  cursor: ${(p: AnimalCardProps) => p.cursor};
   display: flex;
   flex-direction: column;
   height: 100%;

@@ -7,6 +7,7 @@ const modalRoot = document.getElementById("modal-root");
 interface IProps {
   closeModal: () => void;
   children?: JSX.Element;
+  contentWidth?: string;
   forSpinner?: boolean;
   withCloseButton?: boolean;
 }
@@ -14,6 +15,7 @@ interface IProps {
 export default function SimpleModal({
   closeModal,
   children,
+  contentWidth,
   forSpinner,
   withCloseButton = true,
 }: IProps) {
@@ -54,7 +56,11 @@ export default function SimpleModal({
     modalRoot &&
     ReactDOM.createPortal(
       <Wrapper>
-        <Content forSpinner={forSpinner} ref={contentRef}>
+        <Content
+          contentWidth={contentWidth}
+          forSpinner={forSpinner}
+          ref={contentRef}
+        >
           {children}
           {!forSpinner && withCloseButton && (
             <Button onClick={() => closeModal()}>Close</Button>
@@ -67,6 +73,7 @@ export default function SimpleModal({
 }
 
 interface ContentProps {
+  contentWidth?: string;
   forSpinner?: boolean;
 }
 const Wrapper = styled.div`
@@ -76,7 +83,7 @@ const Wrapper = styled.div`
   height: 100%;
   justify-content: center;
   left: 0;
-  position: absolute;
+  position: fixed;
   top: 0;
   width: 100%;
   z-index: 29;
@@ -91,7 +98,7 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   padding: 30px;
-  width: 600px;
+  width: ${(p: ContentProps) => p.contentWidth || "600px"};
   z-index: 30;
   @media (${SMALL_RESPONSIVE_BREAK}) {
     width: 80%;

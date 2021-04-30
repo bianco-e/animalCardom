@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { MenuTitle, Message } from "../components/styled-components";
-import MenuLayout from "../components/MenuLayout";
-import CollectionFilter from "../components/CollectionFilter";
-import Spinner from "../components/Spinner";
 import { IAnimal } from "../interfaces";
 import { getCookie, sortCardsAlphabetically } from "../utils";
-import Card from "../components/Card";
+import { getUserProfile } from "../queries/user";
 import {
   getAllAnimalsCards,
   getFilteredAnimalsCards,
 } from "../queries/animalsCards";
-import { getUserProfile } from "../queries/user";
+import MenuLayout from "../components/MenuLayout";
+import CollectionFilter from "../components/CollectionFilter";
+import Spinner from "../components/Spinner";
+import Card from "../components/Card";
+import CustomModal from "../components/CustomModal";
+import ModalHandEditContent from "../components/ModalHandEditContent";
 
 const getCardOpacityForPreview = (cards: string[], name: string): string => {
   if (cards.find((card) => card === name)) {
@@ -22,6 +24,7 @@ const getCardOpacityForPreview = (cards: string[], name: string): string => {
 
 export default function Collection() {
   const [speciesFilter, setSpeciesFilter] = useState<string>();
+  const [showModal, setShowModal] = useState<boolean>(false);
   const [skillTypeFilter, setSkillTypeFilter] = useState<string>();
   const [owningFilter, setOwningFilter] = useState<boolean | undefined>();
   const [cardsToShow, setCardsToShow] = useState<IAnimal[]>([]);
@@ -29,6 +32,7 @@ export default function Collection() {
   const [currentHand, setCurrentHand] = useState<string[]>([]);
   const [ownedCards, setOwnedCards] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [animalToAdd, setAnimalToAdd] = useState<IAnimal>();
 
   useEffect(() => {
     setIsLoading(true);
@@ -68,6 +72,16 @@ export default function Collection() {
     });
   }, [speciesFilter, skillTypeFilter, owningFilter]); //eslint-disable-line
 
+  const handleClick = (name: string) => {
+    setShowModal(true);
+    const cardToAdd = allCards.find((card) => card.name === name);
+    if (cardToAdd) {
+      setAnimalToAdd(cardToAdd);
+    }
+  };
+
+  const hand = allCards.filter((card) => currentHand.includes(card.name));
+
   return (
     <MenuLayout>
       <>
@@ -76,54 +90,48 @@ export default function Collection() {
           setSkillTypeFilter={setSkillTypeFilter}
           setOwningFilter={setOwningFilter}
         />
-        <MenuTitle>
-          Hand{" "}
-          <i>
-            <img alt="info" src="/images/icons/info-icon.png" width={10} />
-            Changes may not apply for campaign games
-          </i>
-        </MenuTitle>
+        <MenuTitle>Hand</MenuTitle>
         {!(currentHand.length > 0) ? (
           <Spinner />
         ) : (
           <CardsContainer>
-            {allCards
-              .filter((card) => currentHand.includes(card.name))
-              .map((card) => {
-                const {
-                  attack,
-                  bleeding,
-                  name,
-                  image,
-                  life,
-                  paralyzed,
-                  poisoned,
-                  skill,
-                  species,
-                  targeteable,
-                } = card;
-                return (
-                  <Card
-                    attack={attack}
-                    belongsToUser={false}
-                    bleeding={bleeding}
-                    species={species}
-                    image={image}
-                    key={name}
-                    life={life}
-                    opacityForPreview="1"
-                    paralyzed={paralyzed}
-                    poisoned={poisoned}
-                    skill={skill}
-                    name={name}
-                    targeteable={targeteable}
-                  ></Card>
-                );
-              })}
+            {hand.map((card) => {
+              const {
+                attack,
+                bleeding,
+                name,
+                image,
+                life,
+                paralyzed,
+                poisoned,
+                skill,
+                species,
+                targeteable,
+              } = card;
+              return (
+                <Card
+                  attack={attack}
+                  belongsToUser={false}
+                  bleeding={bleeding}
+                  species={species}
+                  image={image}
+                  key={name}
+                  life={life}
+                  opacityForPreview="1"
+                  paralyzed={paralyzed}
+                  poisoned={poisoned}
+                  skill={skill}
+                  name={name}
+                  targeteable={targeteable}
+                ></Card>
+              );
+            })}
           </CardsContainer>
         )}
 
-        <MenuTitle>Collection</MenuTitle>
+        <MenuTitle>
+          Collection <i>Click an owned animal to add to your hand</i>
+        </MenuTitle>
         {isLoading ? (
           <Spinner />
         ) : cardsToShow.length > 0 ? (
@@ -150,6 +158,11 @@ export default function Collection() {
                   image={image}
                   key={name}
                   life={life}
+                  onPreviewClick={
+                    ownedCards.includes(name) && !currentHand.includes(name)
+                      ? handleClick
+                      : undefined
+                  }
                   opacityForPreview={getCardOpacityForPreview(ownedCards, name)}
                   paralyzed={paralyzed}
                   poisoned={poisoned}
@@ -162,6 +175,20 @@ export default function Collection() {
           </CardsContainer>
         ) : (
           <Message margin="75px 0 0 0">No animals found.</Message>
+        )}
+        {showModal && (
+          <CustomModal
+            closeModal={() => setShowModal(false)}
+            contentWidth="950px"
+            withCloseButton={false}
+          >
+            <ModalHandEditContent
+              closeModal={() => setShowModal(false)}
+              hand={hand}
+              animalToAdd={animalToAdd!}
+              handSetter={setCurrentHand}
+            />
+          </CustomModal>
         )}
       </>
     </MenuLayout>
@@ -179,7 +206,6 @@ const CardsContainer = styled.div`
   padding: 15px 60px;
   width: 83%;
   > button {
-    cursor: default;
     height: 270px;
     margin-bottom: 16px;
     width: 19%;

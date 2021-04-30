@@ -79,11 +79,11 @@ export default function App() {
           if (
             userRes &&
             userRes.xp !== undefined &&
-            userRes.owned_cards &&
+            userRes.hand &&
             userRes.first_name
           ) {
             setUserName(userRes.first_name);
-            const { owned_cards, xp } = userRes;
+            const { hand, xp } = userRes;
             const xpParam = parseInt(search.split("?x=")[1]);
             if (
               xpParam <= xp &&
@@ -94,7 +94,7 @@ export default function App() {
               setCurrentXp(xp);
               newTerrain(xpParam).then((terrainRes) => {
                 if (terrainRes && terrainRes.name) {
-                  newCampaignGame(xpParam, owned_cards).then((gameRes) =>
+                  newCampaignGame(xpParam, hand).then((gameRes) =>
                     newGameResHandler(terrainRes, gameRes)
                   );
                   setTerrain(terrainRes);

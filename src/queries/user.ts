@@ -54,3 +54,11 @@ export const getLastGames = (auth_id: string) => {
     .then((res) => res.json())
     .catch((err) => console.error(err));
 };
+
+export const updateHand = (auth_id: string, hand: string[]) => {
+  return fetch(`${API_URL}users/hand/update`, {
+    ...ACPost({ auth_id, hand }),
+  })
+    .then((res) => res.json())
+    .catch((err) => console.error(err));
+};
