@@ -151,46 +151,53 @@ export default function Card({
         <Text
           className="skill"
           fWeight="regular"
-          textDeco={`${paralyzed > 0 && "line-through 1px red"}`}
+          textDeco={`${paralyzed > 0 && "line-through 1px #dd5540"}`}
         >
           {skill.description}
         </Text>
       </DescriptionContainer>
-
-      <FlexSection>
-        <Image className="small-icon" src={utilitiesIcons.attack} />
-        <Text
-          className="stats"
-          color={`${
-            attack.current > attack.initial
-              ? "green"
-              : attack.current < attack.initial && "red"
-          }`}
-        >
-          {attack.current}
-        </Text>
-
-        {poisoned.rounds === 0 ? (
-          <Text className="life-heart" margin="2px">
-            {`\u{1F5A4}`} {/* unicode for black heart emoji */}
+      <StatsContainer>
+        <FlexSection>
+          <Image className="small-icon" src={utilitiesIcons.attack} />
+          <Text
+            className="stats"
+            color={`${
+              attack.current > attack.initial
+                ? "green"
+                : attack.current < attack.initial && "red"
+            }`}
+          >
+            {attack.current}
           </Text>
-        ) : (
-          <Text className="life-heart" margin="2px">
-            {`\u{1F49A}`} {/* unicode for green heart emoji */}
+          {poisoned.rounds === 0 ? (
+            <Text className="life-heart" margin="2px">
+              {`\u{1F5A4}`} {/* unicode for black heart emoji */}
+            </Text>
+          ) : (
+            <Text className="life-heart" margin="2px">
+              {`\u{1F49A}`} {/* unicode for green heart emoji */}
+            </Text>
+          )}
+          <Text
+            className="stats"
+            color={`${
+              life.current > life.initial
+                ? "green"
+                : life.current < life.initial && "red"
+            }`}
+          >
+            {life.current}
           </Text>
-        )}
-
-        <Text
-          className="stats"
-          color={`${
-            life.current > life.initial
-              ? "green"
-              : life.current < life.initial && "red"
-          }`}
-        >
-          {life.current}
-        </Text>
-      </FlexSection>
+          {paralyzed > 0 && (
+            <span className="negative-stats paralyze-stats">{paralyzed}</span>
+          )}
+          {poisoned.rounds > 0 && (
+            <span className="negative-stats poison-stats">
+              {poisoned.damage}/{poisoned.rounds}
+            </span>
+          )}
+        </FlexSection>
+      </StatsContainer>
     </AnimalCard>
   );
 }
@@ -283,6 +290,25 @@ export const AnimalCard = styled.button`
     padding: 6px;
   }
 `;
+const StatsContainer = styled.div`
+  align-items: center;
+  background: #d4a257;
+  border-radius: 50px 50px 0 0;
+  border: 2px solid #b9935a;
+  border-bottom: 0;
+  box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.6);
+  display: flex;
+  height: 30px;
+  justify-content: space-around;
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  transition: all 0.4s ease;
+  width: 130px;
+  bottom: 0;
+`;
+
 const CornerIconContainer = styled.div`
   background: #d4a257;
   border-radius: 50%;
@@ -408,6 +434,28 @@ const FlexSection = styled.div`
   display: flex;
   justify-content: center;
   margin-bottom: ${(p: FlexSectionProps) => p.mBottom};
+  position: relative;
+  > span.negative-stats {
+    background: #b9935a;
+    border-radius: 5px;
+    border: 2px solid #b9935a;
+    box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.6);
+    font-size: 11px;
+    font-weight: bold;
+    position: absolute;
+    top: -5px;
+    transform: rotate(30deg);
+    padding: 1px 2px;
+  }
+  > span.poison-stats {
+    color: green;
+    right: -25px;
+  }
+  > span.paralyze-stats {
+    color: #dd5540;
+    left: -20px;
+    transform: rotate(-30deg);
+  }
 `;
 const DescriptionContainer = styled.div`
   align-items: center;
@@ -418,7 +466,7 @@ const DescriptionContainer = styled.div`
   flex-direction: column;
   height: 28%;
   justify-content: flex-start;
-  margin-top: 4px;
+  margin: 4px 0 30px 0;
   overflow: auto;
   padding: 5px;
   width: 85%;
