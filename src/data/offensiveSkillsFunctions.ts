@@ -184,6 +184,20 @@ const alligatorFn = (state: IHandsState, hand: HandKey): IHandsState => {
   return setHandInState(state, hand, newHand);
 };
 
+const batFn = (state: IHandsState, hand: HandKey): IHandsState => {
+  const { hands, defender, attacker } = state;
+  const otherHand = hand === "pc" ? "user" : "pc";
+  const newOwnHand = healItself(hands[otherHand], attacker!, 1);
+  const newEnemyHand = makeEnemyBleed(hands[hand], defender!);
+  return {
+    ...state,
+    hands: {
+      [hand]: newEnemyHand,
+      [otherHand]: newOwnHand,
+    },
+  };
+};
+
 const bearFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, defender } = state;
   const newHand = makeEnemyBleed(hands[hand], defender!);
@@ -301,6 +315,15 @@ const komododragonFn = (state: IHandsState, hand: HandKey): IHandsState => {
   return setHandInState(state, hand, newHand);
 };
 
+const leechFn = (state: IHandsState, hand: HandKey): IHandsState => {
+  const { hands, attacker, defender } = state;
+  if (defender!.bleeding) {
+    const otherHand = hand === "pc" ? "user" : "pc";
+    const newHand = healItself(hands[otherHand], attacker!, 2);
+    return setHandInState(state, otherHand, newHand);
+  } else return state;
+};
+
 const lionFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, defender } = state;
   const roundsNumber = 3;
@@ -349,6 +372,15 @@ const parrotFn = (state: IHandsState, hand: HandKey): IHandsState => {
   if (updatedDefender!.life.current === "DEAD") {
     const newHand = copyDefenderSkill(hands[otherHand], defender!, attacker!);
     return setHandInState(state, otherHand, newHand);
+  } else return state;
+};
+
+const pelicanFn = (state: IHandsState, hand: HandKey): IHandsState => {
+  const { hands, defender } = state;
+  if (defender!.species === "🦈") {
+    const damage = 2;
+    const newHand = makeExtraDamage(hands[hand], defender!, damage);
+    return setHandInState(state, hand, newHand);
   } else return state;
 };
 
@@ -496,6 +528,8 @@ export default function getSkillFn(name: string) {
       return cassowaryFn;
     case "Parrot":
       return parrotFn;
+    case "Pelican":
+      return pelicanFn;
     case "Mosquito":
       return mosquitoFn;
     case "Scorpion":
@@ -504,6 +538,10 @@ export default function getSkillFn(name: string) {
       return beeFn;
     case "Spider":
       return spiderFn;
+    case "Leech":
+      return leechFn;
+    case "Bat":
+      return batFn;
     case "Bear":
       return bearFn;
     case "Lion":
