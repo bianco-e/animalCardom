@@ -84,17 +84,19 @@ export default function App() {
           ) {
             setUserName(userRes.first_name);
             const { hand, xp } = userRes;
-            const xpParam = parseInt(search.split("?x=")[1]);
+            const xpParam = new URLSearchParams(search).get("x");
+            const parsedXpParam = xpParam && parseInt(xpParam);
             if (
-              xpParam <= xp &&
+              (parsedXpParam || parsedXpParam === 0) &&
+              parsedXpParam <= xp &&
               [0, 450, 900, 1350, 1800, 2250, 2700, 3150, 3600].includes(
-                xpParam
+                parsedXpParam
               )
             ) {
               setCurrentXp(xp);
-              newTerrain(xpParam).then((terrainRes) => {
+              newTerrain(parsedXpParam).then((terrainRes) => {
                 if (terrainRes && terrainRes.name) {
-                  newCampaignGame(xpParam, hand).then((gameRes) =>
+                  newCampaignGame(parsedXpParam, hand).then((gameRes) =>
                     newGameResHandler(terrainRes, gameRes)
                   );
                   setTerrain(terrainRes);

@@ -12,11 +12,29 @@ import AvatarWithXpBar from "./AvatarWithXpBar";
 import Spinner from "./Spinner";
 import { ACButton, ModalTitle, Text } from "./styled-components";
 
-const getXpToEarn = (current: number, xpParam: number): number => {
-  if (xpParam > current) {
-    return 450;
+const getGameEarning = (
+  currentXp: number,
+  xpParam: number
+): { xpToEarn: number; earnedAnimal?: string } => {
+  if (xpParam >= currentXp) {
+    switch (currentXp) {
+      case 1350:
+        return { xpToEarn: 450, earnedAnimal: "Frog" };
+      case 1800:
+        return { xpToEarn: 450, earnedAnimal: "Bee" };
+      case 2250:
+        return { xpToEarn: 450, earnedAnimal: "Pelican" };
+      case 2700:
+        return { xpToEarn: 450, earnedAnimal: "Orc" };
+      case 3150:
+        return { xpToEarn: 450, earnedAnimal: "Snake" };
+      case 3600:
+        return { xpToEarn: 450, earnedAnimal: "Lion" };
+      default:
+        return { xpToEarn: 450, earnedAnimal: undefined };
+    }
   }
-  return 0;
+  return { xpToEarn: 0, earnedAnimal: undefined };
 };
 
 interface IProps {
@@ -35,6 +53,7 @@ export default function ModalResultContent({
 }: IProps) {
   const [state, dispatch] = useContext<IHandsContext>(HandsContext);
   const [isLoadingNewGame, setisLoadingNewGame] = useState<boolean>(false);
+  const [showEarnedAnimal, setShowEarnedAnimal] = useState<string>();
   const [havingXp, setHavingXp] = useState<number>(0);
   const history = useHistory();
   const { search } = useLocation();
@@ -59,14 +78,16 @@ export default function ModalResultContent({
           applied: wasApplied,
         };
       });
-
     const xpParam = parseInt(search.split("?x=")[1]);
-    const xpToEarn: number =
-      currentXp !== undefined ? getXpToEarn(currentXp, xpParam) : 0;
+    const gameEarning =
+      currentXp !== undefined
+        ? getGameEarning(currentXp, xpParam)
+        : { xpToEarn: 0, earnedAnimal: undefined };
+    const { xpToEarn, earnedAnimal } = gameEarning;
 
     const gameToSave = {
-      created_at: new Date().getTime().toString(),
       terrain: state.terrainName!,
+      earned_animal: won ? earnedAnimal : undefined,
       xp_earned: won ? xpToEarn : 0,
       won,
       usedAnimals: {
@@ -82,6 +103,9 @@ export default function ModalResultContent({
     saveGameResult(authId, gameToSave).then((res) => {
       if (res && res.xp !== undefined) {
         setHavingXp(res.xp);
+        if (res.earned_animal) {
+          setShowEarnedAnimal(res.earned_animal);
+        }
       }
     });
   };
@@ -143,6 +167,14 @@ export default function ModalResultContent({
       {isCampaignGame ? (
         <>
           <AvatarWithXpBar havingXp={havingXp} />
+          {showEarnedAnimal && (
+            <>
+              <p>You have earned a new animal.</p>
+              <span>
+                Go to Collection to check your <b>{showEarnedAnimal}</b>
+              </span>
+            </>
+          )}
           <ACButton margin="20px 0" onClick={() => handleRoute("/campaign")}>
             Go to campaign menu
           </ACButton>

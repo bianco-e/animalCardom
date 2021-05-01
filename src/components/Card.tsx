@@ -172,15 +172,13 @@ export default function Card({
           >
             {attack.current}
           </Text>
-          {poisoned.rounds === 0 ? (
-            <Text className="life-heart" margin="2px">
-              {`\u{1F5A4}`} {/* unicode for black heart emoji */}
-            </Text>
-          ) : (
-            <Text className="life-heart" margin="2px">
-              {`\u{1F49A}`} {/* unicode for green heart emoji */}
-            </Text>
-          )}
+          <Text className="life-heart" margin="2px">
+            {
+              poisoned.rounds === 0
+                ? `\u{1F5A4}` /* unicode for black heart emoji */
+                : `\u{1F49A}` /* unicode for green heart emoji */
+            }
+          </Text>
           <Text
             className="stats"
             color={`${
@@ -236,6 +234,7 @@ const Injury = styled.div`
   transform: translateX(-50%);
   transition: all 0.4s ease;
   -webkit-transform: translateX(-50%);
+  z-index: 20;
   > img {
     &.big-wound {
       transform: rotate(60deg);
@@ -393,7 +392,7 @@ const Text = styled.span`
   }
   &.stats {
     margin-left: 3px;
-    font-size: 20px;
+    font-size: 16px;
     @media (${MEDIUM_RESPONSIVE_BREAK}) {
       font-size: 13px;
     }

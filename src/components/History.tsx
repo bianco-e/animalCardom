@@ -22,7 +22,7 @@ export default function History({ lastGames }: IProps) {
             created_at,
             xp_earned,
           } = game;
-          const gameDate = new Date(created_at);
+          const gameDate = new Date(created_at!);
           return (
             <HistoryCard terrain={terrain.toLowerCase()} key={idx}>
               <Result bgColor={won ? "green" : "red"}>

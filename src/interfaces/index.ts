@@ -55,7 +55,8 @@ export interface ITerrain {
 }
 
 export interface Game {
-  created_at: string;
+  created_at?: Date;
+  earned_animal?: string;
   terrain: string;
   xp_earned: number;
   won: boolean;
