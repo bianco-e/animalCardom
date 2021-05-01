@@ -169,7 +169,11 @@ export default function Collection() {
                   skill={skill}
                   name={name}
                   targeteable={targeteable}
-                ></Card>
+                >
+                  {currentHand.includes(name) ? (
+                    <span className="in-hand">In hand</span>
+                  ) : undefined}
+                </Card>
               );
             })}
           </CardsContainer>
@@ -211,6 +215,19 @@ const CardsContainer = styled.div`
     width: 19%;
     > .animal-name {
       font-size: 18px;
+    }
+    > .in-hand {
+      background: green;
+      border: 2px solid #b9935a;
+      border-radius: 5px;
+      color: #fff;
+      font-weight: bold;
+      padding: 1px;
+      position: absolute;
+      transform: rotate(30deg);
+      top: 8px;
+      right: 0;
+      text-align: center;
     }
     &:hover {
       box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.6);

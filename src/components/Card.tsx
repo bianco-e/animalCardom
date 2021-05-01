@@ -37,6 +37,7 @@ interface IProps {
   attack: Stat<number>;
   belongsToUser?: boolean;
   bleeding: boolean;
+  children?: JSX.Element;
   species: string;
   image: string;
   life: Stat<number | string>;
@@ -52,6 +53,7 @@ interface IProps {
 export default function Card({
   attack,
   belongsToUser,
+  children,
   life,
   species,
   image,
@@ -93,6 +95,7 @@ export default function Card({
       };
   return (
     <AnimalCard {...cardProps}>
+      {children}
       <Injury animation={isCardUnderAttack && attackAnimation}>
         <img
           draggable="false"
