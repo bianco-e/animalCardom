@@ -83,29 +83,6 @@ export const ComingSoon = styled.span`
   transform: rotate(20deg);
 `;
 
-export const MenuTitle = styled.span`
-  align-self: flex-start;
-  font-weight: bold;
-  font-size: 20px;
-  margin: 60px 0 0 8%;
-  position: relative;
-  > i {
-    font-size: 10px;
-    font-weight: normal;
-    margin-left: 10px;
-  }
-  &::before {
-    background: rgba(95, 57, 0, 0.6);
-    border-radius: 120px;
-    content: "";
-    height: 3px;
-    width: 80px;
-    position: absolute;
-    top: 48%;
-    left: -90px;
-  }
-`;
-
 export const Message = styled.span`
   font-size: 18px;
   font-weight: bold;

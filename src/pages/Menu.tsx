@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import AccordionSection from "../components/AccordionSection";
 import Card from "../components/Card";
 import MenuLayout from "../components/MenuLayout";
 import Spinner from "../components/Spinner";
-import { MenuTitle } from "../components/styled-components";
 import { IAnimal } from "../interfaces";
 import { getNewestAnimals } from "../queries/animalsCards";
 
@@ -59,53 +59,54 @@ export default function Menu() {
             </div>
           )}
         </Wrapper>
-
-        <MenuTitle>How to play</MenuTitle>
-        <TextContainer>
-          <span>
-            You will get <b>five different random animals cards</b>, and{" "}
-            <b>three different plants</b> to apply on them (or enemies) if
-            wanted. A <b>terrain</b> will be also randomly set at the very
-            beginning.
-          </span>
-          <span>
-            Each card has an <b>ability</b>, an <b>attack</b> and{" "}
-            <b>life points</b>, and also belongs to a <b>species</b> which can
-            give you benefits or not depending on the terrain or other cards'
-            abilities. The objective is to kill all opponent's cards.{" "}
-            <b>Have fun!</b>
-          </span>
-        </TextContainer>
-        <MenuTitle>Terrains</MenuTitle>
-        <TextContainer>
-          <span>
-            There are 7 different terrains. One is randomly set when game begins
-            and benefits a species increasing attack by 1
-          </span>
-          <ul>
-            <li>
-              <b>Neutral</b> doesn't buff any animal
-            </li>
-            <li>
-              <b>Swamp</b> buffs 🐸 animals
-            </li>
-            <li>
-              <b>Desert</b> buffs 🦂 animals
-            </li>
-            <li>
-              <b>Mountain</b> buffs 🦅 animals
-            </li>
-            <li>
-              <b>Sea</b> buffs 🦈 animals
-            </li>
-            <li>
-              <b>Forest</b> buffs 🦎 animals
-            </li>
-            <li>
-              <b>Jungle</b> buffs 🐺 animals
-            </li>
-          </ul>
-        </TextContainer>
+        <AccordionSection title="How to play">
+          <TextContainer>
+            <span>
+              You will get <b>five different random animals cards</b>, and{" "}
+              <b>three different plants</b> to apply on them (or enemies) if
+              wanted. A <b>terrain</b> will be also randomly set at the very
+              beginning.
+            </span>
+            <span>
+              Each card has an <b>ability</b>, an <b>attack</b> and{" "}
+              <b>life points</b>, and also belongs to a <b>species</b> which can
+              give you benefits or not depending on the terrain or other cards'
+              abilities. The objective is to kill all opponent's cards.{" "}
+              <b>Have fun!</b>
+            </span>
+          </TextContainer>
+        </AccordionSection>
+        <AccordionSection title="Terrains">
+          <TextContainer>
+            <span>
+              There are 7 different terrains. One is randomly set when game
+              begins and benefits a species increasing attack by 1
+            </span>
+            <ul>
+              <li>
+                <b>Neutral</b> doesn't buff any animal
+              </li>
+              <li>
+                <b>Swamp</b> buffs 🐸 animals
+              </li>
+              <li>
+                <b>Desert</b> buffs 🦂 animals
+              </li>
+              <li>
+                <b>Mountain</b> buffs 🦅 animals
+              </li>
+              <li>
+                <b>Sea</b> buffs 🦈 animals
+              </li>
+              <li>
+                <b>Forest</b> buffs 🦎 animals
+              </li>
+              <li>
+                <b>Jungle</b> buffs 🐺 animals
+              </li>
+            </ul>
+          </TextContainer>
+        </AccordionSection>
       </>
     </MenuLayout>
   );
@@ -146,10 +147,15 @@ const Wrapper = styled.div`
   }
 `;
 const TextContainer = styled.div`
+  background: #d4a257;
+  border-radius: 5px;
+  border: 2px solid #b9935a;
+  box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
-  padding: 75px 60px 15px 60px;
-  width: 83%;
+  margin-top: 60px;
+  padding: 30px 60px;
+  width: 75%;
   > span {
     margin-bottom: 20px;
     &:last-child {

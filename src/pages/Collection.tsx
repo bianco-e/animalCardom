@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { MenuTitle, Message } from "../components/styled-components";
+import { Message } from "../components/styled-components";
 import { IAnimal } from "../interfaces";
 import { getCookie, sortCardsAlphabetically } from "../utils";
 import { getUserProfile } from "../queries/user";
@@ -14,6 +14,7 @@ import Spinner from "../components/Spinner";
 import Card from "../components/Card";
 import CustomModal from "../components/CustomModal";
 import ModalHandEditContent from "../components/ModalHandEditContent";
+import AccordionSection from "../components/AccordionSection";
 
 const getCardOpacityForPreview = (cards: string[], name: string): string => {
   if (cards.find((card) => card === name)) {
@@ -90,96 +91,98 @@ export default function Collection() {
           setSkillTypeFilter={setSkillTypeFilter}
           setOwningFilter={setOwningFilter}
         />
-        <MenuTitle>Hand</MenuTitle>
-        {!(currentHand.length > 0) ? (
-          <Spinner />
-        ) : (
-          <CardsContainer>
-            {hand.map((card) => {
-              const {
-                attack,
-                bleeding,
-                name,
-                image,
-                life,
-                paralyzed,
-                poisoned,
-                skill,
-                species,
-                targeteable,
-              } = card;
-              return (
-                <Card
-                  attack={attack}
-                  belongsToUser={false}
-                  bleeding={bleeding}
-                  species={species}
-                  image={image}
-                  key={name}
-                  life={life}
-                  opacityForPreview="1"
-                  paralyzed={paralyzed}
-                  poisoned={poisoned}
-                  skill={skill}
-                  name={name}
-                  targeteable={targeteable}
-                ></Card>
-              );
-            })}
-          </CardsContainer>
-        )}
-
-        <MenuTitle>
-          Collection <i>Click an owned animal to add to your hand</i>
-        </MenuTitle>
-        {isLoading ? (
-          <Spinner />
-        ) : cardsToShow.length > 0 ? (
-          <CardsContainer>
-            {cardsToShow.map((card) => {
-              const {
-                attack,
-                bleeding,
-                name,
-                image,
-                life,
-                paralyzed,
-                poisoned,
-                skill,
-                species,
-                targeteable,
-              } = card;
-              return (
-                <Card
-                  attack={attack}
-                  belongsToUser={false}
-                  bleeding={bleeding}
-                  species={species}
-                  image={image}
-                  key={name}
-                  life={life}
-                  onPreviewClick={
-                    ownedCards.includes(name) && !currentHand.includes(name)
-                      ? handleClick
-                      : undefined
-                  }
-                  opacityForPreview={getCardOpacityForPreview(ownedCards, name)}
-                  paralyzed={paralyzed}
-                  poisoned={poisoned}
-                  skill={skill}
-                  name={name}
-                  targeteable={targeteable}
-                >
-                  {currentHand.includes(name) ? (
-                    <span className="in-hand">In hand</span>
-                  ) : undefined}
-                </Card>
-              );
-            })}
-          </CardsContainer>
-        ) : (
-          <Message margin="75px 0 0 0">No animals found.</Message>
-        )}
+        <AccordionSection title="Hand">
+          {!(currentHand.length > 0) ? (
+            <Spinner />
+          ) : (
+            <CardsContainer>
+              {hand.map((card) => {
+                const {
+                  attack,
+                  bleeding,
+                  name,
+                  image,
+                  life,
+                  paralyzed,
+                  poisoned,
+                  skill,
+                  species,
+                  targeteable,
+                } = card;
+                return (
+                  <Card
+                    attack={attack}
+                    belongsToUser={false}
+                    bleeding={bleeding}
+                    species={species}
+                    image={image}
+                    key={name}
+                    life={life}
+                    opacityForPreview="1"
+                    paralyzed={paralyzed}
+                    poisoned={poisoned}
+                    skill={skill}
+                    name={name}
+                    targeteable={targeteable}
+                  ></Card>
+                );
+              })}
+            </CardsContainer>
+          )}
+        </AccordionSection>
+        <AccordionSection title="Collection">
+          {isLoading ? (
+            <Spinner />
+          ) : cardsToShow.length > 0 ? (
+            <CardsContainer>
+              {cardsToShow.map((card) => {
+                const {
+                  attack,
+                  bleeding,
+                  name,
+                  image,
+                  life,
+                  paralyzed,
+                  poisoned,
+                  skill,
+                  species,
+                  targeteable,
+                } = card;
+                return (
+                  <Card
+                    attack={attack}
+                    belongsToUser={false}
+                    bleeding={bleeding}
+                    species={species}
+                    image={image}
+                    key={name}
+                    life={life}
+                    onPreviewClick={
+                      ownedCards.includes(name) && !currentHand.includes(name)
+                        ? handleClick
+                        : undefined
+                    }
+                    opacityForPreview={getCardOpacityForPreview(
+                      ownedCards,
+                      name
+                    )}
+                    paralyzed={paralyzed}
+                    poisoned={poisoned}
+                    skill={skill}
+                    name={name}
+                    targeteable={targeteable}
+                  >
+                    {currentHand.includes(name) ? (
+                      <span className="in-hand">In hand</span>
+                    ) : undefined}
+                  </Card>
+                );
+              })}
+            </CardsContainer>
+          ) : (
+            <Message margin="75px 0 0 0">No animals found.</Message>
+          )}
+        </AccordionSection>
         {showModal && (
           <CustomModal
             closeModal={() => setShowModal(false)}
@@ -221,11 +224,12 @@ const CardsContainer = styled.div`
       border: 2px solid #b9935a;
       border-radius: 5px;
       color: #fff;
+      font-size: 10px;
       font-weight: bold;
       padding: 1px;
       position: absolute;
       transform: rotate(30deg);
-      top: 8px;
+      top: 6px;
       right: 0;
       text-align: center;
     }

@@ -135,6 +135,9 @@ export default function CollectionFilter({
 
 const Wrapper = styled.div`
   align-items: center;
+  background-image: url("/images/welcome-background.png");
+  background-size: cover;
+  background-position: bottom;
   border-radius: 5px;
   box-shadow: 0 0 10px 10px rgba(95, 57, 0, 0.2);
   display: flex;
@@ -151,6 +154,7 @@ const DropdownsContainer = styled.div`
   width: 75%;
 `;
 const Text = styled.span`
+  color: #e3cdac;
   font-weight: bold;
   font-size: 20px;
 `;
