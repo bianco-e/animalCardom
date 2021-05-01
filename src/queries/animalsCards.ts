@@ -1,12 +1,12 @@
-const API_URL = "http://localhost:5000/";
+import { API_BASE_URL } from "../utils/constants";
 
 export const getAllAnimalsCards = () =>
-  fetch(`${API_URL}animals/all`)
+  fetch(`${API_BASE_URL}animals/all`)
     .then((res) => res.json())
     .catch((err) => console.error(err));
 
 export const getNewestAnimals = () =>
-  fetch(`${API_URL}animals/newest`)
+  fetch(`${API_BASE_URL}animals/newest`)
     .then((res) => res.json())
     .catch((err) => console.error(err));
 
@@ -22,7 +22,7 @@ export const getFilteredAnimalsCards = (
       ? owned_to_filter.join(";")
       : undefined;
   return fetch(
-    `${API_URL}animals/filter?${species ? `species=${species}&` : ""}${
+    `${API_BASE_URL}animals/filter?${species ? `species=${species}&` : ""}${
       skill_type ? `skill_type=${skill_type}&` : ""
     }${
       ownedString

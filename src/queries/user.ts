@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/";
+import { API_BASE_URL } from "../utils/constants";
 
 interface User {
   auth_id: string;
@@ -24,7 +24,7 @@ export const ACPost = (body: any) => ({
 });
 
 export const createUser = (user: User) => {
-  return fetch(`${API_URL}users/create`, {
+  return fetch(`${API_BASE_URL}users/create`, {
     ...ACPost(user),
   })
     .then((res) => res.json())
@@ -32,7 +32,7 @@ export const createUser = (user: User) => {
 };
 
 export const getUserMe = (auth_id: string) => {
-  return fetch(`${API_URL}users/me`, {
+  return fetch(`${API_BASE_URL}users/me`, {
     ...ACPost({ auth_id }),
   })
     .then((res) => res.json())
@@ -40,7 +40,7 @@ export const getUserMe = (auth_id: string) => {
 };
 
 export const getUserProfile = (auth_id: string) => {
-  return fetch(`${API_URL}users/profile`, {
+  return fetch(`${API_BASE_URL}users/profile`, {
     ...ACPost({ auth_id }),
   })
     .then((res) => res.json())
@@ -48,7 +48,7 @@ export const getUserProfile = (auth_id: string) => {
 };
 
 export const getLastGames = (auth_id: string) => {
-  return fetch(`${API_URL}games/last-games?quantity=10`, {
+  return fetch(`${API_BASE_URL}games/last-games?quantity=10`, {
     ...ACPost({ auth_id }),
   })
     .then((res) => res.json())
@@ -56,7 +56,7 @@ export const getLastGames = (auth_id: string) => {
 };
 
 export const updateHand = (auth_id: string, hand: string[]) => {
-  return fetch(`${API_URL}users/hand/update`, {
+  return fetch(`${API_BASE_URL}users/hand/update`, {
     ...ACPost({ auth_id, hand }),
   })
     .then((res) => res.json())
