@@ -40,7 +40,8 @@ export const ACButton = styled.button`
   background-color: ${(p: ButtonProps) => (p.selected ? "#d4a257" : "#b9935a")};
   border: 2px solid #b9935a;
   border-radius: 5px;
-  box-shadow: inset 0px 0px 3px black;
+  box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.5),
+    1px 1px 5px rgba(0, 0, 0, 0.5);
   color: black;
   cursor: pointer;
   height: 60px;
@@ -50,8 +51,12 @@ export const ACButton = styled.button`
   padding: 6px 10px;
   position: relative;
   width: 100%;
+  &:active:enabled {
+    box-shadow: inset 0px 0px 3px black;
+  }
   &:disabled {
     background: rgba(185, 147, 90, 0.3);
+    box-shadow: inset 0px 0px 3px black;
     cursor: not-allowed;
   }
 `;

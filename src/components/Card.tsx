@@ -436,10 +436,10 @@ const FlexSection = styled.div`
   margin-bottom: ${(p: FlexSectionProps) => p.mBottom};
   position: relative;
   > span.negative-stats {
-    background: #b9935a;
+    background: #d4a257;
     border-radius: 5px;
     border: 2px solid #b9935a;
-    box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.6);
+    box-shadow: inset 0px 0px 1px rgba(0, 0, 0, 0.5);
     font-size: 11px;
     font-weight: bold;
     position: absolute;
@@ -470,4 +470,22 @@ const DescriptionContainer = styled.div`
   overflow: auto;
   padding: 5px;
   width: 85%;
+
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #fff;
+    border-radius: 0 5px 5px 0;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #e3cdac;
+    border-radius: 0 5px 5px 0;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #b9935a;
+  }
 `;
