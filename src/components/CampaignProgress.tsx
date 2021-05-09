@@ -29,14 +29,15 @@ const Wrapper = styled.div`
 `;
 const ProgressBar = styled.div`
   background: color: none;
-  border: 1px solid #5f0a87;
+  border: 1px solid ${({ theme }) => theme.xp_primary_violet};
   border-radius: 5px;
   height: 15px;
   margin: 10px 0;
   width: 200px;
   > div {
-    background-color: #5f0a87;
-    background-image: linear-gradient(#5f0a87, #a4508b);
+    background-color: ${({ theme }) => theme.xp_primary_violet};
+    background-image: ${({ theme }) =>
+      `linear-gradient(${theme.xp_primary_violet}, ${theme.xp_secondary_violet})`};
     border-radius: 5px;
     height: 15px;
     transition: all 0.4s ease;

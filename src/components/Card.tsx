@@ -166,7 +166,7 @@ export default function Card({
             className="stats"
             color={`${
               attack.current > attack.initial
-                ? "green"
+                ? "#0B8A37"
                 : attack.current < attack.initial && "red"
             }`}
           >
@@ -183,7 +183,7 @@ export default function Card({
             className="stats"
             color={`${
               life.current > life.initial
-                ? "green"
+                ? "#0B8A37"
                 : life.current < life.initial && "red"
             }`}
           >
@@ -249,8 +249,8 @@ const Injury = styled.div`
 export const AnimalCard = styled.button`
   align-items: center;
   animation: ${(p: AnimalCardProps) => p.animation};
-  background: #d4a257;
-  border: 2px solid #b9935a;
+  background: ${({ theme }) => theme.primary_brown};
+  border: 2px solid ${({ theme }) => theme.secondary_brown};
   box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.6);
   border-radius: 5px;
   cursor: ${(p: AnimalCardProps) => p.cursor};
@@ -294,9 +294,9 @@ export const AnimalCard = styled.button`
 `;
 const StatsContainer = styled.div`
   align-items: center;
-  background: #d4a257;
+  background: ${({ theme }) => theme.primary_brown};
   border-radius: 50px 50px 0 0;
-  border: 2px solid #b9935a;
+  border: 2px solid ${({ theme }) => theme.secondary_brown};
   border-bottom: 0;
   box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.6);
   display: flex;
@@ -316,9 +316,9 @@ const StatsContainer = styled.div`
 `;
 
 const CornerIconContainer = styled.div`
-  background: #d4a257;
+  background: ${({ theme }) => theme.primary_brown};
   border-radius: 50%;
-  border: 2px solid #b9935a;
+  border: 2px solid ${({ theme }) => theme.secondary_brown};
   box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.6);
   height: 60px;
   left: -30px;
@@ -443,9 +443,9 @@ const FlexSection = styled.div`
   margin-bottom: ${(p: FlexSectionProps) => p.mBottom};
   position: relative;
   > span.negative-stats {
-    background: #d4a257;
+    background: ${({ theme }) => theme.primary_brown};
     border-radius: 5px;
-    border: 2px solid #b9935a;
+    border: 2px solid ${({ theme }) => theme.secondary_brown};
     box-shadow: inset 0px 0px 1px rgba(0, 0, 0, 0.5);
     font-size: 11px;
     font-weight: bold;
@@ -455,11 +455,11 @@ const FlexSection = styled.div`
     padding: 1px 2px;
   }
   > span.poison-stats {
-    color: green;
+    color: ${({ theme }) => theme.primary_green};
     right: -25px;
   }
   > span.paralyze-stats {
-    color: #dd5540;
+    color: ${({ theme }) => theme.primary_red};
     left: -20px;
     transform: rotate(-30deg);
   }
@@ -471,9 +471,9 @@ const FlexSection = styled.div`
 `;
 const DescriptionContainer = styled.div`
   align-items: center;
-  background: #b9935a;
+  background: ${({ theme }) => theme.secondary_brown};
   border-radius: 5px;
-  box-shadow: inset 0px 0px 10px #e3cdac;
+  box-shadow: inset 0px 0px 10px ${({ theme }) => theme.light_brown};
   display: flex;
   flex-direction: column;
   height: 28%;
@@ -493,11 +493,11 @@ const DescriptionContainer = styled.div`
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #e3cdac;
+    background: ${({ theme }) => theme.light_brown};
     border-radius: 0 5px 5px 0;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #b9935a;
+    background: ${({ theme }) => theme.secondary_brown};
   }
 `;

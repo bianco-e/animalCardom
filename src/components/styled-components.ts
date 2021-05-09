@@ -38,7 +38,7 @@ export const Image = styled.img`
 
 export const ACButton = styled.button`
   background-color: ${(p: ButtonProps) => (p.selected ? "#d4a257" : "#b9935a")};
-  border: 2px solid #b9935a;
+  border: 2px solid ${({ theme }) => theme.secondary_brown};
   border-radius: 5px;
   box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.5),
     1px 1px 5px rgba(0, 0, 0, 0.5);
@@ -63,7 +63,7 @@ export const ACButton = styled.button`
 `;
 
 export const LogButton = styled.button`
-  border: 2px solid #b9935a;
+  border: 2px solid ${({ theme }) => theme.secondary_brown};
   border-radius: 5px;
   box-shadow: inset 0px 0px 3px black;
   cursor: pointer;

@@ -32,9 +32,9 @@ const Title = styled.span`
 `;
 const CardLetter = styled.div`
   align-items: center;
-  background: #d4a257;
+  background: ${({ theme }) => theme.primary_brown};
   border-radius: 5px;
-  border: 2px solid #b9935a;
+  border: 2px solid ${({ theme }) => theme.secondary_brown};
   box-shadow: inset 0 0 10px 10px rgba(0, 0, 0, 0.1),
     0 0 5px 0 rgba(0, 0, 0, 0.3);
   display: flex;

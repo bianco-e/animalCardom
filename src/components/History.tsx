@@ -26,7 +26,7 @@ export default function History({ lastGames }: IProps) {
           const gameDate = new Date(created_at!);
           return (
             <HistoryCard terrain={terrain.toLowerCase()} key={idx}>
-              <Result bgColor={won ? "green" : "red"}>
+              <Result bgColor={won ? "#0B8A37" : "#dd5540"}>
                 {won ? "Won" : "Lost"}
               </Result>
               <PlayerStats>
@@ -140,9 +140,9 @@ const HistoryCard = styled.div`
 `;
 const DetailsPanel = styled.div`
   align-items: center;
-  background: #d4a257;
+  background: ${({ theme }) => theme.primary_brown};
   border-radius: 50px 50px 0 0;
-  border: 2px solid #b9935a;
+  border: 2px solid ${({ theme }) => theme.secondary_brown};
   border-bottom: 0;
   box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.6);
   content: "";

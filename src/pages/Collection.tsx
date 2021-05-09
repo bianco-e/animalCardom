@@ -221,8 +221,8 @@ const CardsContainer = styled.div`
       font-size: 18px;
     }
     > .in-hand {
-      background: green;
-      border: 2px solid #b9935a;
+      background: ${({ theme }) => theme.primary_green};
+      border: 2px solid ${({ theme }) => theme.secondary_brown};
       border-radius: 5px;
       color: #fff;
       font-size: 10px;

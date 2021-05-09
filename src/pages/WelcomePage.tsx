@@ -89,7 +89,7 @@ export default function WelcomePage() {
 const ErrorMessage = styled.span`
   font-size: 12px;
   font-weight: bold;
-  color: #dd5540;
+  color: ${({ theme }) => theme.primary_red};
   position: absolute;
   left: 50%;
   -webkit-transform: translateX(-50%);
@@ -131,8 +131,8 @@ const Container = styled.div`
   }
 `;
 const Input = styled.input`
-  background: #d4a257;
-  border: 2px solid #b9935a;
+  background: ${({ theme }) => theme.primary_brown};
+  border: 2px solid ${({ theme }) => theme.secondary_brown};
   border-radius: 5px;
   box-shadow: inset 0px 0px 3px black;
   font-size: 18px;
@@ -142,7 +142,7 @@ const Input = styled.input`
   text-align: center;
   width: 96%;
   &:focus {
-    background: #b9935a;
+    background: ${({ theme }) => theme.secondary_brown};
   }
   &::placeholder {
     color: #000;

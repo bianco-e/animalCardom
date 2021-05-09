@@ -37,7 +37,7 @@ interface PlantCardProps {
 
 export const PlantCard = styled.button`
   align-items: center;
-  background-color: #d4a257;
+  background-color: ${({ theme }) => theme.primary_brown};
   border: none;
   border-radius: 5px;
   box-shadow: inset 0px 0px 2px black;
@@ -75,8 +75,10 @@ export const PlantCard = styled.button`
     width: 45px;
   }
   &:hover {
-    box-shadow: 4px 4px 4px #b9935a, inset 0px 0px 5px black;
+    ${({ theme }) => `
+    box-shadow: 4px 4px 4px ${theme.secondary_brown}, inset 0px 0px 5px black;
     transform: scale(1.05);
+    `};
   }
   &:active {
     box-shadow: inset 0px 0px 20px black;

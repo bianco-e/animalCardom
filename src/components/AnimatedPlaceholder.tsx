@@ -13,7 +13,7 @@ interface WrapperProps {
   width?: string;
 }
 const Wrapper = styled.span`
-  background: #d4a257;
+  background: ${({ theme }) => theme.primary_brown};
   background: linear-gradient(
     90deg,
     rgba(185, 147, 90, 0.9) 0%,

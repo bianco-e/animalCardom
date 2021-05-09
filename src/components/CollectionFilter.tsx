@@ -154,7 +154,7 @@ const DropdownsContainer = styled.div`
   width: 75%;
 `;
 const Text = styled.span`
-  color: #e3cdac;
+  color: ${({ theme }) => theme.light_brown};
   font-weight: bold;
   font-size: 20px;
 `;

@@ -94,7 +94,7 @@ const Container = styled.div`
 const Wrapper = styled.div`
   align-items: center;
   background: rgba(255, 255, 255, 0.9);
-  border: 2px solid #b9935a;
+  border: 2px solid ${({ theme }) => theme.secondary_brown};
   border-radius: 0 0 5px 5px;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3),
     inset 0px 0px 15px rgba(0, 0, 0, 0.3);

@@ -15,9 +15,9 @@ const Wrapper = styled.div`
   transform: translateZ(1px);
   > div {
     animation: lds-circle 5s cubic-bezier(0, 0.2, 0.8, 1) infinite;
-    background: #d4a257;
+    background: ${({ theme }) => theme.primary_brown};
     border-radius: 5px;
-    border: 2px solid #b9935a;
+    border: 2px solid ${({ theme }) => theme.secondary_brown};
     box-shadow: inset 0 0 10px 10px rgba(0, 0, 0, 0.1);
     height: 80px;
     margin: 8px;

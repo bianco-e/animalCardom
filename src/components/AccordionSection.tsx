@@ -76,9 +76,9 @@ const Wrapper = styled.div`
       }
       &::before {
         content: "";
-        background: #d4a257;
+        background: ${({ theme }) => theme.primary_brown};
         border-radius: 2px;
-        border: 2px solid #b9935a;
+        border: 2px solid ${({ theme }) => theme.secondary_brown};
         box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
         height: 14px;
         width: 10px;

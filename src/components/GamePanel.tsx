@@ -205,9 +205,9 @@ const TerrainName = styled.h3`
 `;
 const OptionsPanel = styled.div`
   align-items: center;
-  background: #d4a257;
+  background: ${({ theme }) => theme.primary_brown};
   border-radius: 0 50px 50px 0;
-  border: 2px solid #b9935a;
+  border: 2px solid ${({ theme }) => theme.secondary_brown};
   border-left: 0;
   box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.6);
   display: flex;
@@ -234,7 +234,7 @@ const OptionsPanel = styled.div`
     }
   }
   @media (${SMALL_RESPONSIVE_BREAK}) {
-    border: 2px solid #b9935a;
+    border: 2px solid ${({ theme }) => theme.secondary_brown};
     border-top: 0;
     border-radius: 0 0 50px 50px;
     flex-direction: row;

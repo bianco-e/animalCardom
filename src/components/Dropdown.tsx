@@ -127,7 +127,7 @@ const OptionsContainer = styled.div`
 const StyledOption = styled.span`
   align-items: center;
   background: #fff;
-  border-bottom: 2px solid #b9935a;
+  border-bottom: 2px solid ${({ theme }) => theme.secondary_brown};
   cursor: pointer;
   display: flex;
   font-weight: ${(p: OptionProps) => p.fWeight || "bold"};
@@ -142,6 +142,6 @@ const StyledOption = styled.span`
     border-bottom: 0;
   }
   &:hover {
-    background: #e3cdac;
+    background: ${({ theme }) => theme.light_brown};
   }
 `;

@@ -85,7 +85,7 @@ const TerrainContainer = styled.div`
   width: 140px;
   &:before {
     align-items: center;
-    background: #d4a257;
+    background: ${({ theme }) => theme.primary_brown};
     border-radius: 5px;
     box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.6);
     content: "${(p: TerrainContainerProps) => p.level}";
