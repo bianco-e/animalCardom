@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import { terrains } from "../data/data";
+import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
 
 const ANGLE = 360 / (terrains.length - 1);
 interface IProps {
@@ -51,10 +52,15 @@ interface TerrainContainerProps {
   level?: number;
 }
 const Wrapper = styled.div`
-  position: relative;
-  width: 450px;
   height: 450px;
   margin: 120px 0 0 0;
+  position: relative;
+  width: 450px;
+  @media (${SMALL_RESPONSIVE_BREAK}) {
+    margin: 90px 0 0 0;
+    height: 270px;
+    width: 270px;
+  }
 `;
 const TerrainContainer = styled.div`
   background-image: ${(p: TerrainContainerProps) => `url('${p.bgImage}')`};
@@ -90,6 +96,10 @@ const TerrainContainer = styled.div`
     justify-content: center;
     padding: 4px 2px;
     width: 14px;
+  }
+  @media (${SMALL_RESPONSIVE_BREAK}) {
+    height: 80px;
+    width: 80px;
   }
   ${(p: TerrainContainerProps) =>
     p.disabled &&

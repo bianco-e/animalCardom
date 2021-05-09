@@ -48,6 +48,7 @@ export const ACButton = styled.button`
   font-size: 20px;
   font-weight: ${(p: ButtonProps) => p.fWeight};
   margin: ${(p: ButtonProps) => p.margin};
+  overflow: hidden;
   padding: 6px 10px;
   position: relative;
   width: 100%;
@@ -68,6 +69,7 @@ export const LogButton = styled.button`
   cursor: pointer;
   font-size: 18px;
   margin-right: 20px;
+  overflow: hidden;
   padding: 6px 15px;
 `;
 

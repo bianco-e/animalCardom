@@ -6,6 +6,7 @@ import { ACButton } from "./styled-components";
 import { updateHand } from "../queries/user";
 import { getCookie } from "../utils";
 import Spinner from "./Spinner";
+import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
 
 interface IProps {
   hand: IAnimal[];
@@ -113,7 +114,7 @@ export default function ModalHandEditContent({
         </>
       )}
       <ACButton fWeight="bold" onClick={handleConfirm}>
-        {isLoading ? "Saving..." : "Confirm changes"}
+        {isLoading ? "Saving..." : "Confirm"}
       </ACButton>
     </Wrapper>
   );
@@ -163,6 +164,12 @@ const Container = styled.div`
   &.current-hand {
     > button {
       cursor: pointer;
+    }
+  }
+  @media (${SMALL_RESPONSIVE_BREAK}) {
+    > button {
+      height: 200px;
+      width: 20%;
     }
   }
 `;

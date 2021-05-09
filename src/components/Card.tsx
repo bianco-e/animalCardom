@@ -309,6 +309,10 @@ const StatsContainer = styled.div`
   transition: all 0.4s ease;
   width: 130px;
   bottom: 0;
+  @media (${SMALL_RESPONSIVE_BREAK}) {
+    height: 22px;
+    width: 90%;
+  }
 `;
 
 const CornerIconContainer = styled.div`
@@ -364,6 +368,7 @@ const Image = styled.img`
     width: 80%;
     position: relative;
     @media (${LARGE_RESPONSIVE_BREAK}) {
+      min-height: 50px;
       width: 85%;
     }
   }
@@ -457,6 +462,11 @@ const FlexSection = styled.div`
     color: #dd5540;
     left: -20px;
     transform: rotate(-30deg);
+  }
+  @media (${SMALL_RESPONSIVE_BREAK}) {
+    > span.negative-stats {
+      font-size: 9px;
+    }
   }
 `;
 const DescriptionContainer = styled.div`

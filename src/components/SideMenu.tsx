@@ -9,6 +9,7 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 import AnimatedPlaceholder from "./AnimatedPlaceholder";
 import { getCurrentSection } from "../utils";
+import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
 
 interface IProps {
   username: string;
@@ -16,6 +17,7 @@ interface IProps {
 
 export default function SideMenu({ username }: IProps) {
   const [currentSection, setCurrentSection] = useState<string>();
+  const [menuWidth, setMenuWidth] = useState<string>("210px");
   const { logout } = useAuth0();
   const history = useHistory();
   const location = useLocation();
@@ -37,9 +39,25 @@ export default function SideMenu({ username }: IProps) {
     },
   ];
   const handleLogout = () => logout({ returnTo: window.location.origin });
+  const hideSideMenu = () => {
+    setMenuWidth(menuWidth === "1px" ? "210px" : "1px");
+  };
 
   return (
-    <Wrapper>
+    <Wrapper width={menuWidth}>
+      <CloseButton
+        className="close-button"
+        onClick={hideSideMenu}
+        rotate={menuWidth === "1px" ? "270deg" : "90deg"}
+      >
+        <svg x="0px" y="0px" width={30} height={30} viewBox="0 0 960 560">
+          <path
+            d="M480,344.181L268.869,131.889c-15.756-15.859-41.3-15.859-57.054,0c-15.754,15.857-15.754,41.57,0,57.431l237.632,238.937
+                c8.395,8.451,19.562,12.254,30.553,11.698c10.993,0.556,22.159-3.247,30.555-11.698l237.631-238.937
+                c15.756-15.86,15.756-41.571,0-57.431s-41.299-15.859-57.051,0L480,344.181z"
+          />
+        </svg>
+      </CloseButton>
       <img
         alt="ac-logo"
         src="/images/animal-cardom-logo.png"
@@ -53,10 +71,11 @@ export default function SideMenu({ username }: IProps) {
       ) : (
         <AnimatedPlaceholder />
       )}
-      {buttonsData.map(({ title, fn }) => {
+      {buttonsData.map(({ title, fn }, idx) => {
         const isSelected = currentSection === title;
         return (
           <ACButton
+            className={`menu-button-${idx}`}
             key={title}
             fWeight="bold"
             onClick={fn}
@@ -75,13 +94,44 @@ export default function SideMenu({ username }: IProps) {
   );
 }
 
+interface WrapperProps {
+  width?: string;
+}
+
+interface CloseButtonProps {
+  rotate?: string;
+}
+
 const Title = styled.span`
   font-size: 20px;
+  @media (${SMALL_RESPONSIVE_BREAK}) {
+    display: none;
+  }
+`;
+
+const CloseButton = styled.div`
+  display: none;
+  @media (${SMALL_RESPONSIVE_BREAK}) {
+    background: #f4e4bc;
+    border-radius: 0 5px 5px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 35px;
+    position: absolute;
+    right: -14px;
+    top: 15px;
+    width: 18px;
+    > svg {
+      transition: all 0.4s ease;
+      transform: rotate(${(p: CloseButtonProps) => p.rotate});
+    }
+  }
 `;
 
 const Wrapper = styled.div`
   align-items: center;
-  background: rgba(185, 147, 90, 0.1);
+  background: #f4e4bc;
   box-shadow: 0 0 5px 5px rgba(95, 57, 0, 0.2);
   display: flex;
   flex-direction: column;
@@ -92,6 +142,7 @@ const Wrapper = styled.div`
   position: fixed;
   top: 0;
   width: 250px;
+  z-index: 5;
   > img {
     &:first-child {
       cursor: pointer;
@@ -102,5 +153,31 @@ const Wrapper = styled.div`
     &:last-child {
       margin-bottom: 60px;
     }
+  }
+  @media (${SMALL_RESPONSIVE_BREAK}) {
+    transition: all 0.4s ease;
+    width: ${(p: WrapperProps) => p.width};
+    ${(p: WrapperProps) =>
+      p.width === "1px"
+        ? `
+          padding: 0 3px;
+          button, img {
+            display: none;
+          }
+          > .close-button {
+            display: flex;
+          }
+          `
+        : `> img {
+          display: none;
+          }
+          > .menu-button-0 {
+            margin-top: 15px;
+          }
+          > button {
+            &:last-child {
+              margin-bottom: 15px;
+            }
+          }`}
   }
 `;

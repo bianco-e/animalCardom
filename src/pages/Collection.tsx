@@ -15,6 +15,7 @@ import Card from "../components/Card";
 import CustomModal from "../components/CustomModal";
 import ModalHandEditContent from "../components/ModalHandEditContent";
 import AccordionSection from "../components/AccordionSection";
+import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
 
 const getCardOpacityForPreview = (cards: string[], name: string): string => {
   if (cards.find((card) => card === name)) {
@@ -236,6 +237,20 @@ const CardsContainer = styled.div`
     &:hover {
       box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.6);
       transform: none;
+    }
+  }
+  @media (${SMALL_RESPONSIVE_BREAK}) {
+    width: 93%;
+    > button {
+      height: 180px;
+      margin-bottom: 8px;
+      width: 19%;
+      > .animal-name {
+        font-size: 13px;
+      }
+      > .in-hand {
+        font-size: 8px;
+      }
     }
   }
 `;

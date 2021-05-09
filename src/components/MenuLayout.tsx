@@ -6,6 +6,7 @@ import { Redirect, useHistory } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getUserMe, createUser } from "../queries/user";
 import { getNewUserTemplate } from "../utils";
+import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
 
 export default function MenuLayout({ children }: { children: JSX.Element }) {
   const { user, isAuthenticated, isLoading } = useAuth0();
@@ -43,6 +44,9 @@ export default function MenuLayout({ children }: { children: JSX.Element }) {
 
 const Wrapper = styled.div`
   margin-left: 290px;
+  @media (${SMALL_RESPONSIVE_BREAK}) {
+    margin-left: 0;
+  }
 `;
 const ChildrenContainer = styled.div`
   align-items: center;
@@ -50,6 +54,7 @@ const ChildrenContainer = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  padding-top: 60px;
+  overflow: auto;
+  padding: 60px 0;
   width: 100%;
 `;

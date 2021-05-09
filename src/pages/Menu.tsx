@@ -6,6 +6,7 @@ import MenuLayout from "../components/MenuLayout";
 import Spinner from "../components/Spinner";
 import { IAnimal } from "../interfaces";
 import { getNewestAnimals } from "../queries/animalsCards";
+import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
 
 export default function Menu() {
   const [newestAnimals, setNewestAnimals] = useState<IAnimal[]>([]);
@@ -142,6 +143,18 @@ const Wrapper = styled.div`
       &:hover {
         box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.6);
         transform: none;
+      }
+    }
+  }
+  @media (${SMALL_RESPONSIVE_BREAK}) {
+    > div {
+      width: 100%;
+      > button {
+        height: 190px;
+        width: 33%;
+        > .animal-name {
+          font-size: 15px;
+        }
       }
     }
   }

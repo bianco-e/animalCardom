@@ -111,7 +111,7 @@ export default function CollectionFilter({
 
   return (
     <Wrapper>
-      <Text>Filter cards by</Text>
+      <Text>Filter by</Text>
       <DropdownsContainer>
         <Dropdown
           closedText="Species"

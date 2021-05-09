@@ -104,14 +104,16 @@ const Wrapper = styled.div`
   flex-direction: column;
   height: 100vh;
   justify-content: space-around;
+  @media (${SMALL_RESPONSIVE_BREAK}) {
+  }
 `;
 const Title = styled.h4`
   font-size: 30px;
   text-align: center;
   padding-top: 60px;
   @media (${SMALL_RESPONSIVE_BREAK}) {
+    margin-bottom: 5px;
     font-size: 24px;
-    padding-top: 30px;
   }
 `;
 const Container = styled.div`
@@ -124,7 +126,8 @@ const Container = styled.div`
   position: relative;
   width: 40%;
   @media (${SMALL_RESPONSIVE_BREAK}) {
-    width: 85%;
+    height: 65vh;
+    width: 60%;
   }
 `;
 const Input = styled.input`
@@ -143,5 +146,8 @@ const Input = styled.input`
   }
   &::placeholder {
     color: #000;
+  }
+  @media (${SMALL_RESPONSIVE_BREAK}) {
+    margin-bottom: 10px;
   }
 `;

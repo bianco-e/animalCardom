@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { LogButton } from "../components/styled-components";
+import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
 
 interface IProps {
   isAuthenticated: boolean;
@@ -83,6 +84,11 @@ const Container = styled.div`
     left: 50%;
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
+  }
+  @media (${SMALL_RESPONSIVE_BREAK}) {
+    > img {
+      display: none;
+    }
   }
 `;
 const Wrapper = styled.div`

@@ -101,7 +101,7 @@ const Content = styled.div`
   width: ${(p: ContentProps) => p.contentWidth || "600px"};
   z-index: 30;
   @media (${SMALL_RESPONSIVE_BREAK}) {
-    width: 80%;
+    width: 87%;
   }
 `;
 const Button = styled.button`

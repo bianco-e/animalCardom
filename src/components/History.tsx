@@ -4,6 +4,7 @@ import PlantThumbnail from "./PlantThumbnail";
 import { cardSpeciesToLowerCase } from "../utils";
 import { Game } from "../interfaces";
 import { Message } from "./styled-components";
+import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
 
 interface IProps {
   lastGames: Game[];
@@ -164,6 +165,9 @@ const DetailsPanel = styled.div`
       margin-bottom: 0;
     }
   }
+  @media (${SMALL_RESPONSIVE_BREAK}) {
+    height: 30px;
+  }
 `;
 const PlayerStats = styled.div`
   align-items: center;
@@ -173,6 +177,16 @@ const PlayerStats = styled.div`
   > b {
     margin-bottom: 10px;
   }
+  @media (${SMALL_RESPONSIVE_BREAK}) {
+    margin: 0 auto;
+    width: 47%;
+    &:first-child {
+      margin-right: 2px;
+    }
+    &:last-child {
+      margin-left: 2px;
+    }
+  }
 `;
 const CardsContainer = styled.div`
   align-items: center;
@@ -180,6 +194,13 @@ const CardsContainer = styled.div`
   margin-bottom: 10px;
   justify-content: space-around;
   width: 85%;
+  @media (${SMALL_RESPONSIVE_BREAK}) {
+    justify-content: space-between;
+    &:last-child {
+      padding-bottom: 20px;
+    }
+    width: 100%;
+  }
 `;
 const Result = styled.span`
   background: ${(p: ResultProps) => p.bgColor};

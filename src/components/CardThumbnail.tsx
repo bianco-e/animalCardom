@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
 import { AnimalCard } from "./Card";
 
 interface IProps {
@@ -36,5 +37,12 @@ const Card = styled(AnimalCard)`
   }
   &:hover {
     box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.6);
+  }
+  @media (${SMALL_RESPONSIVE_BREAK}) {
+    > .animal-picture {
+      border-radius: 10px;
+    }
+    height: 60px;
+    width: 20%;
   }
 `;

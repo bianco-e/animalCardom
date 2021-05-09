@@ -233,4 +233,23 @@ const OptionsPanel = styled.div`
       width: 100%;
     }
   }
+  @media (${SMALL_RESPONSIVE_BREAK}) {
+    border: 2px solid #b9935a;
+    border-top: 0;
+    border-radius: 0 0 50px 50px;
+    flex-direction: row;
+    height: 18px;
+    right: auto;
+    top: 100%;
+    width: 90px;
+    > button {
+      height: 95%;
+      margin-bottom: 0;
+      width: 30%;
+      > img {
+        height: 100%;
+        width: 100%;
+      }
+    }
+  }
 `;
