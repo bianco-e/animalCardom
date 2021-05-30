@@ -1,15 +1,5 @@
 import { IAnimal } from "../interfaces";
 
-export const generateAnimationString = (percent: number) =>
-  new Array(Math.floor(100 / percent))
-    .fill("")
-    .map((i, idx) => {
-      return `${idx * percent}% {transform: rotate(${
-        idx % 2 === 0 ? "0.2deg" : "-0.2deg"
-      })}`;
-    })
-    .join(" ");
-
 export const cardSpeciesToLowerCase = (species: string): string => {
   const splittedSpecies = species.split(" ");
   if (splittedSpecies.length > 1) {

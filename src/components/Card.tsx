@@ -11,7 +11,7 @@ import {
 import { Poisoned, Skill, Stat } from "../interfaces";
 
 const cardSelection = keyframes`
-    1% {
+    0% {
         transform:rotate(0deg);
     }
     100% {
@@ -270,7 +270,8 @@ export const AnimalCard = styled.button`
   transition: transform 0.15s ease;
   width: 17%;
   &:hover {
-    box-shadow: 4px 4px 4px #b9935a, inset 0px 0px 10px black;
+    box-shadow: 4px 4px 4px ${({ theme }) => theme.secondary_brown},
+      inset 0px 0px 10px black;
     transform: ${(p: AnimalCardProps) => p.transform};
   }
   ${(p: AnimalCardProps) =>
