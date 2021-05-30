@@ -24,7 +24,7 @@ export const capitalize = (string: string): string =>
   `${string[0].toUpperCase()}${string.substring(1).toLowerCase()}`;
 
 export const getCurrentSection = (path: string): string =>
-  ["/profile", "/campaign", "/collection"].includes(path)
+  ["/profile", "/campaign", "/collection", "/menu"].includes(path)
     ? capitalize(path.substring(1))
     : "";
 
@@ -62,6 +62,7 @@ export const getNewUserTemplate = (user: {
     preferences: {
       language: "en",
     },
+    coins: 0,
     xp: 0,
     owned_cards: initialAnimals,
     hand: initialAnimals,

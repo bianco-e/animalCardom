@@ -8,10 +8,11 @@ import { getCurrentSection } from "../utils";
 import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
 
 interface IProps {
+  avatar: string;
   username: string;
 }
 
-export default function SideMenu({ username }: IProps) {
+export default function SideMenu({ avatar, username }: IProps) {
   const [currentSection, setCurrentSection] = useState<string>();
   const [menuWidth, setMenuWidth] = useState<string>("210px");
   const { logout } = useAuth0();
@@ -59,15 +60,19 @@ export default function SideMenu({ username }: IProps) {
         </svg>
       </CloseButton>
       <img
+        className="logo"
         alt="animal-cardom"
         src="/images/animal-cardom-logo.png"
         width={60}
         onClick={() => history.push("/")}
       />
       {username ? (
-        <Title>
-          Hi, <b>{username}</b>
-        </Title>
+        <UserInfoContainer>
+          <img className="avatar" alt={username} src={avatar} />
+          <span>
+            <b>{username}</b>
+          </span>
+        </UserInfoContainer>
       ) : (
         <AnimatedPlaceholder />
       )}
@@ -102,10 +107,21 @@ interface CloseButtonProps {
   rotate?: string;
 }
 
-const Title = styled.span`
-  font-size: 20px;
-  @media (${SMALL_RESPONSIVE_BREAK}) {
-    display: none;
+const UserInfoContainer = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  > .avatar {
+    border-radius: 50%;
+    height: 40px;
+    margin-bottom: 5px;
+    width: 40px;
+  }
+  > span {
+    font-size: 20px;
+    @media (${SMALL_RESPONSIVE_BREAK}) {
+      display: none;
+    }
   }
 `;
 
@@ -143,7 +159,8 @@ const Wrapper = styled.div`
   top: 0;
   width: 250px;
   z-index: 5;
-  > img {
+
+  > .logo {
     cursor: pointer;
     margin-top: 60px;
   }
