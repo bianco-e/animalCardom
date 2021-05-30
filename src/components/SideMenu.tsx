@@ -26,6 +26,10 @@ export default function SideMenu({ username }: IProps) {
   }, [location.pathname]);
   const buttonsData = [
     {
+      title: "Menu",
+      fn: () => history.push("/menu"),
+    },
+    {
       title: "Profile",
       fn: () => history.push("/profile"),
     },
@@ -59,10 +63,10 @@ export default function SideMenu({ username }: IProps) {
         </svg>
       </CloseButton>
       <img
-        alt="ac-logo"
+        alt="animal-cardom"
         src="/images/animal-cardom-logo.png"
         width={60}
-        onClick={() => history.push("/menu")}
+        onClick={() => history.push("/")}
       />
       {username ? (
         <Title>
@@ -85,10 +89,10 @@ export default function SideMenu({ username }: IProps) {
           </ACButton>
         );
       })}
-      <ACButton disabled fWeight="bold">
+      {/*  <ACButton disabled fWeight="bold">
         <ComingSoon>Coming soon!</ComingSoon>
         PvP
-      </ACButton>
+      </ACButton> */}
       <LogButton onClick={handleLogout}>Log out</LogButton>
     </Wrapper>
   );
@@ -144,10 +148,8 @@ const Wrapper = styled.div`
   width: 250px;
   z-index: 5;
   > img {
-    &:first-child {
-      cursor: pointer;
-      margin-top: 60px;
-    }
+    cursor: pointer;
+    margin-top: 60px;
   }
   > button {
     &:last-child {

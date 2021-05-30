@@ -58,6 +58,7 @@ export const ACButton = styled.button`
   &:disabled {
     background: rgba(185, 147, 90, 0.3);
     box-shadow: inset 0px 0px 3px black;
+    overflow: visible;
     cursor: not-allowed;
   }
 `;
