@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import styled, { css, keyframes } from "styled-components";
+import styled from "styled-components";
 import { utilitiesIcons } from "../data/data";
 import HandsContext from "../context/HandsContext";
 import { SELECT_CARD } from "../context/HandsContext/types";
@@ -9,34 +9,12 @@ import {
   SMALL_RESPONSIVE_BREAK,
 } from "../utils/constants";
 import { Poisoned, Skill, Stat } from "../interfaces";
-
-const cardSelection = keyframes`
-    0% {
-        transform:rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-`;
-
-const cardAttack = keyframes`
-  20%, 90% {
-    opacity: 1;
-  }
-  95% {
-    opacity: 0.8;
-  }
-  100% {
-    opacity: 0;
-  }
-`;
-const selectionAnimation = css`
-  animation: 3.5s ${cardSelection} linear infinite;
-`;
-const attackAnimation = css`
-  animation: 0.25s ${cardAttack} linear;
-`;
-const attackAudio = new Audio("/audio/claw-sound-effect.mp3");
+import {
+  attackAnimation,
+  attackAudio,
+  injuryAnimation,
+  selectionAnimation,
+} from "../animations/card-animations";
 
 interface IProps {
   attack: Stat<number>;
@@ -81,7 +59,8 @@ export default function Card({
   const isForPreview = !!opacityForPreview;
   const cardProps = isForPreview
     ? {
-        animation: "",
+        attackAnimation: undefined,
+        selectionAnimation: undefined,
         className: "",
         cursor: onPreviewClick ? "pointer" : "default",
         isCardSelected: false,
@@ -91,7 +70,8 @@ export default function Card({
         transform: "",
       }
     : {
-        animation: isCardSelected ? selectionAnimation : undefined,
+        attackAnimation: isCardUnderAttack ? attackAnimation : undefined,
+        selectionAnimation: isCardSelected ? selectionAnimation : undefined,
         cursor: "pointer",
         isCardSelected,
         isParalyzed: paralyzed > 0,
@@ -102,7 +82,7 @@ export default function Card({
   return (
     <AnimalCard {...cardProps}>
       {children}
-      <Injury animation={isCardUnderAttack && attackAnimation}>
+      <Injury animation={isCardUnderAttack && injuryAnimation}>
         <img
           draggable="false"
           alt="wound"
@@ -213,7 +193,8 @@ interface InjuryProps {
   animation?: any;
 }
 interface AnimalCardProps {
-  animation?: any;
+  attackAnimation?: any;
+  selectionAnimation?: any;
   cursor?: string;
   isCardSelected: boolean;
   isParalyzed: boolean;
@@ -254,6 +235,7 @@ const Injury = styled.div`
 `;
 export const AnimalCard = styled.button`
   align-items: center;
+  ${(p: AnimalCardProps) => p.attackAnimation};
   background: ${({ theme }) => theme.primary_brown};
   border: 2px solid ${({ theme }) => theme.secondary_brown};
   box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.6);
@@ -297,7 +279,7 @@ export const AnimalCard = styled.button`
         : "none"};
     z-index: -2;
     background-size: 300% 300%;
-    ${(p: AnimalCardProps) => p.animation};
+    ${(p: AnimalCardProps) => p.selectionAnimation};
   }
   &::after {
     content: "";
