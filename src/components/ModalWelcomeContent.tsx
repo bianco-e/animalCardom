@@ -1,3 +1,4 @@
+import Rules from "./Rules";
 import { ModalTitle, Text } from "./styled-components";
 
 interface IProps {
@@ -17,19 +18,7 @@ export default function ModalResultContent({ modal }: IProps) {
       ) : modal === "rules" ? (
         <>
           <ModalTitle>Animal Cardom rules</ModalTitle>
-          <Text textAlign="center" margin="10px 0 5px 0">
-            You will get <b>five different random animals cards</b>, and{" "}
-            <b>three different plants</b> to apply on them (or enemies) if
-            wanted. A <b>terrain</b> will be also randomly set at the very
-            beginning.
-          </Text>
-          <Text textAlign="center" margin="5px 0 10px 0">
-            Each card has an <b>ability</b>, an <b>attack</b> and{" "}
-            <b>life points</b>, and also belongs to a <b>species</b> which can
-            give you benefits or not depending on the terrain or other cards'
-            abilities. The objective is to kill all opponent's cards.{" "}
-            <b>Have fun!</b>
-          </Text>
+          <Rules centered={true} />
         </>
       ) : (
         modal === "terrains" && (

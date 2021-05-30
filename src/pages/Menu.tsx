@@ -3,6 +3,7 @@ import styled from "styled-components";
 import AccordionSection from "../components/AccordionSection";
 import Card from "../components/Card";
 import MenuLayout from "../components/MenuLayout";
+import Rules from "../components/Rules";
 import Spinner from "../components/Spinner";
 import { IAnimal } from "../interfaces";
 import { getNewestAnimals } from "../queries/animalsCards";
@@ -62,19 +63,7 @@ export default function Menu() {
         </Wrapper>
         <AccordionSection title="How to play">
           <TextContainer>
-            <span>
-              You will get <b>five different random animals cards</b>, and{" "}
-              <b>three different plants</b> to apply on them (or enemies) if
-              wanted. A <b>terrain</b> will be also randomly set at the very
-              beginning.
-            </span>
-            <span>
-              Each card has an <b>ability</b>, an <b>attack</b> and{" "}
-              <b>life points</b>, and also belongs to a <b>species</b> which can
-              give you benefits or not depending on the terrain or other cards'
-              abilities. The objective is to kill all opponent's cards.{" "}
-              <b>Have fun!</b>
-            </span>
+            <Rules />
           </TextContainer>
         </AccordionSection>
         <AccordionSection title="Terrains">
