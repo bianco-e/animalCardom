@@ -26,7 +26,7 @@ const cardAttack = keyframes`
   }
 `;
 const selectAnimation = css`
-  ${cardSelection} 1.5s linear infinite;
+  ${cardSelection} 2s linear infinite;
 `;
 const attackAnimation = css`
   ${cardAttack} 0.25s linear;
@@ -269,15 +269,25 @@ export const AnimalCard = styled.button`
     `
     filter: blur(0.4px);
   `}
-  ${(p: AnimalCardProps) =>
-    p.isCardSelected
+  ${({ isCardSelected, theme, transform }) =>
+    isCardSelected
       ? `
-    outline: 7px inset rgba(255, 129, 3, .8);
+      &::before {
+        content: '';
+        border: 5px solid ${theme.xp_secondary_violet};
+        height: calc(100% - 10px);
+        left: 50%;
+        position: absolute;
+        top: 0;
+        transform: translateX(-50%);
+        -webkit-transform: translateX(-50%);
+        width: calc(100% - 10px);
+      }
   `
       : `
     &:hover {
       box-shadow: 4px 4px 4px #b9935a, inset 0px 0px 15px black;
-      transform: ${p.transform};
+      transform: ${transform};
     }
   `}
   &:active {

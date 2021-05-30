@@ -5,7 +5,7 @@ export const generateAnimationString = (percent: number) =>
     .fill("")
     .map((i, idx) => {
       return `${idx * percent}% {transform: rotate(${
-        idx % 2 === 0 ? "0.35deg" : "-0.35deg"
+        idx % 2 === 0 ? "0.2deg" : "-0.2deg"
       })}`;
     })
     .join(" ");
