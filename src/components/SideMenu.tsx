@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useLocation, useHistory } from "react-router-dom";
-import {
-  ACButton,
-  ComingSoon,
-  LogButton,
-} from "../components/styled-components";
+import { ACButton, LogButton } from "../components/styled-components";
 import { useAuth0 } from "@auth0/auth0-react";
 import AnimatedPlaceholder from "./AnimatedPlaceholder";
 import { getCurrentSection } from "../utils";

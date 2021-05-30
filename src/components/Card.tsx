@@ -8,12 +8,17 @@ import {
   MEDIUM_RESPONSIVE_BREAK,
   SMALL_RESPONSIVE_BREAK,
 } from "../utils/constants";
-import { generateAnimationString } from "../utils";
 import { Poisoned, Skill, Stat } from "../interfaces";
 
 const cardSelection = keyframes`
-  ${generateAnimationString(5)}
+    1% {
+        transform:rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 `;
+
 const cardAttack = keyframes`
   20%, 90% {
     opacity: 1;
@@ -25,11 +30,11 @@ const cardAttack = keyframes`
     opacity: 0;
   }
 `;
-const selectAnimation = css`
-  ${cardSelection} 2s linear infinite;
+const selectionAnimation = css`
+  animation: 3.5s ${cardSelection} linear infinite;
 `;
 const attackAnimation = css`
-  ${cardAttack} 0.25s linear;
+  animation: 0.25s ${cardAttack} linear;
 `;
 const attackAudio = new Audio("/audio/claw-sound-effect.mp3");
 
@@ -77,21 +82,22 @@ export default function Card({
   const cardProps = isForPreview
     ? {
         animation: "",
+        className: "",
         cursor: onPreviewClick ? "pointer" : "default",
         isCardSelected: false,
         isParalyzed: false,
         onClick: () => onPreviewClick && onPreviewClick(name),
-        opacity: opacityForPreview ? opacityForPreview : "",
+        opacity: opacityForPreview ? opacityForPreview : "1",
         transform: "",
       }
     : {
-        animation: isCardSelected && selectAnimation,
+        animation: isCardSelected ? selectionAnimation : undefined,
         cursor: "pointer",
         isCardSelected,
         isParalyzed: paralyzed > 0,
         onClick: () => !state.pcTurn && dispatch({ type: SELECT_CARD, name }),
-        opacity: `${life.current === "DEAD" && "0.5"}`,
-        transform: belongsToUser ? "translateY(-10px)" : "translateY(10px)",
+        opacity: `${life.current === "DEAD" ? "0.5" : "1"}`,
+        transform: belongsToUser ? "translateY(-5px)" : "",
       };
   return (
     <AnimalCard {...cardProps}>
@@ -146,7 +152,7 @@ export default function Card({
           />
           <Text
             className="skill"
-            textDeco={`${paralyzed > 0 && "line-through 1px red"}`}
+            textDeco={`${paralyzed > 0 && "line-through 2px #dd5540"}`}
           >
             {skill.name}
           </Text>
@@ -154,7 +160,7 @@ export default function Card({
         <Text
           className="skill"
           fWeight="regular"
-          textDeco={`${paralyzed > 0 && "line-through 1px #dd5540"}`}
+          textDeco={`${paralyzed > 0 && "line-through 2px #dd5540"}`}
         >
           {skill.description}
         </Text>
@@ -224,7 +230,7 @@ interface FlexSectionProps {
   mBottom?: string;
 }
 const Injury = styled.div`
-  animation: ${(p: InjuryProps) => p.animation};
+  ${(p: InjuryProps) => p.animation};
   display: flex;
   justify-content: flex-start;
   position: absolute;
@@ -248,7 +254,6 @@ const Injury = styled.div`
 `;
 export const AnimalCard = styled.button`
   align-items: center;
-  animation: ${(p: AnimalCardProps) => p.animation};
   background: ${({ theme }) => theme.primary_brown};
   border: 2px solid ${({ theme }) => theme.secondary_brown};
   box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.6);
@@ -258,41 +263,60 @@ export const AnimalCard = styled.button`
   flex-direction: column;
   height: 100%;
   justify-content: space-around;
-  overflow: hidden;
   opacity: ${(p: AnimalCardProps) => p.opacity};
+  overflow: hidden;
   padding: 12px;
   position: relative;
-  transition: transform 0.1s ease;
+  transition: transform 0.15s ease;
   width: 17%;
+  &:hover {
+    box-shadow: 4px 4px 4px #b9935a, inset 0px 0px 10px black;
+    transform: ${(p: AnimalCardProps) => p.transform};
+  }
   ${(p: AnimalCardProps) =>
-    p.isParalyzed &&
+    p.isCardSelected &&
     `
-    filter: blur(0.4px);
-  `}
-  ${({ isCardSelected, theme, transform }) =>
-    isCardSelected
-      ? `
-      &::before {
-        content: '';
-        border: 5px solid ${theme.xp_secondary_violet};
-        height: calc(100% - 10px);
-        left: 50%;
-        position: absolute;
-        top: 0;
-        transform: translateX(-50%);
-        -webkit-transform: translateX(-50%);
-        width: calc(100% - 10px);
-      }
-  `
-      : `
-    &:hover {
-      box-shadow: 4px 4px 4px #b9935a, inset 0px 0px 15px black;
-      transform: ${transform};
-    }
-  `}
+    box-shadow:  inset 0px 0px 10px black;
+  `};
   &:active {
     box-shadow: inset 0px 0px 40px black;
   }
+  &::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    height: 210%;
+    width: 35%;
+    background: ${(p: AnimalCardProps) =>
+      p.opacity === "1"
+        ? "linear-gradient(90deg, #5f0a87, #e3cdac, #a4508b)"
+        : "none"};
+    z-index: -2;
+    background-size: 300% 300%;
+    ${(p: AnimalCardProps) => p.animation};
+  }
+  &::after {
+    content: "";
+    border-radius: 5px;
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    height: calc(100% - 16px);
+    width: calc(100% - 16px);
+    background: #d4a257;
+    z-index: -1;
+    background-size: 300% 300%;
+  }
+  ${(p: AnimalCardProps) =>
+    p.isCardSelected &&
+    `
+    transform: ${p.transform};
+  `}
   @media (${MEDIUM_RESPONSIVE_BREAK}) {
     max-width: 170px;
     padding: 9px;
