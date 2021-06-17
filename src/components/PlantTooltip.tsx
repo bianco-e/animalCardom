@@ -41,14 +41,13 @@ const Tooltip = styled.div`
   z-index: 3;
   ${(p: TooltipProps) =>
     p.belongsToUser
-      ? `bottom: 115%; flex-direction: column;`
-      : `top: 115%; flex-direction: column-reverse;`};
+      ? `bottom: 120%; flex-direction: column;`
+      : `top: 120%; flex-direction: column-reverse;`};
   > hr {
-    background: ${({ theme }) => theme.secondary_brown};
-    border: 1px solid ${({ theme }) => theme.secondary_brown};
-    height: 2px;
+    background: ${({ theme }) => theme.xp_secondary_violet};
+    border: 1px solid ${({ theme }) => theme.xp_secondary_violet};
     margin: 0;
-    width: 100%;
+    width: calc(100% - 2px);
   }
   > div {
     align-items: center;
@@ -78,7 +77,7 @@ const Tooltip = styled.div`
       p.belongsToUser
         ? `border-radius: 0 0 5px 5px;`
         : ` border-radius:  5px 5px 0 0;`};
-    &:after {
+    &::after {
       background: ${({ theme }) => theme.primary_brown};
       ${(p: TooltipProps) =>
         p.belongsToUser ? `bottom: -4px;` : `top: -4px;`};

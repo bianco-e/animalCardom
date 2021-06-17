@@ -8,25 +8,27 @@ import {
   MEDIUM_RESPONSIVE_BREAK,
 } from "../utils/constants";
 import PlantTooltip from "./PlantTooltip";
+import { selectionAnimation } from "../animations/card-animations";
 
 export default function Plant({ plant }: { plant: IPlant }) {
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
   const [state, dispatch] = useContext(HandsContext);
   const { selectedPlant, pcTurn, usedPlants, plants } = state;
   const { name, description, image, appliable_on } = plant;
+  const isPlantSelected = selectedPlant?.name === name;
+  const plantBelongsToUser = !!plants.user.find(
+    (pl: IPlant) => pl.name === name
+  );
   return (
     <PlantContainer>
       {showTooltip && (
         <PlantTooltip
           appliableOn={appliable_on}
           description={description}
-          belongsToUser={!!plants.user.find((pl: IPlant) => pl.name === name)}
+          belongsToUser={plantBelongsToUser}
         />
       )}
       <PlantCard
-        outline={`${
-          selectedPlant?.name === name && "3px inset rgba(255, 129, 3, .8)"
-        }`}
         onClick={() => {
           !pcTurn &&
             !usedPlants.includes(plant) &&
@@ -34,7 +36,10 @@ export default function Plant({ plant }: { plant: IPlant }) {
         }}
         onMouseEnter={() => setShowTooltip(true)}
         onMouseLeave={() => setShowTooltip(false)}
-        opacity={usedPlants.includes(plant) && "0.6"}
+        opacity={usedPlants.includes(plant) ? "0.6" : "1"}
+        belongsToUser={plantBelongsToUser}
+        selectionAnimation={isPlantSelected && selectionAnimation}
+        transform={isPlantSelected ? "scale(1.05);" : ""}
       >
         <span>{name}</span>
         <img alt={name} src={image} />
@@ -44,8 +49,11 @@ export default function Plant({ plant }: { plant: IPlant }) {
 }
 
 interface PlantCardProps {
+  selectionAnimation?: any;
   opacity?: string;
-  outline?: string;
+  isPlantSelected?: boolean;
+  transform?: string;
+  belongsToUser?: boolean;
 }
 
 const PlantContainer = styled.div`
@@ -56,6 +64,37 @@ const PlantContainer = styled.div`
 `;
 
 export const PlantCard = styled.button`
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -85%;
+    margin-left: -25%;
+    height: 170%;
+    width: 50%;
+    z-index: -2;
+    background: ${(p: PlantCardProps) =>
+      p.opacity === "1" && p.belongsToUser
+        ? "linear-gradient(90deg, #5f0a87, #e3cdac, #a4508b)"
+        : "none"};
+    background-size: 300% 300%;
+    ${(p: PlantCardProps) => p.selectionAnimation};
+  }
+  &::after {
+    content: "";
+    border-radius: 5px;
+    position: absolute;
+    top: 3.5px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    height: calc(100% - 7px);
+    width: calc(100% - 7px);
+    background: ${({ theme }) => theme.primary_brown};
+    z-index: -1;
+    background-size: 300% 300%;
+  }
   align-items: center;
   background-color: ${({ theme }) => theme.primary_brown};
   border: none;
@@ -66,10 +105,11 @@ export const PlantCard = styled.button`
   flex-direction: column;
   height: 100%;
   opacity: ${(p: PlantCardProps) => p.opacity};
-  outline: ${(p: PlantCardProps) => p.outline};
+  overflow: hidden;
   padding: 3px 3px 5px 3px;
   width: 100%;
-  transition: transform 0.1s ease;
+  transition: transform 0.15s ease;
+  transform: ${(p: PlantCardProps) => p.transform};
   @media (${LARGE_RESPONSIVE_BREAK}) {
     max-width: 55px;
   }
