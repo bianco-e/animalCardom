@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
 import HandsContext from "../context/HandsContext";
 import { SELECT_PLANT } from "../context/HandsContext/types";
@@ -7,26 +7,39 @@ import {
   LARGE_RESPONSIVE_BREAK,
   MEDIUM_RESPONSIVE_BREAK,
 } from "../utils/constants";
+import PlantTooltip from "./PlantTooltip";
 
 export default function Plant({ plant }: { plant: IPlant }) {
+  const [showTooltip, setShowTooltip] = useState<boolean>(false);
   const [state, dispatch] = useContext(HandsContext);
-  const { selectedPlant, pcTurn, usedPlants } = state;
-  const { name, description, image } = plant;
+  const { selectedPlant, pcTurn, usedPlants, plants } = state;
+  const { name, description, image, appliable_on } = plant;
   return (
-    <PlantCard
-      outline={`${
-        selectedPlant?.name === name && "3px inset rgba(255, 129, 3, .8)"
-      }`}
-      onClick={() => {
-        !pcTurn &&
-          !usedPlants.includes(plant) &&
-          dispatch({ type: SELECT_PLANT, plant });
-      }}
-      opacity={usedPlants.includes(plant) && "0.6"}
-    >
-      <span>{name}</span>
-      <img alt={name} title={description} src={image} />
-    </PlantCard>
+    <PlantContainer>
+      {showTooltip && (
+        <PlantTooltip
+          appliableOn={appliable_on}
+          description={description}
+          belongsToUser={!!plants.user.find((pl: IPlant) => pl.name === name)}
+        />
+      )}
+      <PlantCard
+        outline={`${
+          selectedPlant?.name === name && "3px inset rgba(255, 129, 3, .8)"
+        }`}
+        onClick={() => {
+          !pcTurn &&
+            !usedPlants.includes(plant) &&
+            dispatch({ type: SELECT_PLANT, plant });
+        }}
+        onMouseEnter={() => setShowTooltip(true)}
+        onMouseLeave={() => setShowTooltip(false)}
+        opacity={usedPlants.includes(plant) && "0.6"}
+      >
+        <span>{name}</span>
+        <img alt={name} src={image} />
+      </PlantCard>
+    </PlantContainer>
   );
 }
 
@@ -34,6 +47,13 @@ interface PlantCardProps {
   opacity?: string;
   outline?: string;
 }
+
+const PlantContainer = styled.div`
+  height: 25%;
+  margin-bottom: 8%;
+  position: relative;
+  width: 70%;
+`;
 
 export const PlantCard = styled.button`
   align-items: center;
@@ -44,12 +64,11 @@ export const PlantCard = styled.button`
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  height: 25%;
-  margin-bottom: 8%;
+  height: 100%;
   opacity: ${(p: PlantCardProps) => p.opacity};
   outline: ${(p: PlantCardProps) => p.outline};
   padding: 3px 3px 5px 3px;
-  width: 70%;
+  width: 100%;
   transition: transform 0.1s ease;
   @media (${LARGE_RESPONSIVE_BREAK}) {
     max-width: 55px;
