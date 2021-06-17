@@ -39,7 +39,7 @@ export default function Plant({ plant }: { plant: IPlant }) {
         opacity={usedPlants.includes(plant) ? "0.6" : "1"}
         belongsToUser={plantBelongsToUser}
         selectionAnimation={isPlantSelected && selectionAnimation}
-        transform={isPlantSelected ? "scale(1.05);" : ""}
+        transform={isPlantSelected ? "scale(1.1);" : ""}
       >
         <span>{name}</span>
         <img alt={name} src={image} />
@@ -108,7 +108,7 @@ export const PlantCard = styled.button`
   overflow: hidden;
   padding: 3px 3px 5px 3px;
   width: 100%;
-  transition: transform 0.15s ease;
+  transition: transform 0.2s ease;
   transform: ${(p: PlantCardProps) => p.transform};
   @media (${LARGE_RESPONSIVE_BREAK}) {
     max-width: 55px;
