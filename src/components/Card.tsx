@@ -15,6 +15,10 @@ import {
   injuryAnimation,
   selectionAnimation,
 } from "../animations/card-animations";
+import {
+  poisonAnimation,
+  paralyzeAnimation,
+} from "../animations/plant-animations";
 
 interface IProps {
   attack: Stat<number>;
@@ -52,6 +56,13 @@ export default function Card({
   const [state, dispatch] = useContext(HandsContext);
   const isCardSelected = state.attacker?.name === name;
   const isCardUnderAttack = state.underAttack === name;
+  const isCardBeingPoisoned =
+    state.animalToTreat?.name === name &&
+    state.usedPlants[state.usedPlants.length - 1].name === "Ricinum";
+  const isCardBeingParalyzed =
+    state.animalToTreat?.name === name &&
+    state.usedPlants[state.usedPlants.length - 1].name === "Peyote";
+
   const soundState = localStorage.getItem("sound");
   useEffect(() => {
     isCardUnderAttack && soundState === "on" && attackAudio.play();
@@ -102,6 +113,14 @@ export default function Card({
           src="/images/svg/blood-splatter.svg"
         />
       </Injury>
+      <PlantEffectImage
+        animation={isCardBeingPoisoned && poisonAnimation}
+        src="/images/plants/green-smoke.png"
+      />
+      <PlantEffectImage
+        animation={isCardBeingParalyzed && paralyzeAnimation}
+        src="/images/plants/spiral.png"
+      />
       <CornerIconContainer>
         <span>{species}</span>
       </CornerIconContainer>
@@ -210,6 +229,16 @@ interface TextProps {
 interface FlexSectionProps {
   mBottom?: string;
 }
+const PlantEffectImage = styled.img`
+  ${(p: InjuryProps) => p.animation};
+  opacity: 0;
+  left: 50%;
+  margin-left: -70px;
+  position: absolute;
+  top: 3%;
+  width: 140px;
+  z-index: 20;
+`;
 const Injury = styled.div`
   ${(p: InjuryProps) => p.animation};
   display: flex;

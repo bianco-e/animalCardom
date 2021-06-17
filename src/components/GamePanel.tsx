@@ -41,9 +41,8 @@ export default function SidePanel({ plants, terrain, userName }: IProps) {
     const soundToSet = soundState === "off" ? "on" : "off";
     setSoundState(soundToSet);
   };
-  const handleExit = () => {
-    setShowExitModal(true);
-  };
+  const handleExit = () => setShowExitModal(true);
+
   return (
     <LeftPanel bgImage={terrain.image}>
       <HalfPanel>

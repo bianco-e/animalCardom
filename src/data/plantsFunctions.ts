@@ -85,7 +85,6 @@ const setHandInState = (
       ...hands,
       [hand]: newHand,
     },
-    animalToTreat: undefined,
     selectedPlant: undefined,
     usedPlants: newUsedPlants,
   };
