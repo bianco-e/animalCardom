@@ -90,7 +90,8 @@ export const PlantCard = styled.button`
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
     height: calc(100% - 7px);
-    width: calc(100% - 7px);
+    width: ${(p: PlantCardProps) =>
+      p.opacity === "1" ? "calc(100% - 7px);" : "auto"};
     background: ${({ theme }) => theme.primary_brown};
     z-index: -1;
     background-size: 300% 300%;

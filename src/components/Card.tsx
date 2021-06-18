@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
-import styled from "styled-components";
+import styled, { FlattenSimpleInterpolation } from "styled-components";
 import { utilitiesIcons } from "../data/data";
-import HandsContext from "../context/HandsContext";
+import HandsContext, { IHandsState } from "../context/HandsContext";
 import { SELECT_CARD } from "../context/HandsContext/types";
 import {
   LARGE_RESPONSIVE_BREAK,
@@ -16,9 +16,67 @@ import {
   selectionAnimation,
 } from "../animations/card-animations";
 import {
+  buffAnimation,
+  cleaningAnimation,
   poisonAnimation,
   paralyzeAnimation,
+  healingAnimation,
 } from "../animations/plant-animations";
+
+interface PlantData {
+  animation: FlattenSimpleInterpolation;
+  img: string;
+  fullWidth?: boolean;
+}
+
+interface PlantsData {
+  [plant: string]: PlantData;
+}
+
+const plantsAnimationsData: PlantsData = {
+  Peyote: {
+    animation: paralyzeAnimation,
+    img: "/images/plants/spiral.png",
+  },
+  Ricinum: {
+    animation: poisonAnimation,
+    img: "/images/plants/green-smoke.png",
+  },
+  Withania: {
+    animation: buffAnimation,
+    img: "/images/plants/violet-buff.png",
+    fullWidth: true,
+  },
+  Jewelweed: {
+    animation: cleaningAnimation,
+    img: "/images/plants/yellow-stars.png",
+    fullWidth: true,
+  },
+  Coffee: {
+    animation: cleaningAnimation,
+    img: "/images/plants/yellow-stars.png",
+    fullWidth: true,
+  },
+  Aloe: {
+    animation: healingAnimation,
+    img: "/images/plants/yellow-flash.png",
+  },
+};
+
+const getPlantAnimation = (state: IHandsState, name: string) => {
+  if (state.animalToTreat?.name === name && state.usedPlants.length > 0) {
+    const plantName = state.usedPlants[state.usedPlants.length - 1].name;
+    const plantData = plantsAnimationsData[plantName];
+    return (
+      <PlantEffectImage
+        fullWidth={plantData.fullWidth}
+        animation={plantData.animation}
+        src={plantData.img}
+      />
+    );
+  }
+  return;
+};
 
 interface IProps {
   attack: Stat<number>;
@@ -56,13 +114,6 @@ export default function Card({
   const [state, dispatch] = useContext(HandsContext);
   const isCardSelected = state.attacker?.name === name;
   const isCardUnderAttack = state.underAttack === name;
-  const isCardBeingPoisoned =
-    state.animalToTreat?.name === name &&
-    state.usedPlants[state.usedPlants.length - 1].name === "Ricinum";
-  const isCardBeingParalyzed =
-    state.animalToTreat?.name === name &&
-    state.usedPlants[state.usedPlants.length - 1].name === "Peyote";
-
   const soundState = localStorage.getItem("sound");
   useEffect(() => {
     isCardUnderAttack && soundState === "on" && attackAudio.play();
@@ -113,14 +164,7 @@ export default function Card({
           src="/images/svg/blood-splatter.svg"
         />
       </Injury>
-      <PlantEffectImage
-        animation={isCardBeingPoisoned && poisonAnimation}
-        src="/images/plants/green-smoke.png"
-      />
-      <PlantEffectImage
-        animation={isCardBeingParalyzed && paralyzeAnimation}
-        src="/images/plants/spiral.png"
-      />
+      {getPlantAnimation(state, name)}
       <CornerIconContainer>
         <span>{species}</span>
       </CornerIconContainer>
@@ -210,6 +254,7 @@ export default function Card({
 
 interface InjuryProps {
   animation?: any;
+  fullWidth?: boolean;
 }
 interface AnimalCardProps {
   attackAnimation?: any;
@@ -233,12 +278,21 @@ const PlantEffectImage = styled.img`
   ${(p: InjuryProps) => p.animation};
   opacity: 0;
   left: 50%;
-  margin-left: -70px;
   position: absolute;
   top: 3%;
-  width: 140px;
   z-index: 20;
+  ${(p: InjuryProps) =>
+    p.fullWidth
+      ? `
+  margin-left: -50%;
+  width: 100%;
+  `
+      : `
+  margin-left: -70px;
+  width: 140px;
+  `}
 `;
+
 const Injury = styled.div`
   ${(p: InjuryProps) => p.animation};
   display: flex;
@@ -285,11 +339,6 @@ export const AnimalCard = styled.button`
       inset 0px 0px 10px black;
     transform: ${(p: AnimalCardProps) => p.transform};
   }
-  ${(p: AnimalCardProps) =>
-    p.isCardSelected &&
-    `
-    box-shadow:  inset 0px 0px 10px black;
-  `};
   &:active {
     box-shadow: inset 0px 0px 40px black;
   }
