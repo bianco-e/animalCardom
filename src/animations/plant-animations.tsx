@@ -121,3 +121,11 @@ export const cleaningAnimation = css`
 export const healingAnimation = css`
   animation: 1s ${healing} linear;
 `;
+
+export const audioFiles = {
+  bite: new Audio("/audio/fruit-bite-sound-effect.mp3"),
+  cleaning: new Audio("/audio/fruit-bite-sound-effect.mp3"),
+  healing: new Audio("/audio/healing-sound-effect.mp3"),
+  paralyze: new Audio("/audio/paralyze-sound-effect.mp3"),
+  poison: new Audio("/audio/poison-sound-effect.mp3"),
+};

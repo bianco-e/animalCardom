@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
-import styled, { FlattenSimpleInterpolation } from "styled-components";
+import styled from "styled-components";
 import { utilitiesIcons } from "../data/data";
-import HandsContext, { IHandsState } from "../context/HandsContext";
+import HandsContext from "../context/HandsContext";
 import { SELECT_CARD } from "../context/HandsContext/types";
 import {
   LARGE_RESPONSIVE_BREAK,
@@ -15,68 +15,7 @@ import {
   injuryAnimation,
   selectionAnimation,
 } from "../animations/card-animations";
-import {
-  buffAnimation,
-  cleaningAnimation,
-  poisonAnimation,
-  paralyzeAnimation,
-  healingAnimation,
-} from "../animations/plant-animations";
-
-interface PlantData {
-  animation: FlattenSimpleInterpolation;
-  img: string;
-  fullWidth?: boolean;
-}
-
-interface PlantsData {
-  [plant: string]: PlantData;
-}
-
-const plantsAnimationsData: PlantsData = {
-  Peyote: {
-    animation: paralyzeAnimation,
-    img: "/images/plants/spiral.png",
-  },
-  Ricinum: {
-    animation: poisonAnimation,
-    img: "/images/plants/green-smoke.png",
-  },
-  Withania: {
-    animation: buffAnimation,
-    img: "/images/plants/violet-buff.png",
-    fullWidth: true,
-  },
-  Jewelweed: {
-    animation: cleaningAnimation,
-    img: "/images/plants/yellow-stars.png",
-    fullWidth: true,
-  },
-  Coffee: {
-    animation: cleaningAnimation,
-    img: "/images/plants/yellow-stars.png",
-    fullWidth: true,
-  },
-  Aloe: {
-    animation: healingAnimation,
-    img: "/images/plants/yellow-flash.png",
-  },
-};
-
-const getPlantAnimation = (state: IHandsState, name: string) => {
-  if (state.animalToTreat?.name === name && state.usedPlants.length > 0) {
-    const plantName = state.usedPlants[state.usedPlants.length - 1].name;
-    const plantData = plantsAnimationsData[plantName];
-    return (
-      <PlantEffectImage
-        fullWidth={plantData.fullWidth}
-        animation={plantData.animation}
-        src={plantData.img}
-      />
-    );
-  }
-  return;
-};
+import usePlantAnimation from "../hooks/usePlantAnimation";
 
 interface IProps {
   attack: Stat<number>;
@@ -115,6 +54,7 @@ export default function Card({
   const isCardSelected = state.attacker?.name === name;
   const isCardUnderAttack = state.underAttack === name;
   const soundState = localStorage.getItem("sound");
+  const [animationProps] = usePlantAnimation({ name, soundState });
   useEffect(() => {
     isCardUnderAttack && soundState === "on" && attackAudio.play();
   }, [isCardUnderAttack, soundState]);
@@ -164,7 +104,7 @@ export default function Card({
           src="/images/svg/blood-splatter.svg"
         />
       </Injury>
-      {getPlantAnimation(state, name)}
+      {animationProps && <PlantEffectImage {...animationProps} />}
       <CornerIconContainer>
         <span>{species}</span>
       </CornerIconContainer>
@@ -254,7 +194,6 @@ export default function Card({
 
 interface InjuryProps {
   animation?: any;
-  fullWidth?: boolean;
 }
 interface AnimalCardProps {
   attackAnimation?: any;
@@ -274,23 +213,28 @@ interface TextProps {
 interface FlexSectionProps {
   mBottom?: string;
 }
+
+interface PlantEffectProps {
+  animation?: any;
+  fullWidth?: boolean;
+}
 const PlantEffectImage = styled.img`
-  ${(p: InjuryProps) => p.animation};
+  ${(p: PlantEffectProps) => p.animation};
   opacity: 0;
   left: 50%;
   position: absolute;
   top: 3%;
   z-index: 20;
-  ${(p: InjuryProps) =>
+  ${(p: PlantEffectProps) =>
     p.fullWidth
       ? `
-  margin-left: -50%;
-  width: 100%;
-  `
+    margin-left: -50%;
+    width: 100%;
+    `
       : `
-  margin-left: -70px;
-  width: 140px;
-  `}
+    margin-left: -70px;
+    width: 140px;
+    `}
 `;
 
 const Injury = styled.div`

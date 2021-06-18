@@ -32,6 +32,7 @@ export interface IHandsState {
   hands: IHands;
   plants: IPlants;
   animalToTreat?: IAnimal;
+  treatedAnimal?: IAnimal;
   selectedPlant?: IPlant;
   usedPlants: IPlant[];
   attacker?: IAnimal;
@@ -47,6 +48,7 @@ const newGame = (): IHandsState => ({
   hands: { user: [], pc: [] },
   plants: { user: [], pc: [] },
   animalToTreat: undefined,
+  treatedAnimal: undefined,
   selectedPlant: undefined,
   usedPlants: [],
   attacker: undefined,

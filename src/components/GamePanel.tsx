@@ -51,7 +51,7 @@ export default function SidePanel({ plants, terrain, userName }: IProps) {
         </Text>
         <PlayerNameTab>PC</PlayerNameTab>
         {plants.pc.map((plant) => {
-          return <Plant plant={plant}></Plant>;
+          return <Plant plant={plant} key={plant.name}></Plant>;
         })}
       </HalfPanel>
       <TerrainName
@@ -85,7 +85,7 @@ export default function SidePanel({ plants, terrain, userName }: IProps) {
         </Text>
         <PlayerNameTab>{userName}</PlayerNameTab>
         {plants.user.map((plant) => {
-          return <Plant plant={plant}></Plant>;
+          return <Plant plant={plant} key={plant.name}></Plant>;
         })}
       </HalfPanel>
       {showExitModal && (
