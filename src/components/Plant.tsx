@@ -58,44 +58,12 @@ interface PlantCardProps {
 
 const PlantContainer = styled.div`
   height: 25%;
-  margin-bottom: 8%;
+  margin: 0 auto 8% auto;
   position: relative;
   width: 70%;
 `;
 
 export const PlantCard = styled.button`
-  &::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-top: -85%;
-    margin-left: -25%;
-    height: 170%;
-    width: 50%;
-    z-index: -2;
-    background: ${(p: PlantCardProps) =>
-      p.opacity === "1" && p.belongsToUser
-        ? "linear-gradient(90deg, #5f0a87, #e3cdac, #a4508b)"
-        : "none"};
-    background-size: 300% 300%;
-    ${(p: PlantCardProps) => p.selectionAnimation};
-  }
-  &::after {
-    content: "";
-    border-radius: 5px;
-    position: absolute;
-    top: 3.5px;
-    left: 50%;
-    -webkit-transform: translateX(-50%);
-    transform: translateX(-50%);
-    height: calc(100% - 7px);
-    width: ${(p: PlantCardProps) =>
-      p.opacity === "1" ? "calc(100% - 7px);" : "auto"};
-    background: ${({ theme }) => theme.primary_brown};
-    z-index: -1;
-    background-size: 300% 300%;
-  }
   align-items: center;
   background-color: ${({ theme }) => theme.primary_brown};
   border: none;
@@ -142,5 +110,37 @@ export const PlantCard = styled.button`
   }
   &:active {
     box-shadow: inset 0px 0px 20px black;
+  }
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -85%;
+    margin-left: -25%;
+    height: 165%;
+    width: 50%;
+    z-index: -2;
+    background: ${(p: PlantCardProps) =>
+      p.opacity === "1" && p.belongsToUser
+        ? "linear-gradient(90deg, #5f0a87, #e3cdac, #a4508b)"
+        : "none"};
+    background-size: 300% 300%;
+    ${(p: PlantCardProps) => p.selectionAnimation};
+  }
+  &::after {
+    content: "";
+    border-radius: 5px;
+    position: absolute;
+    top: 3.5px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    height: calc(100% - 7px);
+    width: ${(p: PlantCardProps) =>
+      p.opacity === "1" ? "calc(100% - 7px);" : "auto"};
+    background: ${({ theme }) => theme.primary_brown};
+    z-index: -1;
+    background-size: 300% 300%;
   }
 `;
