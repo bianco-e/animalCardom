@@ -16,7 +16,6 @@ export default function WelcomePage() {
   const history = useHistory();
   const [inputValue, setInputValue] = useState<string>("");
   const [modal, setModal] = useState<string>("");
-  const [guestName, setGuestName] = useState<string>("");
   const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false);
 
   const isMobile = () => {
@@ -34,18 +33,18 @@ export default function WelcomePage() {
     const guest = localStorage.getItem("guest");
     if (guest) {
       setInputValue(guest);
-      setGuestName(guest);
     }
   }, []);
 
   useEffect(() => {
     if (!isLoading) {
       const currentUtm = getUtm(location.search);
+      const guest = localStorage.getItem("guest");
       const visit = {
-        action: "visit",
+        action: "visit-landing",
         ...(user?.sub ? { auth_id: user.sub } : {}),
         ...(currentUtm ? { utm: currentUtm } : {}),
-        ...(guestName ? { guest_name: guestName } : {}),
+        ...(guest ? { guest_name: guest } : {}),
       };
       trackAction(visit);
     }
