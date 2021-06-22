@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import CustomModal from "../components/CustomModal";
 import NavBar from "../components/NavBar";
@@ -7,12 +7,16 @@ import ModalWelcomeContent from "../components/ModalWelcomeContent";
 import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
 import { ACButton, ComingSoon } from "../components/styled-components";
 import { useAuth0 } from "@auth0/auth0-react";
+import { trackAction } from "../queries/tracking";
+import { getUtm } from "../utils";
 
 export default function WelcomePage() {
-  const { user, isAuthenticated } = useAuth0();
+  const { user, isAuthenticated, isLoading } = useAuth0();
+  const location = useLocation();
   const history = useHistory();
   const [inputValue, setInputValue] = useState<string>("");
   const [modal, setModal] = useState<string>("");
+  const [guestName, setGuestName] = useState<string>("");
   const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false);
 
   const isMobile = () => {
@@ -28,12 +32,33 @@ export default function WelcomePage() {
   useEffect(() => {
     isMobile();
     const guest = localStorage.getItem("guest");
-    guest && setInputValue(guest);
+    if (guest) {
+      setInputValue(guest);
+      setGuestName(guest);
+    }
   }, []);
+
+  useEffect(() => {
+    if (!isLoading) {
+      const currentUtm = getUtm(location.search);
+      const visit = {
+        action: "visit",
+        ...(user?.sub ? { auth_id: user.sub } : {}),
+        ...(currentUtm ? { utm: currentUtm } : {}),
+        ...(guestName ? { guest_name: guestName } : {}),
+      };
+      trackAction(visit);
+    }
+  }, [isLoading]); //eslint-disable-line
 
   const goToPlay = () => {
     if (inputValue !== "") {
       localStorage.setItem("guest", inputValue);
+      trackAction({
+        action: "play-as-guest-button",
+        guest_name: inputValue,
+        ...(user?.sub ? { auth_id: user.sub } : {}),
+      });
       history.push(`/play`);
       setInputValue("");
     } else setShowErrorMessage(true);
