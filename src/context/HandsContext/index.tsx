@@ -247,10 +247,11 @@ const selectPlant = (state: IHandsState, plant: IPlant) => {
       ...state,
       selectedPlant: undefined,
     };
-  } else if (plants.user.includes(plant) && !attacker) {
+  } else if (plants.user.includes(plant)) {
     return {
       ...state,
       selectedPlant: plant,
+      ...(attacker ? { attacker: undefined } : {}),
     };
   } else return state;
 };
