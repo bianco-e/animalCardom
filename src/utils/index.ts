@@ -68,3 +68,12 @@ export const getNewUserTemplate = (user: {
     hand: initialAnimals,
   };
 };
+
+export const getUtm = (search?: string) => {
+  if (!search) return;
+  const searchParams = new URLSearchParams(search);
+  if (!searchParams.has("utm_source")) return;
+  return `utm_source=${searchParams.get(
+    "utm_source"
+  )}&utm_medium=${searchParams.get("utm_medium")}`;
+};

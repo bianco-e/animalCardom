@@ -75,7 +75,7 @@ const setHandInState = (
   hand: HandKey,
   newHand: IAnimal[]
 ): IHandsState => {
-  const { hands, usedPlants, selectedPlant } = state;
+  const { hands, usedPlants, selectedPlant, animalToTreat } = state;
   const newUsedPlants = selectedPlant
     ? [...usedPlants, selectedPlant]
     : usedPlants;
@@ -85,8 +85,9 @@ const setHandInState = (
       ...hands,
       [hand]: newHand,
     },
-    animalToTreat: undefined,
     selectedPlant: undefined,
+    animalToTreat: undefined,
+    treatedAnimal: animalToTreat,
     usedPlants: newUsedPlants,
   };
 };

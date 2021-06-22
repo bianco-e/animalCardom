@@ -6,12 +6,13 @@ Animal Cardom is a card game where you get 5 different animals cards, and the ob
 
 ## Try the Vercel version:
 
-[https://animalcardom.vercel.app/](https://animalcardom.vercel.app/)
+[https://animalcardom.vercel.app/](https://animalcardom.vercel.app?utm_source=github&utm_medium=readme)
 
 ## Run local:
 
 _Node version: v12.13.0_
 
-- Download the repo and stand in its folder
-- yarn install
-- yarn start
+- Clone this repo
+- run `cd animal-cardom-front`
+- run `yarn` to install dependencies
+- run `yarn start` to start server on port 3000

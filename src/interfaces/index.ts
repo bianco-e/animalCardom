@@ -30,6 +30,7 @@ export interface IPlant {
   name: string;
   description: string;
   image: string;
+  appliable_on: string;
   toDo: (state: any, hand: HandKey) => any;
 }
 

@@ -15,6 +15,7 @@ import {
   injuryAnimation,
   selectionAnimation,
 } from "../animations/card-animations";
+import usePlantAnimation from "../hooks/usePlantAnimation";
 
 interface IProps {
   attack: Stat<number>;
@@ -53,6 +54,7 @@ export default function Card({
   const isCardSelected = state.attacker?.name === name;
   const isCardUnderAttack = state.underAttack === name;
   const soundState = localStorage.getItem("sound");
+  const [animationProps] = usePlantAnimation({ name, soundState });
   useEffect(() => {
     isCardUnderAttack && soundState === "on" && attackAudio.play();
   }, [isCardUnderAttack, soundState]);
@@ -102,6 +104,7 @@ export default function Card({
           src="/images/svg/blood-splatter.svg"
         />
       </Injury>
+      {animationProps && <PlantEffectImage {...animationProps} />}
       <CornerIconContainer>
         <span>{species}</span>
       </CornerIconContainer>
@@ -210,6 +213,30 @@ interface TextProps {
 interface FlexSectionProps {
   mBottom?: string;
 }
+
+interface PlantEffectProps {
+  animation?: any;
+  fullWidth?: boolean;
+}
+const PlantEffectImage = styled.img`
+  ${(p: PlantEffectProps) => p.animation};
+  opacity: 0;
+  left: 50%;
+  position: absolute;
+  top: 3%;
+  z-index: 20;
+  ${(p: PlantEffectProps) =>
+    p.fullWidth
+      ? `
+    margin-left: -50%;
+    width: 100%;
+    `
+      : `
+    margin-left: -70px;
+    width: 140px;
+    `}
+`;
+
 const Injury = styled.div`
   ${(p: InjuryProps) => p.animation};
   display: flex;
@@ -256,11 +283,6 @@ export const AnimalCard = styled.button`
       inset 0px 0px 10px black;
     transform: ${(p: AnimalCardProps) => p.transform};
   }
-  ${(p: AnimalCardProps) =>
-    p.isCardSelected &&
-    `
-    box-shadow:  inset 0px 0px 10px black;
-  `};
   &:active {
     box-shadow: inset 0px 0px 40px black;
   }

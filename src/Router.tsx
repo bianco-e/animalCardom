@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 import Campaign from "./pages/Campaign";
 import Collection from "./pages/Collection";
@@ -7,6 +6,7 @@ import Game from "./pages/Game";
 import Menu from "./pages/Menu";
 import Profile from "./pages/Profile";
 import WelcomePage from "./pages/WelcomePage";
+import FeedbackPage from "./pages/FeedbackPage";
 
 const MainRouter = () => {
   return (
@@ -19,6 +19,7 @@ const MainRouter = () => {
       <Route exact path="/profile" render={() => <Profile />} />
       <Route exact path="/collection" render={() => <Collection />} />
       <Route exact path="/error" render={() => <ErrorPage />} />
+      <Route exact path="/give-feedback" render={() => <FeedbackPage />} />
     </BrowserRouter>
   );
 };

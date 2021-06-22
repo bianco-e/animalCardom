@@ -1,15 +1,18 @@
 import { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import CustomModal from "../components/CustomModal";
 import NavBar from "../components/NavBar";
 import ModalWelcomeContent from "../components/ModalWelcomeContent";
 import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
-import { ACButton, ComingSoon } from "../components/styled-components";
+import { ACButton, ACInput, ComingSoon } from "../components/styled-components";
 import { useAuth0 } from "@auth0/auth0-react";
+import { trackAction } from "../queries/tracking";
+import { getUtm } from "../utils";
 
 export default function WelcomePage() {
-  const { user, isAuthenticated } = useAuth0();
+  const { user, isAuthenticated, isLoading } = useAuth0();
+  const location = useLocation();
   const history = useHistory();
   const [inputValue, setInputValue] = useState<string>("");
   const [modal, setModal] = useState<string>("");
@@ -28,12 +31,33 @@ export default function WelcomePage() {
   useEffect(() => {
     isMobile();
     const guest = localStorage.getItem("guest");
-    guest && setInputValue(guest);
+    if (guest) {
+      setInputValue(guest);
+    }
   }, []);
+
+  useEffect(() => {
+    if (!isLoading) {
+      const currentUtm = getUtm(location.search);
+      const guest = localStorage.getItem("guest");
+      const visit = {
+        action: "visit-landing",
+        ...(user?.sub ? { auth_id: user.sub } : {}),
+        ...(currentUtm ? { utm: currentUtm } : {}),
+        ...(guest ? { guest_name: guest } : {}),
+      };
+      trackAction(visit);
+    }
+  }, [isLoading]); //eslint-disable-line
 
   const goToPlay = () => {
     if (inputValue !== "") {
       localStorage.setItem("guest", inputValue);
+      trackAction({
+        action: "play-as-guest-button",
+        guest_name: inputValue,
+        ...(user?.sub ? { auth_id: user.sub } : {}),
+      });
       history.push(`/play`);
       setInputValue("");
     } else setShowErrorMessage(true);
@@ -48,6 +72,7 @@ export default function WelcomePage() {
   return (
     <Wrapper>
       <NavBar
+        isHome={true}
         isAuthenticated={isAuthenticated}
         username={user && user.given_name && user.given_name}
       />
@@ -63,7 +88,7 @@ export default function WelcomePage() {
             Nameless people are not allowed in Animal Cardom!
           </ErrorMessage>
         )}
-        <Input
+        <ACInput
           type="text"
           placeholder="Enter your name to play as guest"
           value={inputValue}
@@ -128,26 +153,5 @@ const Container = styled.div`
   @media (${SMALL_RESPONSIVE_BREAK}) {
     height: 65vh;
     width: 60%;
-  }
-`;
-const Input = styled.input`
-  background: ${({ theme }) => theme.primary_brown};
-  border: 2px solid ${({ theme }) => theme.secondary_brown};
-  border-radius: 5px;
-  box-shadow: inset 0px 0px 3px black;
-  font-size: 18px;
-  height: 30px;
-  margin-bottom: 40px;
-  padding: 6px 10px;
-  text-align: center;
-  width: 96%;
-  &:focus {
-    background: ${({ theme }) => theme.secondary_brown};
-  }
-  &::placeholder {
-    color: #000;
-  }
-  @media (${SMALL_RESPONSIVE_BREAK}) {
-    margin-bottom: 10px;
   }
 `;

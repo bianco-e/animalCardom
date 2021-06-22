@@ -41,9 +41,8 @@ export default function SidePanel({ plants, terrain, userName }: IProps) {
     const soundToSet = soundState === "off" ? "on" : "off";
     setSoundState(soundToSet);
   };
-  const handleExit = () => {
-    setShowExitModal(true);
-  };
+  const handleExit = () => setShowExitModal(true);
+
   return (
     <LeftPanel bgImage={terrain.image}>
       <HalfPanel>
@@ -52,7 +51,7 @@ export default function SidePanel({ plants, terrain, userName }: IProps) {
         </Text>
         <PlayerNameTab>PC</PlayerNameTab>
         {plants.pc.map((plant) => {
-          return <Plant plant={plant}></Plant>;
+          return <Plant plant={plant} key={plant.name} />;
         })}
       </HalfPanel>
       <TerrainName
@@ -86,7 +85,7 @@ export default function SidePanel({ plants, terrain, userName }: IProps) {
         </Text>
         <PlayerNameTab>{userName}</PlayerNameTab>
         {plants.user.map((plant) => {
-          return <Plant plant={plant}></Plant>;
+          return <Plant plant={plant} key={plant.name} />;
         })}
       </HalfPanel>
       {showExitModal && (

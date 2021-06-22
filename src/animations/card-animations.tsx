@@ -38,6 +38,7 @@ const injury = keyframes`
     opacity: 0;
   }
 `;
+
 export const selectionAnimation = css`
   animation: 3.5s ${cardSelection} linear infinite;
 `;

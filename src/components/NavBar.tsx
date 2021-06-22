@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { LogButton } from "../components/styled-components";
 import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
@@ -8,9 +8,10 @@ import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
 interface IProps {
   isAuthenticated: boolean;
   username?: string;
+  isHome?: boolean;
 }
 
-export default function NavBar({ isAuthenticated, username }: IProps) {
+export default function NavBar({ isAuthenticated, username, isHome }: IProps) {
   const { loginWithRedirect } = useAuth0();
   const history = useHistory();
   const [soundState, setSoundState] = useState<"off" | "on">("on");
@@ -43,14 +44,22 @@ export default function NavBar({ isAuthenticated, username }: IProps) {
   return (
     <Wrapper>
       <Container>
+        {isHome && (
+          <FeedbackButton>
+            <Link to="give-feedback">Give Feedback</Link>
+          </FeedbackButton>
+        )}
+
         <OptionButton onClick={handleSoundButton}>
           <img
             alt="sound-button"
             src={`/icons/sound-${soundState}-icon.png`}
-            width={40}
+            width={35}
           />
         </OptionButton>
-        <img alt="ac-logo" src="/images/animal-cardom-logo.png" width={60} />
+        <Link className="logo-link" to="/">
+          <img alt="ac-logo" src="/images/animal-cardom-logo.png" width={60} />
+        </Link>
         <LogButton onClick={handleLogin}>
           {isAuthenticated && username ? (
             <span>
@@ -76,18 +85,24 @@ const OptionButton = styled.div`
 const Container = styled.div`
   align-items: center;
   display: flex;
+  height: 100%;
   justify-content: space-between;
   position: relative;
   width: 100%;
-  > img {
-    position: absolute;
-    left: 50%;
-    -webkit-transform: translateX(-50%);
-    transform: translateX(-50%);
+  > .logo-link {
+    height: 100%;
+    > img {
+      position: absolute;
+      left: 50%;
+      -webkit-transform: translateX(-50%);
+      transform: translateX(-50%);
+    }
   }
   @media (${SMALL_RESPONSIVE_BREAK}) {
-    > img {
-      display: none;
+    > .logo-link {
+      > img {
+        display: none;
+      }
     }
   }
 `;
@@ -95,7 +110,6 @@ const Wrapper = styled.div`
   align-items: center;
   background: rgba(255, 255, 255, 0.9);
   border: 2px solid ${({ theme }) => theme.secondary_brown};
-  border-radius: 0 0 5px 5px;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3),
     inset 0px 0px 15px rgba(0, 0, 0, 0.3);
   display: flex;
@@ -105,4 +119,21 @@ const Wrapper = styled.div`
   position: fixed;
   top: 0;
   width: 100%;
+`;
+const FeedbackButton = styled.button`
+  background: ${({ theme }) => theme.primary_brown};
+  border: 2px solid ${({ theme }) => theme.secondary_brown};
+  border-top: 0;
+  border-radius: 0 0 5px 5px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  font-weight: bold;
+  padding: 5px 10px;
+  position: absolute;
+  left: -2px;
+  top: calc(100% + 2px);
+  > a {
+    text-decoration: none;
+    color: #000;
+  }
 `;
