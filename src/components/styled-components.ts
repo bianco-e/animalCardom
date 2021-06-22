@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
 
 interface ButtonProps {
   fWeight?: string;
@@ -119,4 +120,52 @@ export const ModalTitle = styled.span`
   font-size: 18px;
   font-weight: bold;
   margin: 10px 0;
+`;
+
+export const ACInput = styled.input`
+  background: ${({ theme }) => theme.primary_brown};
+  border: 2px solid ${({ theme }) => theme.secondary_brown};
+  border-radius: 5px;
+  box-shadow: inset 0px 0px 3px black;
+  font-size: 18px;
+  height: 30px;
+  margin-bottom: 40px;
+  padding: 6px 10px;
+  text-align: center;
+  width: 96%;
+  &:focus {
+    background: ${({ theme }) => theme.secondary_brown};
+    outline: none;
+  }
+  &::placeholder {
+    color: #000;
+  }
+  @media (${SMALL_RESPONSIVE_BREAK}) {
+    margin-bottom: 10px;
+  }
+`;
+
+export const ACTextArea = styled.textarea`
+  background: ${({ theme }) => theme.light_brown};
+  border: 2px solid ${({ theme }) => theme.primary_brown};
+  border-radius: 5px;
+  box-shadow: inset 0px 0px 3px black;
+  font-family: inherit;
+  font-size: 13px;
+  margin-bottom: 40px;
+  height: 180px;
+  padding: 6px 10px;
+  resize: none;
+  text-align: center;
+  width: 96%;
+  &:focus {
+    outline: none;
+  }
+  &::placeholder {
+    color: #404040;
+    font-size: 11px;
+  }
+  @media (${SMALL_RESPONSIVE_BREAK}) {
+    margin-bottom: 10px;
+  }
 `;

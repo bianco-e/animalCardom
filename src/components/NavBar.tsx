@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { LogButton } from "../components/styled-components";
 import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
@@ -43,11 +43,15 @@ export default function NavBar({ isAuthenticated, username }: IProps) {
   return (
     <Wrapper>
       <Container>
+        <FeedbackButton>
+          <Link to="give-feedback">Give Feedback</Link>
+        </FeedbackButton>
+
         <OptionButton onClick={handleSoundButton}>
           <img
             alt="sound-button"
             src={`/icons/sound-${soundState}-icon.png`}
-            width={40}
+            width={35}
           />
         </OptionButton>
         <img alt="ac-logo" src="/images/animal-cardom-logo.png" width={60} />
@@ -76,6 +80,7 @@ const OptionButton = styled.div`
 const Container = styled.div`
   align-items: center;
   display: flex;
+  height: 100%;
   justify-content: space-between;
   position: relative;
   width: 100%;
@@ -95,7 +100,6 @@ const Wrapper = styled.div`
   align-items: center;
   background: rgba(255, 255, 255, 0.9);
   border: 2px solid ${({ theme }) => theme.secondary_brown};
-  border-radius: 0 0 5px 5px;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3),
     inset 0px 0px 15px rgba(0, 0, 0, 0.3);
   display: flex;
@@ -105,4 +109,21 @@ const Wrapper = styled.div`
   position: fixed;
   top: 0;
   width: 100%;
+`;
+const FeedbackButton = styled.button`
+  background: ${({ theme }) => theme.primary_brown};
+  border: 2px solid ${({ theme }) => theme.secondary_brown};
+  border-top: 0;
+  border-radius: 0 0 5px 5px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  font-weight: bold;
+  padding: 5px 10px;
+  position: absolute;
+  left: -2px;
+  top: calc(100% + 2px);
+  > a {
+    text-decoration: none;
+    color: #000;
+  }
 `;
