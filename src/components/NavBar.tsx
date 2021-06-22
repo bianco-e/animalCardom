@@ -8,9 +8,10 @@ import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
 interface IProps {
   isAuthenticated: boolean;
   username?: string;
+  isHome?: boolean;
 }
 
-export default function NavBar({ isAuthenticated, username }: IProps) {
+export default function NavBar({ isAuthenticated, username, isHome }: IProps) {
   const { loginWithRedirect } = useAuth0();
   const history = useHistory();
   const [soundState, setSoundState] = useState<"off" | "on">("on");
@@ -43,9 +44,11 @@ export default function NavBar({ isAuthenticated, username }: IProps) {
   return (
     <Wrapper>
       <Container>
-        <FeedbackButton>
-          <Link to="give-feedback">Give Feedback</Link>
-        </FeedbackButton>
+        {isHome && (
+          <FeedbackButton>
+            <Link to="give-feedback">Give Feedback</Link>
+          </FeedbackButton>
+        )}
 
         <OptionButton onClick={handleSoundButton}>
           <img
@@ -54,7 +57,9 @@ export default function NavBar({ isAuthenticated, username }: IProps) {
             width={35}
           />
         </OptionButton>
-        <img alt="ac-logo" src="/images/animal-cardom-logo.png" width={60} />
+        <Link className="logo-link" to="/">
+          <img alt="ac-logo" src="/images/animal-cardom-logo.png" width={60} />
+        </Link>
         <LogButton onClick={handleLogin}>
           {isAuthenticated && username ? (
             <span>
@@ -84,15 +89,20 @@ const Container = styled.div`
   justify-content: space-between;
   position: relative;
   width: 100%;
-  > img {
-    position: absolute;
-    left: 50%;
-    -webkit-transform: translateX(-50%);
-    transform: translateX(-50%);
+  > .logo-link {
+    height: 100%;
+    > img {
+      position: absolute;
+      left: 50%;
+      -webkit-transform: translateX(-50%);
+      transform: translateX(-50%);
+    }
   }
   @media (${SMALL_RESPONSIVE_BREAK}) {
-    > img {
-      display: none;
+    > .logo-link {
+      > img {
+        display: none;
+      }
     }
   }
 `;

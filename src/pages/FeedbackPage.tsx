@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
 import { ACButton, ACInput, ACTextArea } from "../components/styled-components";
+import { useAuth0 } from "@auth0/auth0-react";
+import NavBar from "../components/NavBar";
 import { giveFeedback } from "../queries/feedback";
 
 export default function FeedbackPage({}) {
+  const { user, isAuthenticated } = useAuth0();
   const [nameValue, setNameValue] = useState<string>("");
   const [messageValue, setMessageValue] = useState<string>("");
   const [feedbackStatus, setFeedbackStatus] = useState<string>("idle");
@@ -30,6 +33,10 @@ export default function FeedbackPage({}) {
 
   return (
     <Wrapper>
+      <NavBar
+        isAuthenticated={isAuthenticated}
+        username={user && user.given_name && user.given_name}
+      />
       <Container>
         <ACInput
           placeholder="Name (optional)"
@@ -41,7 +48,7 @@ export default function FeedbackPage({}) {
           value={messageValue}
           onChange={(e) => setMessageValue(e.target.value)}
         />
-        <ACButton onClick={handleSendFeedback}>
+        <ACButton onClick={handleSendFeedback} fWeight="bold">
           {feedbackStatus === "sending"
             ? ". . ."
             : feedbackStatus === "sent"

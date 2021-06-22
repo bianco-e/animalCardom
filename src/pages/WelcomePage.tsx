@@ -73,6 +73,7 @@ export default function WelcomePage() {
   return (
     <Wrapper>
       <NavBar
+        isHome={true}
         isAuthenticated={isAuthenticated}
         username={user && user.given_name && user.given_name}
       />
