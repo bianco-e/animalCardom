@@ -12,6 +12,7 @@ Animal Cardom is a card game where you get 5 different animals cards, and the ob
 
 _Node version: v12.13.0_
 
-- Download the repo and stand in its folder
-- yarn
-- yarn start
+- Clone this repo
+- run `cd animal-cardom-front`
+- run `yarn` to install dependencies
+- run `yarn start` to start server on port 3000

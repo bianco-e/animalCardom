@@ -6,7 +6,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import NavBar from "../components/NavBar";
 import { giveFeedback } from "../queries/feedback";
 
-export default function FeedbackPage({}) {
+export default function FeedbackPage() {
   const { user, isAuthenticated } = useAuth0();
   const [nameValue, setNameValue] = useState<string>("");
   const [messageValue, setMessageValue] = useState<string>("");
