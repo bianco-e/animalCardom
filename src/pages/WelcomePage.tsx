@@ -75,6 +75,7 @@ export default function WelcomePage() {
         isHome={true}
         isAuthenticated={isAuthenticated}
         username={user && user.given_name && user.given_name}
+        auth_id={user && user.sub && user.sub}
       />
       <Title>Welcome to Animal Cardom!</Title>
       {modal && (

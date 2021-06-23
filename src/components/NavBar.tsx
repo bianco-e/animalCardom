@@ -1,19 +1,29 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { LogButton } from "../components/styled-components";
 import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
+import { trackAction } from "../queries/tracking";
+import { getUtm } from "../utils";
 
 interface IProps {
   isAuthenticated: boolean;
   username?: string;
+  auth_id?: string;
   isHome?: boolean;
 }
 
-export default function NavBar({ isAuthenticated, username, isHome }: IProps) {
+export default function NavBar({
+  auth_id,
+  isAuthenticated,
+  username,
+  isHome,
+}: IProps) {
   const { loginWithRedirect } = useAuth0();
   const history = useHistory();
+  const location = useLocation();
+
   const [soundState, setSoundState] = useState<"off" | "on">("on");
 
   useEffect(() => {
@@ -36,9 +46,26 @@ export default function NavBar({ isAuthenticated, username, isHome }: IProps) {
   };
 
   const handleLogin = () => {
+    const guest = localStorage.getItem("guest");
+    const currentUtm = getUtm(location.search);
+    const visit = {
+      ...(auth_id ? { auth_id } : {}),
+      ...(currentUtm ? { utm: currentUtm } : {}),
+      ...(guest ? { guest_name: guest } : {}),
+    };
     if (isAuthenticated && username) {
+      trackAction({
+        ...visit,
+        action: "you-are-allowed-button",
+      });
       history.push("/menu");
-    } else loginWithRedirect();
+    } else {
+      trackAction({
+        ...visit,
+        action: "sign-in-button",
+      });
+      loginWithRedirect();
+    }
   };
 
   return (
