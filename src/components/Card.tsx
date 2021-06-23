@@ -63,7 +63,7 @@ export default function Card({
     ? {
         attackAnimation: undefined,
         selectionAnimation: undefined,
-        className: "",
+        className: "card",
         cursor: onPreviewClick ? "pointer" : "default",
         isCardSelected: false,
         isParalyzed: false,

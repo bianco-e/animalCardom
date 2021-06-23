@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import styled from "styled-components";
 import { useHistory, useLocation } from "react-router-dom";
 import HandsContext, {
   IHandsContext,
@@ -54,6 +55,7 @@ export default function ModalResultContent({
   const [state, dispatch] = useContext<IHandsContext>(HandsContext);
   const [isLoadingNewGame, setisLoadingNewGame] = useState<boolean>(false);
   const [showEarnedAnimal, setShowEarnedAnimal] = useState<string>();
+  const [earnedCoins, setEarnedCoins] = useState<number>(1);
   const [havingXp, setHavingXp] = useState<number>(0);
   const history = useHistory();
   const { search } = useLocation();
@@ -84,10 +86,13 @@ export default function ModalResultContent({
         ? getGameEarning(currentXp, xpParam)
         : { xpToEarn: 0, earnedAnimal: undefined };
     const { xpToEarn, earnedAnimal } = gameEarning;
+    const coinsToEarn = won ? 5 : 1;
+    setEarnedCoins(coinsToEarn);
 
     const gameToSave = {
       terrain: state.terrainName!,
       earned_animal: won ? earnedAnimal : undefined,
+      coins_earned: coinsToEarn,
       xp_earned: won ? xpToEarn : 0,
       won,
       usedAnimals: {
@@ -145,7 +150,7 @@ export default function ModalResultContent({
   };
 
   return (
-    <>
+    <Wrapper>
       {modal === "win" ? (
         <>
           <ModalTitle>You won!</ModalTitle>
@@ -175,6 +180,10 @@ export default function ModalResultContent({
               </span>
             </>
           )}
+          <div className="earned-coins">
+            <b>{earnedCoins}</b>
+            <img alt="coins" src="/images/icons/coins.png" width={15} />
+          </div>
           <ACButton margin="20px 0" onClick={() => handleRoute("/campaign")}>
             Go to campaign menu
           </ACButton>
@@ -195,6 +204,23 @@ export default function ModalResultContent({
           )}
         </>
       )}
-    </>
+    </Wrapper>
   );
 }
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  > .earned-coins {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    margin-top: 15px;
+    > b {
+      margin-right: 5px;
+    }
+  }
+`;

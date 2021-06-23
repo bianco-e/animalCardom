@@ -1,17 +1,19 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import styled from "styled-components";
 import SideMenu from "../components/SideMenu";
 import Spinner from "../components/Spinner";
+import CoinsViewer from "./CoinsViewer";
+import UserContext, { IUserContext } from "../context/UserContext";
 import { Redirect, useHistory } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getUserMe, createUser } from "../queries/user";
 import { getNewUserTemplate } from "../utils";
 import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
-import CoinsViewer from "./CoinsViewer";
+import { SET_COINS } from "../context/UserContext/types";
 
 export default function MenuLayout({ children }: { children: JSX.Element }) {
   const { user, isAuthenticated, isLoading } = useAuth0();
-  const [havingCoins, setHavingCoins] = useState<number>();
+  const [state, dispatch] = useContext<IUserContext>(UserContext);
   const { push } = useHistory();
 
   useEffect(() => {
@@ -28,7 +30,7 @@ export default function MenuLayout({ children }: { children: JSX.Element }) {
             });
           }
           if (res.coins !== undefined) {
-            setHavingCoins(res.coins);
+            dispatch({ type: SET_COINS, payload: res.coins });
           }
         }
       });
@@ -43,7 +45,7 @@ export default function MenuLayout({ children }: { children: JSX.Element }) {
     <Wrapper>
       <SideMenu username={user.given_name} avatar={user.picture} />
       <ChildrenContainer>
-        <CoinsViewer coins={havingCoins} />
+        <CoinsViewer coins={state.coins} />
         {children}
       </ChildrenContainer>
     </Wrapper>

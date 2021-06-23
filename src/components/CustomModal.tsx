@@ -86,7 +86,7 @@ const Wrapper = styled.div`
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 29;
+  z-index: 1500;
 `;
 const Content = styled.div`
   align-items: center;

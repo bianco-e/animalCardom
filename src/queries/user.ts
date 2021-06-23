@@ -62,3 +62,15 @@ export const updateHand = (auth_id: string, hand: string[]) => {
     .then((res) => res.json())
     .catch((err) => console.error(err));
 };
+
+export const animalPurchase = (
+  auth_id: string,
+  new_card: string,
+  price: number
+) => {
+  return fetch(`${API_BASE_URL}users/animal_purchase`, {
+    ...ACPost({ auth_id, new_card, price }),
+  })
+    .then((res) => res.json())
+    .catch((err) => console.error(err));
+};

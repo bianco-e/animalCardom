@@ -45,6 +45,7 @@ export interface IAnimal {
   paralyzed: number;
   targeteable: boolean;
   bleeding: boolean;
+  price: number;
 }
 
 export interface ITerrain {

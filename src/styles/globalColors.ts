@@ -6,5 +6,6 @@ const colors = {
   xp_secondary_violet: "#a4508b",
   primary_red: "#dd5540",
   primary_green: "#0B8A37",
+  primary_yellow: "#ffdf0f",
 };
 export default colors;

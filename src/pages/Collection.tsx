@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Message } from "../components/styled-components";
 import { IAnimal } from "../interfaces";
@@ -14,8 +14,10 @@ import Spinner from "../components/Spinner";
 import Card from "../components/Card";
 import CustomModal from "../components/CustomModal";
 import ModalHandEditContent from "../components/ModalHandEditContent";
+import ModalCardPurchaseContent from "../components/ModalCardPurchaseContent";
 import AccordionSection from "../components/AccordionSection";
 import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
+import UserContext, { IUserContext } from "../context/UserContext";
 
 const getCardOpacityForPreview = (cards: string[], name: string): string => {
   if (cards.find((card) => card === name)) {
@@ -25,8 +27,9 @@ const getCardOpacityForPreview = (cards: string[], name: string): string => {
 };
 
 export default function Collection() {
+  const [state] = useContext<IUserContext>(UserContext);
   const [speciesFilter, setSpeciesFilter] = useState<string>();
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [modal, setModal] = useState<string>("");
   const [skillTypeFilter, setSkillTypeFilter] = useState<string>();
   const [owningFilter, setOwningFilter] = useState<boolean | undefined>();
   const [cardsToShow, setCardsToShow] = useState<IAnimal[]>([]);
@@ -35,6 +38,7 @@ export default function Collection() {
   const [ownedCards, setOwnedCards] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [animalToAdd, setAnimalToAdd] = useState<IAnimal>();
+  const [animalToBuy, setAnimalToBuy] = useState<IAnimal>();
 
   useEffect(() => {
     setIsLoading(true);
@@ -48,7 +52,7 @@ export default function Collection() {
     const authId = getCookie("auth=");
     if (authId) {
       getUserProfile(authId).then((res) => {
-        if (res && res.owned_cards && res.hand) {
+        if (res && res.owned_cards && res.hand && res.coins !== undefined) {
           setOwnedCards(res.owned_cards);
           setCurrentHand(res.hand);
         }
@@ -74,12 +78,17 @@ export default function Collection() {
     });
   }, [speciesFilter, skillTypeFilter, owningFilter]); //eslint-disable-line
 
-  const handleClick = (name: string) => {
-    setShowModal(true);
+  const handleEditHandClick = (name: string) => {
+    setModal("editHand");
     const cardToAdd = allCards.find((card) => card.name === name);
     if (cardToAdd) {
       setAnimalToAdd(cardToAdd);
     }
+  };
+
+  const handlePurchaseClick = (card: IAnimal) => {
+    setModal("cardPurchase");
+    setAnimalToBuy(card);
   };
 
   const hand = allCards.filter((card) => currentHand.includes(card.name));
@@ -111,21 +120,23 @@ export default function Collection() {
                   targeteable,
                 } = card;
                 return (
-                  <Card
-                    attack={attack}
-                    belongsToUser={false}
-                    bleeding={bleeding}
-                    species={species}
-                    image={image}
-                    key={name}
-                    life={life}
-                    opacityForPreview="1"
-                    paralyzed={paralyzed}
-                    poisoned={poisoned}
-                    skill={skill}
-                    name={name}
-                    targeteable={targeteable}
-                  ></Card>
+                  <SingleCardContainer>
+                    <Card
+                      attack={attack}
+                      belongsToUser={false}
+                      bleeding={bleeding}
+                      species={species}
+                      image={image}
+                      key={name}
+                      life={life}
+                      opacityForPreview="1"
+                      paralyzed={paralyzed}
+                      poisoned={poisoned}
+                      skill={skill}
+                      name={name}
+                      targeteable={targeteable}
+                    ></Card>
+                  </SingleCardContainer>
                 );
               })}
             </CardsContainer>
@@ -148,35 +159,46 @@ export default function Collection() {
                   skill,
                   species,
                   targeteable,
+                  price,
                 } = card;
                 return (
-                  <Card
-                    attack={attack}
-                    belongsToUser={false}
-                    bleeding={bleeding}
-                    species={species}
-                    image={image}
-                    key={name}
-                    life={life}
-                    onPreviewClick={
-                      ownedCards.includes(name) && !currentHand.includes(name)
-                        ? handleClick
-                        : undefined
-                    }
-                    opacityForPreview={getCardOpacityForPreview(
-                      ownedCards,
-                      name
+                  <SingleCardContainer>
+                    <Card
+                      attack={attack}
+                      belongsToUser={false}
+                      bleeding={bleeding}
+                      species={species}
+                      image={image}
+                      key={name}
+                      life={life}
+                      onPreviewClick={
+                        ownedCards.includes(name) && !currentHand.includes(name)
+                          ? handleEditHandClick
+                          : undefined
+                      }
+                      opacityForPreview={getCardOpacityForPreview(
+                        ownedCards,
+                        name
+                      )}
+                      paralyzed={paralyzed}
+                      poisoned={poisoned}
+                      skill={skill}
+                      name={name}
+                      targeteable={targeteable}
+                    >
+                      {currentHand.includes(name) ? (
+                        <span className="in-hand">Hand</span>
+                      ) : undefined}
+                    </Card>
+                    {!ownedCards.includes(name) && (
+                      <BuyButton
+                        disabled={state.coins < price}
+                        onClick={() => handlePurchaseClick(card)}
+                      >
+                        {price}
+                      </BuyButton>
                     )}
-                    paralyzed={paralyzed}
-                    poisoned={poisoned}
-                    skill={skill}
-                    name={name}
-                    targeteable={targeteable}
-                  >
-                    {currentHand.includes(name) ? (
-                      <span className="in-hand">In hand</span>
-                    ) : undefined}
-                  </Card>
+                  </SingleCardContainer>
                 );
               })}
             </CardsContainer>
@@ -184,55 +206,99 @@ export default function Collection() {
             <Message margin="75px 0 0 0">No animals found.</Message>
           )}
         </AccordionSection>
-        {showModal && (
+        {modal === "editHand" ? (
           <CustomModal
-            closeModal={() => setShowModal(false)}
+            closeModal={() => setModal("")}
             contentWidth="950px"
             withCloseButton={false}
           >
             <ModalHandEditContent
-              closeModal={() => setShowModal(false)}
+              closeModal={() => setModal("")}
               hand={hand}
               animalToAdd={animalToAdd!}
               handSetter={setCurrentHand}
             />
           </CustomModal>
+        ) : (
+          modal === "cardPurchase" && (
+            <CustomModal
+              closeModal={() => setModal("")}
+              contentWidth="600px"
+              withCloseButton={false}
+            >
+              <ModalCardPurchaseContent
+                closeModal={() => setModal("")}
+                setOwnedCards={setOwnedCards}
+                ownedCards={ownedCards}
+                animalToBuy={animalToBuy!}
+              />
+            </CustomModal>
+          )
         )}
       </>
     </MenuLayout>
   );
 }
 
-const CardsContainer = styled.div`
-  align-items: center;
-  border-radius: 5px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-top: 60px;
-  min-height: 100px;
-  padding: 15px 60px;
-  width: 83%;
-  > button {
-    height: 270px;
-    margin-bottom: 16px;
-    width: 19%;
+const BuyButton = styled.button`
+  background: ${({ theme }) => theme.secondary_brown};
+  border-radius: 99px;
+  border: 2px solid ${({ theme }) => theme.primary_brown};
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+  color: ${({ theme }) => theme.primary_yellow};
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  height: 50px;
+  left: 50%;
+  margin-left: -40px;
+  position: absolute;
+  top: 35%;
+  transition: all 0.1s linear;
+  width: 80px;
+  z-index: 30;
+  &:hover:enabled {
+    background: ${({ theme }) => theme.primary_brown};
+  }
+  &:active:enabled {
+    box-shadow: none;
+  }
+  &:disabled {
+    background: ${({ theme }) => theme.light_brown};
+    color: ${({ theme }) => theme.primary_red};
+    cursor: not-allowed;
+  }
+`;
+
+const SingleCardContainer = styled.div`
+  position: relative;
+  height: 270px;
+  margin-bottom: 16px;
+  width: 19%;
+  > button.card {
+    height: 100%;
+    width: 100%;
     > .animal-name {
       font-size: 18px;
     }
     > .in-hand {
       background: ${({ theme }) => theme.primary_green};
-      border: 2px solid ${({ theme }) => theme.secondary_brown};
-      border-radius: 5px;
+      border-radius: 99px;
+      border: 1px solid ${({ theme }) => theme.secondary_brown};
+      display: flex;
+      justify-content: center;
+      align-items: center;
       color: #fff;
-      font-size: 10px;
+      font-size: 16px;
       font-weight: bold;
-      padding: 1px;
+      height: 45px;
+      left: 50%;
+      margin-left: -40px;
       position: absolute;
-      transform: rotate(30deg);
-      top: 6px;
-      right: 0;
       text-align: center;
+      top: 35%;
+      width: 80px;
+      z-index: 30;
     }
     &:hover {
       box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.6);
@@ -241,7 +307,7 @@ const CardsContainer = styled.div`
   }
   @media (${SMALL_RESPONSIVE_BREAK}) {
     width: 93%;
-    > button {
+    > button.card {
       height: 180px;
       margin-bottom: 8px;
       width: 19%;
@@ -253,4 +319,16 @@ const CardsContainer = styled.div`
       }
     }
   }
+`;
+
+const CardsContainer = styled.div`
+  align-items: center;
+  border-radius: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 60px;
+  min-height: 100px;
+  padding: 15px 60px;
+  width: 83%;
 `;

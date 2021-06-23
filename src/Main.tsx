@@ -2,6 +2,7 @@ import { ThemeProvider } from "styled-components";
 import theme from "./styles/globalColors";
 import Router from "./Router";
 import { HandsContext } from "./context/HandsContext";
+import { UserContext } from "./context/UserContext";
 import AuthProvider from "./0auth/Provider";
 
 const Main = () => {
@@ -9,7 +10,9 @@ const Main = () => {
     <ThemeProvider theme={theme}>
       <AuthProvider>
         <HandsContext>
-          <Router></Router>
+          <UserContext>
+            <Router></Router>
+          </UserContext>
         </HandsContext>
       </AuthProvider>
     </ThemeProvider>
