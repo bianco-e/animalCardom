@@ -1,9 +1,5 @@
-import { API_BASE_URL } from "../utils/constants";
+import { API_BASE_URL, IS_PRODUCTION } from "../utils/constants";
 import { ACPost } from "./user";
-const isProduction = process.env.REACT_APP_ENVIRONMENT === "prod";
-
-console.log(process.env.REACT_APP_ENVIRONMENT);
-
 interface Visit {
   auth_id?: string;
   utm?: string;
@@ -12,7 +8,7 @@ interface Visit {
 }
 
 export const trackAction = (visit: Visit) => {
-  if (!isProduction) return;
+  if (!IS_PRODUCTION) return;
   return fetch(`${API_BASE_URL}track_action`, {
     ...ACPost(visit),
   })
