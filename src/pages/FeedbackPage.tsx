@@ -44,7 +44,7 @@ export default function FeedbackPage() {
           onChange={(e) => setNameValue(e.target.value)}
         />
         <ACTextArea
-          placeholder={`Type here \n If it is a bug report please be as specific as you can describing the situation, current view, etc. \n \n Thanks for your feedback!`}
+          placeholder={`Type here \n\n If it is a bug report please be as specific as you can describing the situation, current view, etc. \n Thanks for your feedback!`}
           value={messageValue}
           onChange={(e) => setMessageValue(e.target.value)}
         />

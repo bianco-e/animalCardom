@@ -11,14 +11,16 @@ interface IProps {
   isAuthenticated: boolean;
   username?: string;
   auth_id?: string;
+  picture?: string;
   isHome?: boolean;
 }
 
 export default function NavBar({
   auth_id,
   isAuthenticated,
-  username,
   isHome,
+  picture,
+  username,
 }: IProps) {
   const { loginWithRedirect } = useAuth0();
   const history = useHistory();
@@ -87,11 +89,14 @@ export default function NavBar({
         <Link className="logo-link" to="/">
           <img alt="ac-logo" src="/images/animal-cardom-logo.png" width={60} />
         </Link>
-        <LogButton onClick={handleLogin}>
-          {isAuthenticated && username ? (
-            <span>
-              You are allowed, <b>{username}!</b>
-            </span>
+        <LogButton onClick={handleLogin} overflow="visible">
+          {isAuthenticated && username && picture ? (
+            <>
+              <UserImage src={picture} alt={username} />
+              <span>
+                You are allowed, <b>{username}!</b>
+              </span>
+            </>
           ) : (
             <span>
               Sign in with <b>Google</b>
@@ -103,6 +108,14 @@ export default function NavBar({
   );
 }
 
+const UserImage = styled.img`
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  position: Absolute;
+  right: -18px;
+  top: calc(50% - 18px);
+`;
 const OptionButton = styled.div`
   cursor: pointer;
   display: flex;

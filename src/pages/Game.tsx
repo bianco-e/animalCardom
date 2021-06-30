@@ -161,7 +161,7 @@ export default function App() {
         </Board>
       </Wrapper>
       {isLoading && (
-        <CustomModal closeModal={() => setIsLoading(false)} forSpinner={true}>
+        <CustomModal closeModal={() => {}} forSpinner={true}>
           <Spinner />
         </CustomModal>
       )}

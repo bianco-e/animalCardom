@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { SMALL_RESPONSIVE_BREAK } from "../utils/constants";
 
+interface LogButtonProps {
+  overflow?: string;
+}
 interface ButtonProps {
   fWeight?: string;
   selected?: boolean;
@@ -71,8 +74,9 @@ export const LogButton = styled.button`
   cursor: pointer;
   font-size: 18px;
   margin-right: 20px;
-  overflow: hidden;
-  padding: 6px 15px;
+  overflow: ${(p: LogButtonProps) => p.overflow || "hidden"};
+  padding: 6px 20px;
+  position: relative;
 `;
 
 export const ComingSoon = styled.span`
@@ -123,7 +127,7 @@ export const ModalTitle = styled.span`
 `;
 
 export const ACInput = styled.input`
-  background: ${({ theme }) => theme.primary_brown};
+  background: ${({ theme }) => theme.light_brown};
   border: 2px solid ${({ theme }) => theme.secondary_brown};
   border-radius: 5px;
   box-shadow: inset 0px 0px 3px black;
@@ -134,7 +138,6 @@ export const ACInput = styled.input`
   text-align: center;
   width: 96%;
   &:focus {
-    background: ${({ theme }) => theme.secondary_brown};
     outline: none;
   }
   &::placeholder {
