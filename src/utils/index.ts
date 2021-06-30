@@ -1,4 +1,4 @@
-import { IAnimal } from "../interfaces";
+import { IAnimal, UserTemplate } from "../interfaces";
 
 export const cardSpeciesToLowerCase = (species: string): string => {
   const splittedSpecies = species.split(" ");
@@ -36,21 +36,7 @@ export const getCookie = (name: string) => {
     ?.substring(5);
 };
 
-export const getNewUserTemplate = (user: {
-  sub: string;
-  picture: string;
-  email: string;
-  given_name: string;
-  family_name: string;
-  locale: string;
-}) => {
-  const initialAnimals = [
-    "Alligator",
-    "Basilisk Lizard",
-    "Little Lion",
-    "Octopus",
-    "Vulture",
-  ];
+export const getNewUserTemplate = (user: UserTemplate) => {
   const { sub, picture, email, given_name, family_name, locale } = user;
   return {
     auth_id: sub,
@@ -59,13 +45,6 @@ export const getNewUserTemplate = (user: {
     first_name: given_name,
     last_name: family_name,
     locale,
-    preferences: {
-      language: "en",
-    },
-    coins: 0,
-    xp: 0,
-    owned_cards: initialAnimals,
-    hand: initialAnimals,
   };
 };
 

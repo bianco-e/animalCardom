@@ -1,19 +1,5 @@
+import { UserTemplate } from "../interfaces";
 import { API_BASE_URL } from "../utils/constants";
-
-interface User {
-  auth_id: string;
-  picture: string;
-  email: string;
-  first_name: string;
-  last_name: string;
-  locale: string;
-  preferences: {
-    language: string;
-  };
-  xp: number;
-  owned_cards: string[];
-  hand: string[];
-}
 
 export const ACPost = (body: any) => ({
   method: "POST",
@@ -23,7 +9,7 @@ export const ACPost = (body: any) => ({
   body: JSON.stringify(body),
 });
 
-export const createUser = (user: User) => {
+export const createUser = (user: UserTemplate) => {
   return fetch(`${API_BASE_URL}users/create`, {
     ...ACPost(user),
   })

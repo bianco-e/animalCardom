@@ -71,3 +71,30 @@ export interface Game {
     pc: { name: string; applied: boolean }[];
   };
 }
+
+export interface UserTemplate {
+  sub?: string;
+  auth_id?: string;
+  picture: string;
+  email: string;
+  given_name?: string;
+  first_name?: string;
+  family_name?: string;
+  last_name?: string;
+  locale: string;
+}
+
+export interface User {
+  auth_id: string;
+  picture: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  locale: string;
+  preferences: {
+    language: string;
+  };
+  xp: number;
+  owned_cards: string[];
+  hand: string[];
+}

@@ -22,8 +22,8 @@ export default function MenuLayout({ children }: { children: JSX.Element }) {
       getUserMe(user.sub).then((res) => {
         if (res) {
           if (res.error && res.error === "user_not_found") {
-            const newUser = getNewUserTemplate(user);
-            createUser(newUser).then((userRes) => {
+            const userTemplate = getNewUserTemplate(user);
+            createUser(userTemplate).then((userRes) => {
               if (!userRes && !userRes.auth_id) {
                 push("/error");
               }
