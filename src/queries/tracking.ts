@@ -9,7 +9,7 @@ interface Visit {
 
 export const trackAction = (visit: Visit) => {
   if (!IS_PRODUCTION) return;
-  return fetch(`${API_BASE_URL}track_action`, {
+  return fetch(`${API_BASE_URL}tracking/track_action`, {
     ...ACPost(visit),
   })
     .then((res) => res.json())

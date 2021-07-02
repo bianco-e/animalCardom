@@ -7,7 +7,7 @@ interface Feedback {
 }
 
 export const giveFeedback = (feedback: Feedback) => {
-  return fetch(`${API_BASE_URL}give_feedback`, {
+  return fetch(`${API_BASE_URL}feedback/give`, {
     ...ACPost(feedback),
   })
     .then((res) => res.json())
