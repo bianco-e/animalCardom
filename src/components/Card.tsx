@@ -125,14 +125,16 @@ export default function Card({
 
       <DescriptionContainer>
         <FlexSection mBottom="1px">
-          <Image
-            className="small-icon"
-            src={
-              skill.types.includes("defensive")
-                ? utilitiesIcons.defense
-                : utilitiesIcons.fury
-            }
-          />
+          {!skill.types.includes("none") && (
+            <Image
+              className="small-icon"
+              src={
+                skill.types.includes("defensive")
+                  ? utilitiesIcons.defense
+                  : utilitiesIcons.fury
+              }
+            />
+          )}
           <Text
             className="skill"
             textDeco={`${paralyzed > 0 && "line-through 2px #dd5540"}`}

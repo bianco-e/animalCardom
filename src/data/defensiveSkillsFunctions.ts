@@ -1,5 +1,33 @@
 import { HandKey, IAnimal, IHands } from "../interfaces";
 
+const BUTTERFLY_ANIMAL: IAnimal = {
+  skill: {
+    types: ["none"],
+    name: "",
+    description: "",
+    toDo: (state: any, hand: HandKey) => state,
+  },
+  attack: {
+    initial: 1,
+    current: 1,
+  },
+  life: {
+    initial: 1,
+    current: 1,
+  },
+  poisoned: {
+    damage: 0,
+    rounds: 0,
+  },
+  species: "🦂",
+  name: "Butterfly",
+  image: "/images/animals/adult-butterfly.webp",
+  paralyzed: 0,
+  targeteable: true,
+  bleeding: false,
+  price: 45,
+};
+
 const getRandomChance = (percent: number) => Math.random() < percent / 100;
 const applyDmg = (animal: IAnimal, statsDiff: number): IAnimal => ({
   ...animal,
@@ -36,6 +64,7 @@ const ballBugFn = (
     }),
   };
 };
+
 const basiliskLizardFn = (
   hands: IHands,
   attacker: IAnimal,
@@ -47,16 +76,12 @@ const basiliskLizardFn = (
     ...hands,
     [enemyHandKey]: hands[enemyHandKey].map((animal) => {
       if (animal.name === defender.name) {
-        if (animal.paralyzed === 0) {
+        if (animal.paralyzed === 0 && getRandomChance(30)) {
           return {
             ...animal,
             life: {
               ...animal.life,
-              current: getRandomChance(30)
-                ? animal.life.current
-                : statsDiff < 1
-                ? "DEAD"
-                : statsDiff,
+              current: statsDiff < 1 ? "DEAD" : statsDiff,
             },
           };
         } else return applyDmg(animal, statsDiff);
@@ -64,6 +89,26 @@ const basiliskLizardFn = (
     }),
   };
 };
+
+const caterpillarFn = (
+  hands: IHands,
+  attacker: IAnimal,
+  defender: IAnimal,
+  enemyHandKey: HandKey,
+  statsDiff: number
+): IHands => {
+  return {
+    ...hands,
+    [enemyHandKey]: hands[enemyHandKey].map((animal) => {
+      if (animal.name === defender.name) {
+        if (animal.paralyzed === 0 && statsDiff < 1) {
+          return BUTTERFLY_ANIMAL;
+        } else return applyDmg(animal, statsDiff);
+      } else return animal;
+    }),
+  };
+};
+
 const combStarFn = (
   hands: IHands,
   attacker: IAnimal,
@@ -91,6 +136,7 @@ const combStarFn = (
     }),
   };
 };
+
 const hedgehogFn = (
   hands: IHands,
   attacker: IAnimal,
@@ -121,6 +167,7 @@ const hedgehogFn = (
     }),
   };
 };
+
 const lizardFn = (
   hands: IHands,
   attacker: IAnimal,
@@ -145,6 +192,7 @@ const lizardFn = (
     }),
   };
 };
+
 const ostrichFn = (
   hands: IHands,
   attacker: IAnimal,
@@ -170,6 +218,31 @@ const ostrichFn = (
   };
 };
 
+const peacockFn = (
+  hands: IHands,
+  attacker: IAnimal,
+  defender: IAnimal,
+  enemyHandKey: HandKey,
+  statsDiff: number
+): IHands => {
+  return {
+    ...hands,
+    [enemyHandKey]: hands[enemyHandKey].map((animal) => {
+      if (animal.name === defender.name) {
+        if (animal.paralyzed === 0 && getRandomChance(30)) {
+          return {
+            ...animal,
+            life: {
+              ...animal.life,
+              current: statsDiff + 2 < 1 ? "DEAD" : statsDiff + 2,
+            },
+          };
+        } else return applyDmg(animal, statsDiff);
+      } else return animal;
+    }),
+  };
+};
+
 export default function getSkillFn(name: string) {
   switch (name) {
     case "Ball Bug":
@@ -184,6 +257,10 @@ export default function getSkillFn(name: string) {
       return lizardFn;
     case "Ostrich":
       return ostrichFn;
+    case "Peacock":
+      return peacockFn;
+    case "Caterpillar":
+      return caterpillarFn;
     default:
       return (
         hands: IHands,

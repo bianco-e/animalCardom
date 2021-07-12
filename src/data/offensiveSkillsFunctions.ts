@@ -297,6 +297,13 @@ const gorillaFn = (state: IHandsState, hand: HandKey): IHandsState => {
   return setHandInState(state, otherHand, newHand);
 };
 
+const hornedLizardFn = (state: IHandsState, hand: HandKey): IHandsState => {
+  const { hands, defender } = state;
+  const roundsNumber = 3;
+  const newHand = paralyzeEnemy(hands[hand], defender!, roundsNumber);
+  return setHandInState(state, hand, newHand);
+};
+
 const hyenaFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const { hands, defender } = state;
   const damage = 2;
@@ -369,7 +376,11 @@ const parrotFn = (state: IHandsState, hand: HandKey): IHandsState => {
   const updatedDefender = hands[hand].find(
     (card) => card.name === defender!.name
   );
-  if (updatedDefender!.life.current === "DEAD") {
+  if (
+    updatedDefender &&
+    updatedDefender.life.current === "DEAD" &&
+    !updatedDefender.skill.types.includes("none")
+  ) {
     const newHand = copyDefenderSkill(hands[otherHand], defender!, attacker!);
     return setHandInState(state, otherHand, newHand);
   } else return state;
@@ -500,6 +511,8 @@ export default function getSkillFn(name: string) {
       return komododragonFn;
     case "Chameleon":
       return chameleonFn;
+    case "Horned Lizard":
+      return hornedLizardFn;
     case "Frog":
       return toadAndFrogFn;
     case "Toad":
