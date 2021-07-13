@@ -497,6 +497,33 @@ const wolfFn = (state: IHandsState, hand: HandKey): IHandsState => {
   return setHandInState(state, otherHand, newHand);
 };
 
+export const getExtraDamageIfApplies = (
+  attacker: IAnimal,
+  defender: IAnimal
+): number => {
+  const isNotParalyzed = attacker.paralyzed === 0;
+  switch (attacker.name) {
+    case "Alligator":
+      return isNotParalyzed ? 1 : 0;
+    case "Crocodile":
+      return isNotParalyzed ? 2 : 0;
+    case "Komodo Dragon":
+      return isNotParalyzed ? 1 : 0;
+    case "Eagle":
+      return isNotParalyzed && defender.species !== "🦂" ? 2 : 0;
+    case "Hyena":
+      return isNotParalyzed && defender.life.current < defender.life.initial
+        ? 2
+        : 0;
+    case "Pelican":
+      return isNotParalyzed && defender.species === "🦈" ? 2 : 0;
+    case "Bee":
+      return isNotParalyzed ? 3 : 0;
+    default:
+      return 0;
+  }
+};
+
 export default function getSkillFn(name: string) {
   switch (name) {
     case "Alligator":

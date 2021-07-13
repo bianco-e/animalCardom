@@ -1,7 +1,9 @@
 import React, { useReducer } from "react";
-import getPlantFn from "../../data/plantsFunctions";
-import getOffensiveSkillFn from "../../data/offensiveSkillsFunctions";
-import getDefensiveSkillFn from "../../data/defensiveSkillsFunctions";
+import getPlantFn from "../../cardsFunctions/plantsFunctions";
+import getOffensiveSkillFn, {
+  getExtraDamageIfApplies,
+} from "../../cardsFunctions/offensiveSkillsFunctions";
+import getDefensiveSkillFn from "../../cardsFunctions/defensiveSkillsFunctions";
 import {
   HandKey,
   IAnimal,
@@ -300,7 +302,8 @@ const applyAttackDamage = (
 ) => {
   const statsDiff =
     typeof defender.life.current === "number"
-      ? defender.life.current - attacker.attack.current
+      ? defender.life.current -
+        (attacker.attack.current + getExtraDamageIfApplies(attacker, defender))
       : undefined;
   return getDefensiveSkillFn(defender.name)(
     hands,
